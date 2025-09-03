@@ -10,8 +10,8 @@ class LockerCondition {
   final String? comments;
   final String? problems;
 
-  factory LockerCondition.good() {
-    return LockerCondition(true);
+  factory LockerCondition.good({String? comments}) {
+    return LockerCondition(true, comments: comments);
   }
 
   LockerCondition copyWith({

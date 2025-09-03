@@ -3,17 +3,22 @@ import 'package:excel_gestion_casiers/src/models/student.dart';
 import 'package:flutter/material.dart';
 
 class LockersProvder with ChangeNotifier {
+  final _imported = <Locker>[];
+
   final _lockers = <Locker>[];
   final _students = <Student>[];
 
   List<Locker> get lockers => [..._lockers];
   List<Student> get students => [..._students];
+  bool get getImportationDone => _imported.isNotEmpty;
 
   // Lockers
 
   void setLockersList(List<Locker> lockers) {
     _lockers.clear();
     _lockers.addAll(lockers);
+    _imported.clear();
+    _imported.addAll(lockers);
     notifyListeners();
   }
 
@@ -48,6 +53,38 @@ class LockersProvder with ChangeNotifier {
     _lockers.removeAt(
       _lockers.indexWhere((locker) => locker.number == lockerNumber),
     );
+    notifyListeners();
+  }
+
+  void searchLocker(String searchValue) {
+    late List<Locker> lockers;
+
+    if (int.tryParse(searchValue) != null) {
+      lockers = _imported
+          .where((locker) => locker.number.toString().contains(searchValue))
+          .toList();
+
+      if (lockers.isEmpty) {
+        lockers = _imported
+            .where(
+              (locker) => locker.lockNumber.toString().contains(searchValue),
+            )
+            .toList();
+      }
+    } else {
+      lockers = [];
+      for (Locker locker in _imported) {
+        if (locker.student != null &&
+            locker.student!.name.toLowerCase().contains(
+              searchValue.toLowerCase(),
+            )) {
+          lockers.add(locker);
+        }
+      }
+    }
+
+    _lockers.clear();
+    _lockers.addAll(lockers);
     notifyListeners();
   }
 

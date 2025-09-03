@@ -16,6 +16,8 @@ class LockersListScreen extends StatefulWidget {
 }
 
 class _LockersListScreenState extends State<LockersListScreen> {
+  TextEditingController searchController = TextEditingController();
+
   void importFile() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -57,15 +59,28 @@ class _LockersListScreenState extends State<LockersListScreen> {
   }
 
   @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<Locker> lockers = context.watch<LockersProvder>().lockers;
 
     return Scaffold(
-      body: lockers.isEmpty
+      body:
+          lockers.isEmpty && !context.read<LockersProvder>().getImportationDone
           ? getEmptyLockersGreeting()
           : Column(
               children: [
                 Text('Casiers : ${lockers.length}'),
+                TextField(
+                  controller: searchController,
+                  onChanged: (value) {
+                    context.read<LockersProvder>().searchLocker(value);
+                  },
+                ),
                 Expanded(
                   child: ListView.builder(
                     itemCount: lockers.length,

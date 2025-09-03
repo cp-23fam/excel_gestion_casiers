@@ -40,7 +40,7 @@ List<Locker> importIchFromExcelFile(Excel excel) {
           null;
 
       final results = [];
-      for (int i = 0; i < 8; i++) {
+      for (int i = 0; i < 9; i++) {
         var cell = excel[floor].cell(
           CellIndex.indexByColumnRow(columnIndex: 2 + i, rowIndex: row),
         );
@@ -72,7 +72,9 @@ List<Locker> importIchFromExcelFile(Excel excel) {
           caution: int.tryParse(results[5]) ?? 0,
           numberKeys: int.parse(results[6]),
           lockNumber: int.parse(results[7]),
-          lockerCondition: LockerCondition.good(),
+          lockerCondition: LockerCondition.good(
+            comments: results[8] == 'null' ? null : results[8],
+          ),
         ),
       );
 
