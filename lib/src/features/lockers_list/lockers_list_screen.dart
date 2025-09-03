@@ -2,6 +2,7 @@ import 'package:excel/excel.dart';
 import 'package:excel_gestion_casiers/src/features/lockers_list/lockers_details_screen.dart';
 import 'package:excel_gestion_casiers/src/features/providers/lockers_provder.dart';
 import 'package:excel_gestion_casiers/src/models/locker.dart';
+import 'package:excel_gestion_casiers/src/models/locker_condition.dart';
 import 'package:excel_gestion_casiers/utils/excel.dart';
 import 'package:excel_gestion_casiers/utils/lockers.dart';
 import 'package:file_picker/file_picker.dart';
@@ -69,6 +70,36 @@ class _LockersListScreenState extends State<LockersListScreen> {
     List<Locker> lockers = context.watch<LockersProvder>().lockers;
 
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.read<LockersProvder>().restoreTransaction();
+            },
+            icon: Icon(Icons.arrow_back),
+            style: IconButton.styleFrom(backgroundColor: Colors.blue),
+          ),
+          IconButton(
+            onPressed: () {
+              context.read<LockersProvder>().addLocker(
+                Locker(
+                  place: 'Ancien Batiment',
+                  floor: 'F',
+                  number: 321,
+                  responsible: 'JHI',
+                  student: null,
+                  caution: 0,
+                  numberKeys: 0,
+                  lockNumber: 522678,
+                  lockerCondition: LockerCondition.good(),
+                ),
+              );
+            },
+            icon: Icon(Icons.add),
+            style: IconButton.styleFrom(backgroundColor: Colors.blue),
+          ),
+        ],
+      ),
       body:
           lockers.isEmpty && !context.read<LockersProvder>().getImportationDone
           ? getEmptyLockersGreeting()
