@@ -4,7 +4,7 @@ import 'package:excel_gestion_casiers/src/models/locker_condition.dart';
 import 'package:excel_gestion_casiers/src/models/student.dart';
 import 'package:uuid/uuid.dart';
 
-final uuid = Uuid();
+final uuid = const Uuid();
 
 List<Locker> importIchFromExcelFile(Excel excel) {
   final lockers = <Locker>[];

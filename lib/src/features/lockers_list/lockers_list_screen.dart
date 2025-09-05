@@ -30,12 +30,17 @@ class _LockersListScreenState extends State<LockersListScreen> {
       if (verifyExcelFile()) {
         Excel excel = Excel.decodeBytes(bytes);
         final lockers = importIchFromExcelFile(excel);
+        // ignore: use_build_context_synchronously
         context.read<LockersProvder>().setLockersList(
           runAutoHealthCheckOnLockers(lockers),
         );
-        context.read<LockersProvder>().createStudentListWithLockerList();
+        // ignore: use_build_context_synchronously
+        // context.read<LockersProvder>().createStudentListWithLockerList();
       } else {
-        // TODO Show error message
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Erreur: Fichier excel invalide')),
+        );
       }
     }
   }
@@ -45,11 +50,11 @@ class _LockersListScreenState extends State<LockersListScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Aucun casier...'),
-          SizedBox(height: 8.0),
+          const Text('Aucun casier...'),
+          const SizedBox(height: 8.0),
           TextButton(
             onPressed: importFile,
-            child: Row(
+            child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [Text('Importer un fichier excel'), Icon(Icons.add)],
             ),
@@ -66,6 +71,12 @@ class _LockersListScreenState extends State<LockersListScreen> {
   }
 
   @override
+  void initState() {
+    context.read<LockersProvder>().fetchLockersList();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<Locker> lockers = context.watch<LockersProvder>().lockers;
 
@@ -76,7 +87,7 @@ class _LockersListScreenState extends State<LockersListScreen> {
             onPressed: () {
               context.read<LockersProvder>().restoreTransaction();
             },
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             style: IconButton.styleFrom(backgroundColor: Colors.blue),
           ),
           IconButton(
@@ -95,7 +106,7 @@ class _LockersListScreenState extends State<LockersListScreen> {
                 ),
               );
             },
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
             style: IconButton.styleFrom(backgroundColor: Colors.blue),
           ),
         ],
@@ -109,7 +120,7 @@ class _LockersListScreenState extends State<LockersListScreen> {
                 TextField(
                   controller: searchController,
                   onChanged: (value) {
-                    context.read<LockersProvder>().searchLocker(value);
+                    // context.read<LockersProvder>().searchLocker(value);
                   },
                 ),
                 Expanded(
@@ -129,17 +140,20 @@ class _LockersListScreenState extends State<LockersListScreen> {
                           child: Row(
                             children: [
                               lockers[index].student == null
-                                  ? Icon(Icons.close, color: Colors.red)
-                                  : Icon(Icons.check, color: Colors.green),
+                                  ? const Icon(Icons.close, color: Colors.red)
+                                  : const Icon(
+                                      Icons.check,
+                                      color: Colors.green,
+                                    ),
                               Text(
                                 '${lockers[index].number.toString()}. ${lockers[index].student?.name ?? ''}',
                               ),
-                              Expanded(child: SizedBox()),
+                              const Expanded(child: SizedBox()),
                               lockers[index]
                                       .lockerCondition
                                       .isLockerinGoodCondition
-                                  ? Icon(Icons.check, color: Colors.green)
-                                  : Icon(Icons.close, color: Colors.red),
+                                  ? const Icon(Icons.check, color: Colors.green)
+                                  : const Icon(Icons.close, color: Colors.red),
                             ],
                           ),
                         ),

@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "Main",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib\\main.dart",
+            "args": [
+                "-d",
+                "chrome",
+                "--web-port",
+                "56798"
+            ]
+        }
+    ]
+}

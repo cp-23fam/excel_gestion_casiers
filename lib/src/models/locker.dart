@@ -1,9 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:excel_gestion_casiers/src/models/locker_condition.dart';
 import 'package:excel_gestion_casiers/src/models/student.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-class Locker {
-  const Locker({
+part 'locker.g.dart';
+
+@HiveType(typeId: 0)
+class Locker extends HiveObject {
+  Locker({
     required this.place,
     required this.floor,
     required this.number,
@@ -15,14 +19,23 @@ class Locker {
     required this.lockerCondition,
   });
 
+  @HiveField(0)
   final String place;
+  @HiveField(1)
   final String floor;
+  @HiveField(2)
   final int number;
+  @HiveField(3)
   final String responsible;
+  @HiveField(4)
   final Student? student;
+  @HiveField(5)
   final int caution;
+  @HiveField(6)
   final int numberKeys;
+  @HiveField(7)
   final int lockNumber;
+  @HiveField(8)
   final LockerCondition lockerCondition;
 
   Locker returnFreedLocker() {

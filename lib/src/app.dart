@@ -18,8 +18,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
-          '/': (context) => LockersListScreen(),
-          LockersDetailsScreen.routeName: (context) => LockersDetailsScreen(),
+          '/': (context) => const LockersListScreen(),
+          LockersDetailsScreen.routeName: (context) =>
+              const LockersDetailsScreen(),
         },
         // home: LockersListScreen(),
       ),
