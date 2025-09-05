@@ -1,5 +1,5 @@
 import 'package:excel_gestion_casiers/src/features/providers/lockers_provder.dart';
-import 'package:excel_gestion_casiers/src/models/locker.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

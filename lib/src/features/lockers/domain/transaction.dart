@@ -1,4 +1,4 @@
-import 'package:excel_gestion_casiers/src/models/locker.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 
 enum TransactionType { add, remove, edit }
 

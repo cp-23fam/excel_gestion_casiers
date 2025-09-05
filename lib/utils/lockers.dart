@@ -1,5 +1,5 @@
-import 'package:excel_gestion_casiers/src/models/locker.dart';
-import 'package:excel_gestion_casiers/src/models/locker_condition.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_condition.dart';
 
 List<Locker> runAutoHealthCheckOnLockers(List<Locker> lockers) {
   final checkedLockers = <Locker>[];

@@ -1,8 +1,8 @@
 import 'package:excel/excel.dart';
-import 'package:excel_gestion_casiers/src/features/lockers_list/lockers_details_screen.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/presentation/lockers_list/lockers_details_screen.dart';
 import 'package:excel_gestion_casiers/src/features/providers/lockers_provder.dart';
-import 'package:excel_gestion_casiers/src/models/locker.dart';
-import 'package:excel_gestion_casiers/src/models/locker_condition.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_condition.dart';
 import 'package:excel_gestion_casiers/utils/excel.dart';
 import 'package:excel_gestion_casiers/utils/lockers.dart';
 import 'package:file_picker/file_picker.dart';

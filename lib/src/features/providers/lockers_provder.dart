@@ -1,6 +1,6 @@
-import 'package:excel_gestion_casiers/src/models/locker.dart';
-import 'package:excel_gestion_casiers/src/models/student.dart';
-import 'package:excel_gestion_casiers/src/models/transaction.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:excel_gestion_casiers/src/models/locker_condition.dart';
-import 'package:excel_gestion_casiers/src/models/student.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_condition.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 part 'locker.g.dart';

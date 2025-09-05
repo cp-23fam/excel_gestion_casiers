@@ -1,7 +1,7 @@
 import 'package:excel/excel.dart';
-import 'package:excel_gestion_casiers/src/models/locker.dart';
-import 'package:excel_gestion_casiers/src/models/locker_condition.dart';
-import 'package:excel_gestion_casiers/src/models/student.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_condition.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
 import 'package:uuid/uuid.dart';
 
 final uuid = const Uuid();
