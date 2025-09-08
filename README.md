@@ -1,16 +1,50 @@
-# excel_gestion_casiers
+# Gestion casiers
+Application desktop pour gérer les casiers.
+Ce projet à été fait en collaboration avec Donzé pour la partie Front-End.
 
-A new Flutter project.
+## Précisions
+- Les données sont sauvegardés sur *Hive*, qui permet d'avoir un stockage permanent **local**.
+- Certains icônes de material (extension) ont étés modifiés depuis `.vscode/settings.json`
+- L'import depuis les fichiers excel ne fonctionne que sur les templates
 
-## Getting Started
+## Classes
+```mermaid
+classDiagram
+    Locker ..> Student
+    Locker ..> LockerCondition
 
-This project is a starting point for a Flutter application.
+    class Locker {
+        LockerID id;
+        String place;
+        String floor;
+        int number;
+        String responsible;
+        StudentID? studentId;
+        int caution;
+        int numberKeys;
+        int lockNumber;
+        LockerCondition lockerCondition;
+    }
 
-A few resources to get you started if this is your first Flutter project:
+    class Student {
+        StudentID id;
+        String genderTitle;
+        String name;
+        String surname;
+        String job;
+        String login;
+        int formationYear;
+    }
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+    class LockerCondition {
+        bool isLockerinGoodCondition;
+        String? comments;
+        String? problems;
+    }
+    
+    class Transaction {
+	    TransactionType type;
+	    int lockerNumber;
+	    Locker previousValue;
+    }
+```
