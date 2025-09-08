@@ -73,6 +73,7 @@ List<Locker> importLockersFrom(Excel excel) {
           lockerCondition: LockerCondition.good(
             comments: results[8] == 'null' ? null : results[8],
           ),
+          id: uuid.v4(),
         ),
       );
 
@@ -135,10 +136,8 @@ void importFile(Excel excel) {
   }
 
   if (doImportLockers) {
-    LockersRepository.instance.importLockersFromList(importLockersFrom(excel));
+    LockersRepository().importLockersFromList(importLockersFrom(excel));
   } else {
-    LockersRepository.instance.importStudentsFromList(
-      importStudentsFrom(excel),
-    );
+    LockersRepository().importStudentsFromList(importStudentsFrom(excel));
   }
 }

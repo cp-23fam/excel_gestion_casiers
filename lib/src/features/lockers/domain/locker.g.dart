@@ -26,13 +26,14 @@ class LockerAdapter extends TypeAdapter<Locker> {
       numberKeys: fields[6] as int,
       lockNumber: fields[7] as int,
       lockerCondition: fields[8] as LockerCondition,
+      id: fields[9] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Locker obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.place)
       ..writeByte(1)
@@ -50,7 +51,9 @@ class LockerAdapter extends TypeAdapter<Locker> {
       ..writeByte(7)
       ..write(obj.lockNumber)
       ..writeByte(8)
-      ..write(obj.lockerCondition);
+      ..write(obj.lockerCondition)
+      ..writeByte(9)
+      ..write(obj.id);
   }
 
   @override

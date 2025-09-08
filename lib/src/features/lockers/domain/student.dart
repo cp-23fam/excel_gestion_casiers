@@ -2,6 +2,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 part 'student.g.dart';
 
+typedef StudentID = String;
+
 @HiveType(typeId: 1)
 class Student {
   const Student({
@@ -15,7 +17,7 @@ class Student {
   });
 
   @HiveField(0)
-  final String id;
+  final StudentID id;
   @HiveField(1)
   final String name;
   @HiveField(2)

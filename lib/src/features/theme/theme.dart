@@ -1,5 +1,5 @@
-import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
+import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
 
 class AppColors {
   static Color primaryColor = const Color.fromRGBO(141, 169, 196, 1);
@@ -9,6 +9,9 @@ class AppColors {
   static Color titleColor = const Color.fromRGBO(200, 200, 200, 1);
   static Color textColor = const Color.fromARGB(255, 165, 165, 165);
   static Color iconColor = const Color.fromARGB(255, 255, 255, 255);
+
+  static Color editColor = const Color.fromRGBO(76, 175, 80, 1);
+  static Color deleteColor = const Color.fromRGBO(244, 67, 54, 1);
 }
 
 ThemeData primaryTheme = ThemeData(
@@ -27,7 +30,7 @@ ThemeData primaryTheme = ThemeData(
   ),
 
   // text
-  textTheme: const TextTheme().copyWith(
+  textTheme: TextTheme().copyWith(
     bodyMedium: TextStyle(
       color: AppColors.textColor,
       fontSize: 16,

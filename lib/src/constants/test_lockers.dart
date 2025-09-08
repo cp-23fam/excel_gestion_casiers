@@ -12,6 +12,7 @@ final testLockers = [
     numberKeys: 2,
     lockNumber: 45502,
     lockerCondition: LockerCondition.good(),
+    id: '1',
   ),
   Locker(
     place: 'Ancien Batiment',
@@ -23,6 +24,7 @@ final testLockers = [
     numberKeys: 2,
     lockNumber: 45503,
     lockerCondition: LockerCondition.good(),
+    id: '2',
   ),
   Locker(
     place: 'Ancien Batiment',
@@ -34,6 +36,7 @@ final testLockers = [
     numberKeys: 2,
     lockNumber: 45504,
     lockerCondition: LockerCondition.good(),
+    id: '3',
   ),
   Locker(
     place: 'Ancien Batiment',
@@ -45,5 +48,6 @@ final testLockers = [
     numberKeys: 2,
     lockNumber: 45505,
     lockerCondition: LockerCondition.good(),
+    id: '4',
   ),
 ];

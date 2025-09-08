@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
-import 'package:flutter/material.dart';
 
 class LockerCard extends StatelessWidget {
   const LockerCard({super.key, required this.locker, required this.infoLocker});
@@ -18,14 +18,14 @@ class LockerCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Icon(Icons.door_front_door, size: Sizes.p24),
+            Icon(Icons.door_front_door, size: Sizes.p24),
             gapW8,
-            StyledHeading('N° ${locker.number}'),
-            const Expanded(child: SizedBox()),
+            StyledHeading("N° ${locker.number}"),
+            Expanded(child: SizedBox()),
             Center(
               child: IconButton(
                 onPressed: () => infoLocker(locker),
-                icon: const Icon(Icons.double_arrow),
+                icon: Icon(Icons.double_arrow),
               ),
             ),
           ],

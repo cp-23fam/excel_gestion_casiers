@@ -1,6 +1,6 @@
-import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
-import 'package:excel_gestion_casiers/src/features/lockers/presentation/lockers_list/lockers_list_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/presentation/lockers_list/lockers_list_screen.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/presentation/students_list/students_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,12 +23,12 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           },
           destinations: <NavigationRailDestination>[
-            const NavigationRailDestination(
+            NavigationRailDestination(
               icon: Icon(Icons.lock_outline),
               selectedIcon: Icon(Icons.lock),
               label: Text('Lockers'),
             ),
-            const NavigationRailDestination(
+            NavigationRailDestination(
               icon: Icon(Icons.person_outline),
               selectedIcon: Icon(Icons.person),
               label: Text('Students'),
@@ -39,13 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         const VerticalDivider(thickness: 1, width: 1),
         _selectedIndex == 0
-            ? const Expanded(child: LockersListScreen())
-            : Expanded(
-                child: Scaffold(
-                  appBar: AppBar(title: const StyledTitle('Students')),
-                  body: const Placeholder(),
-                ),
-              ),
+            ? Expanded(child: LockersListScreen())
+            : Expanded(child: StudentsListScreen()),
       ],
     );
   }

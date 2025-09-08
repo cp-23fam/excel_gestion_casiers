@@ -6,16 +6,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class LockersRepository {
-  static LockersRepository get instance => LockersRepository._();
-  LockersRepository._();
-
   static final Box<Locker> lockersBox = Hive.box('lockers');
   static final Box<Student> studentsBox = Hive.box('students');
 
   final _transactions = <Transaction>[];
 
   // Transaction
-  void _saveTransaction(TransactionType type, int number, Locker value) {
+  void saveTransaction(TransactionType type, int number, Locker value) {
     _transactions.add(Transaction(type, number, value));
 
     if (_transactions.length > 10) {
@@ -70,12 +67,12 @@ class LockersRepository {
 
   void addLocker(Locker locker) async {
     lockersBox.put(locker.number, locker);
-    _saveTransaction(TransactionType.add, locker.number, locker);
+    saveTransaction(TransactionType.add, locker.number, locker);
   }
 
   void editLocker(int lockerNumber, Locker editedLocker) async {
     lockersBox.put(lockerNumber, editedLocker);
-    _saveTransaction(TransactionType.edit, lockerNumber, editedLocker);
+    saveTransaction(TransactionType.edit, lockerNumber, editedLocker);
   }
 
   void freeLockerByIndex(int lockerNumber) async {
@@ -84,7 +81,7 @@ class LockersRepository {
       lockersBox.get(lockerNumber)!.returnFreedLocker(),
     );
 
-    _saveTransaction(
+    saveTransaction(
       TransactionType.edit,
       lockerNumber,
       lockersBox.get(lockerNumber)!,
@@ -94,14 +91,16 @@ class LockersRepository {
   void addStudentToLockerBy(int number, String studentId) async {
     lockersBox.put(
       number,
-      lockersBox.get(number)!.copyWith(student: studentsBox.get(studentId)!.id),
+      lockersBox
+          .get(number)!
+          .copyWith(studentId: studentsBox.get(studentId)!.id),
     );
 
-    _saveTransaction(TransactionType.edit, number, lockersBox.get(number)!);
+    saveTransaction(TransactionType.edit, number, lockersBox.get(number)!);
   }
 
   void erazeLocker(int lockerNumber) async {
-    _saveTransaction(
+    saveTransaction(
       TransactionType.remove,
       lockerNumber,
       lockersBox.get(lockerNumber)!,
@@ -119,7 +118,7 @@ class LockersRepository {
     }
   }
 
-  Student? getStudentBy(String id) {
+  Student? getStudentBy(StudentID id) {
     return studentsBox.get(id);
   }
 
@@ -183,5 +182,39 @@ class LockersRepository {
 }
 
 final lockersRepositoryProvider = Provider<LockersRepository>((ref) {
-  return LockersRepository.instance;
+  return LockersRepository();
 });
+
+class LockersListNotifier extends Notifier<List<Locker>> {
+  @override
+  List<Locker> build() {
+    return LockersRepository().fetchLockersList();
+  }
+
+  Locker? getLockerById(String lockerId) {
+    return state.firstWhere((locker) => locker.id == lockerId);
+  }
+
+  void addLocker(Locker locker) async {
+    LockersRepository.lockersBox.put(locker.number, locker);
+    LockersRepository().saveTransaction(
+      TransactionType.add,
+      locker.number,
+      locker,
+    );
+  }
+
+  void editLocker(int lockerNumber, Locker editedLocker) async {
+    LockersRepository.lockersBox.put(lockerNumber, editedLocker);
+    LockersRepository().saveTransaction(
+      TransactionType.edit,
+      lockerNumber,
+      editedLocker,
+    );
+  }
+}
+
+final lockersListNotifierProvider =
+    NotifierProvider<LockersListNotifier, List<Locker>>(() {
+      return LockersListNotifier();
+    });

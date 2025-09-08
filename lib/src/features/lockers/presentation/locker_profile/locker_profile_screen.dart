@@ -1,21 +1,32 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:excel_gestion_casiers/src/localization/string_hardcoded.dart';
 
 class LockerProfileScreen extends ConsumerWidget {
-  const LockerProfileScreen({super.key, required this.locker});
-  final Locker? locker;
+  final String lockerId;
+  final Function(Locker locker) editLocker;
+  final Function(Locker locker) linkStudent;
+
+  const LockerProfileScreen({
+    super.key,
+    required this.lockerId,
+    required this.editLocker,
+    required this.linkStudent,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final lockers = ref.watch(lockersListNotifierProvider);
+    final locker = lockers.firstWhere((l) => l.id == lockerId);
     final studentsRepository = ref.read(lockersRepositoryProvider);
     final Student? student = studentsRepository.getStudentBy(
-      locker?.studentId ?? '',
+      locker.studentId ?? '',
     );
     return Align(
       alignment: Alignment.centerRight,
@@ -24,9 +35,9 @@ class LockerProfileScreen extends ConsumerWidget {
         height: double.infinity,
         child: Scaffold(
           appBar: AppBar(
-            title: const StyledTitle('Locker Details'),
+            title: StyledTitle('Locker Details'.hardcoded),
             leading: IconButton(
-              icon: const Icon(Icons.close),
+              icon: Icon(Icons.close),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
@@ -44,19 +55,19 @@ class LockerProfileScreen extends ConsumerWidget {
                     child: Column(
                       children: [
                         _buildLockerInfoRow(
-                          'Numéro du casier',
-                          locker!.number.toString(),
+                          "Numéro du casier",
+                          locker.number.toString(),
                         ),
-                        _buildLockerInfoRow('Étage', locker!.floor),
-                        _buildLockerInfoRow('Responsable', locker!.responsible),
-                        _buildLockerInfoRow('Caution', '${locker!.caution}.-'),
+                        _buildLockerInfoRow("Étage", locker.floor),
+                        _buildLockerInfoRow("Responsable", locker.responsible),
+                        _buildLockerInfoRow("Caution", "${locker.caution}.-"),
                         _buildLockerInfoRow(
-                          'Nombre de clés',
-                          locker!.numberKeys.toString(),
+                          "Nombre de clés",
+                          locker.numberKeys.toString(),
                         ),
                         _buildLockerInfoRow(
-                          'N° de cadenas',
-                          locker!.lockNumber.toString(),
+                          "N° de cadenas",
+                          locker.lockNumber.toString(),
                         ),
                       ],
                     ),
@@ -72,16 +83,18 @@ class LockerProfileScreen extends ConsumerWidget {
                           ),
                           child: Row(
                             children: [
-                              const Icon(Icons.person, size: Sizes.p64),
+                              Icon(Icons.person, size: Sizes.p64),
                               gapW12,
-                              const StyledBoldText('-'),
-                              const Expanded(child: SizedBox()),
+                              StyledBoldText("-".hardcoded),
+                              Expanded(child: SizedBox()),
                               Center(
                                 child: Row(
                                   children: [
                                     IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.link),
+                                      onPressed: () {
+                                        linkStudent(locker);
+                                      },
+                                      icon: Icon(Icons.link),
                                     ),
                                   ],
                                 ),
@@ -98,7 +111,7 @@ class LockerProfileScreen extends ConsumerWidget {
                           ),
                           child: Row(
                             children: [
-                              const Icon(Icons.person, size: Sizes.p64),
+                              Icon(Icons.person, size: Sizes.p64),
                               gapW12,
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,21 +121,23 @@ class LockerProfileScreen extends ConsumerWidget {
                                   StyledText(student.job),
                                 ],
                               ),
-                              const Expanded(child: SizedBox()),
+                              Expanded(child: SizedBox()),
                               Center(
                                 child: Row(
                                   children: [
                                     IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.link),
+                                      onPressed: () {
+                                        linkStudent(locker);
+                                      },
+                                      icon: Icon(Icons.link),
                                     ),
                                     IconButton(
                                       onPressed: () {
                                         studentsRepository.freeLockerByIndex(
-                                          locker!.number,
+                                          locker.number,
                                         );
                                       },
-                                      icon: const Icon(Icons.link_off),
+                                      icon: Icon(Icons.link_off),
                                     ),
                                   ],
                                 ),
@@ -136,9 +151,11 @@ class LockerProfileScreen extends ConsumerWidget {
                   children: [
                     Expanded(
                       child: TextButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          editLocker(locker);
+                        },
                         icon: Icon(Icons.edit, color: AppColors.iconColor),
-                        label: const StyledTitle('Update'),
+                        label: StyledTitle('Update'),
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all<Color>(
                             AppColors.primaryAccent,
@@ -151,10 +168,10 @@ class LockerProfileScreen extends ConsumerWidget {
                       child: TextButton.icon(
                         onPressed: () {},
                         icon: Icon(Icons.delete, color: AppColors.iconColor),
-                        label: const StyledTitle('Delete'),
+                        label: StyledTitle('Delete'),
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all<Color>(
-                            Colors.red,
+                            AppColors.deleteColor,
                           ),
                         ),
                       ),

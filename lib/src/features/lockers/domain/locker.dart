@@ -1,8 +1,11 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_condition.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_condition.dart';
+
 part 'locker.g.dart';
+
+typedef LockerID = String;
 
 @HiveType(typeId: 0)
 class Locker extends HiveObject {
@@ -16,6 +19,7 @@ class Locker extends HiveObject {
     required this.numberKeys,
     required this.lockNumber,
     required this.lockerCondition,
+    required this.id,
   });
 
   @HiveField(0)
@@ -27,7 +31,7 @@ class Locker extends HiveObject {
   @HiveField(3)
   final String responsible;
   @HiveField(4)
-  final String? studentId;
+  final StudentID? studentId;
   @HiveField(5)
   final int caution;
   @HiveField(6)
@@ -36,6 +40,8 @@ class Locker extends HiveObject {
   final int lockNumber;
   @HiveField(8)
   final LockerCondition lockerCondition;
+  @HiveField(9)
+  final LockerID id;
 
   Locker returnFreedLocker() {
     return Locker(
@@ -48,6 +54,7 @@ class Locker extends HiveObject {
       numberKeys: numberKeys,
       lockNumber: lockNumber,
       lockerCondition: lockerCondition,
+      id: id,
     );
   }
 
@@ -56,22 +63,24 @@ class Locker extends HiveObject {
     String? floor,
     int? number,
     String? responsible,
-    String? student,
+    StudentID? studentId,
     int? caution,
     int? numberKeys,
     int? lockNumber,
     LockerCondition? lockerCondition,
+    LockerID? id,
   }) {
     return Locker(
       place: place ?? this.place,
       floor: floor ?? this.floor,
       number: number ?? this.number,
       responsible: responsible ?? this.responsible,
-      studentId: student ?? studentId,
+      studentId: studentId ?? this.studentId,
       caution: caution ?? this.caution,
       numberKeys: numberKeys ?? this.numberKeys,
       lockNumber: lockNumber ?? this.lockNumber,
       lockerCondition: lockerCondition ?? this.lockerCondition,
+      id: id ?? this.id,
     );
   }
 }
