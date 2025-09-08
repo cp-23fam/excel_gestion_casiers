@@ -30,8 +30,6 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
           children: [
             StyledButton(
               onPressed: () async {
-                final lockersRepository = ref.watch(lockersRepositoryProvider);
-
                 FilePickerResult? pickedFile = await FilePicker.platform
                     .pickFiles(
                       type: FileType.custom,
@@ -42,12 +40,12 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
                 if (pickedFile != null) {
                   var bytes = pickedFile.files.single.bytes!.toList();
                   var excel = Excel.decodeBytes(bytes);
-                  List<Locker> lockers = importIchFromExcelFile(excel);
-                  lockersRepository.importLockersFrom(lockers);
+                  importFile(excel);
                 }
               },
               child: const Icon(Icons.add, color: Colors.white, size: 30.0),
             ),
+
             gapH24,
             Expanded(
               child: Consumer(

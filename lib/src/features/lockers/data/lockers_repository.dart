@@ -8,8 +8,8 @@ class LockersRepository {
   static LockersRepository get instance => LockersRepository._();
   LockersRepository._();
 
-  final Box<Locker> lockersBox = Hive.box('lockers');
-  final Box<Student> studentsBox = Hive.box('students');
+  static final Box<Locker> lockersBox = Hive.box('lockers');
+  static final Box<Student> studentsBox = Hive.box('students');
 
   final _transactions = <Transaction>[];
 
@@ -46,7 +46,7 @@ class LockersRepository {
 
   // Lockers
 
-  void importLockersFrom(List<Locker> lockers) {
+  void importLockersFromList(List<Locker> lockers) {
     lockersBox.deleteAll(lockersBox.keys);
 
     for (Locker locker in lockers) {
@@ -111,6 +111,14 @@ class LockersRepository {
   }
 
   // Students
+
+  void importStudentsFromList(List<Student> students) {
+    studentsBox.deleteAll(studentsBox.keys);
+
+    for (Student student in students) {
+      studentsBox.put(student.id, student);
+    }
+  }
 
   Student? getStudentBy(String id) {
     return studentsBox.get(id);

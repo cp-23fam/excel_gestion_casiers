@@ -7,7 +7,7 @@ import 'package:uuid/uuid.dart';
 
 final uuid = const Uuid();
 
-List<Locker> importIchFromExcelFile(Excel excel) {
+List<Locker> importLockersFrom(Excel excel) {
   final lockers = <Locker>[];
 
   for (final floor in excel.sheets.keys.where((key) => key.contains('Etage'))) {
@@ -56,11 +56,15 @@ List<Locker> importIchFromExcelFile(Excel excel) {
         continue;
       }
 
-      final id = uuid.v4();
+      String id = '';
 
-      LockersRepository.instance.createStudent(
-        Student(id: id, name: results[2], surname: results[3], job: results[4]),
-      );
+      for (dynamic studentId in LockersRepository.studentsBox.keys) {
+        Student student = LockersRepository.studentsBox.get(studentId)!;
+
+        if (student.name == results[3] && student.surname == results[4]) {
+          id = studentId;
+        }
+      }
 
       lockers.add(
         Locker(
@@ -68,7 +72,7 @@ List<Locker> importIchFromExcelFile(Excel excel) {
           place: place,
           number: int.parse(results[0]),
           responsible: results[1],
-          studentId: !isLockerEmpty ? id : null,
+          studentId: id == '' ? null : id,
           caution: int.tryParse(results[5]) ?? 0,
           numberKeys: int.parse(results[6]),
           lockNumber: int.parse(results[7]),
@@ -89,7 +93,58 @@ List<Locker> importIchFromExcelFile(Excel excel) {
   return lockers;
 }
 
-bool verifyExcelFile() {
-  // TODO implement
-  return true;
+List<Student> importStudentsFrom(Excel excel) {
+  final students = <Student>[];
+
+  final sheet = excel[excel.sheets.keys.first];
+
+  var cell = sheet.cell(CellIndex.indexByString('A1'));
+  int row = 1;
+
+  while (cell.value != null) {
+    final results = [];
+    for (int i = 0; i < 25; i++) {
+      results.add(cell.value?.toString() ?? '');
+      cell = sheet.cell(
+        CellIndex.indexByColumnRow(columnIndex: i, rowIndex: row),
+      );
+    }
+
+    students.add(
+      Student(
+        id: uuid.v4(),
+        name: results[6],
+        genderTitle: results[5],
+        surname: results[7],
+        login: results[12],
+        formationYear: results[19],
+        job: results[14],
+      ),
+    );
+
+    cell = sheet.cell(
+      CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: ++row),
+    );
+  }
+
+  return students;
+}
+
+void importFile(Excel excel) {
+  bool doImportLockers = false;
+
+  for (String sheet in excel.sheets.keys) {
+    if (sheet.contains('Etage')) {
+      doImportLockers = true;
+      break;
+    }
+  }
+
+  if (doImportLockers) {
+    LockersRepository.instance.importLockersFromList(importLockersFrom(excel));
+  } else {
+    LockersRepository.instance.importStudentsFromList(
+      importStudentsFrom(excel),
+    );
+  }
 }
