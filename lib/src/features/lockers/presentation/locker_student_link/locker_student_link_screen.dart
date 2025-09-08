@@ -62,7 +62,7 @@ class _LockerStudentLinkScreenState
         width: MediaQuery.of(context).size.width * 0.3,
         height: double.infinity,
         child: Scaffold(
-          appBar: AppBar(title: StyledTitle('Sélectionner un étudiant')),
+          appBar: AppBar(title: const StyledTitle('Sélectionner un étudiant')),
           body: Padding(
             padding: const EdgeInsets.all(Sizes.p16),
             child: Column(
@@ -72,7 +72,7 @@ class _LockerStudentLinkScreenState
                   style: TextStyle(color: AppColors.titleColor),
                   decoration: InputDecoration(
                     hintText: 'Rechercher par nom ou prénom',
-                    prefixIcon: Icon(Icons.search),
+                    prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(Sizes.p8),
                     ),
@@ -81,7 +81,9 @@ class _LockerStudentLinkScreenState
                 gapH16,
                 Expanded(
                   child: filteredStudents.isEmpty
-                      ? Center(child: StyledText('Aucun étudiant trouvé.'))
+                      ? const Center(
+                          child: StyledText('Aucun étudiant trouvé.'),
+                        )
                       : ListView.builder(
                           itemCount: filteredStudents.length,
                           itemBuilder: (_, index) {

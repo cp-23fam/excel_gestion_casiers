@@ -28,9 +28,12 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
               children: [
                 StyledButton(
                   onPressed: () {},
-                  child: Icon(Icons.add, color: Colors.white, size: 30.0),
+                  child: const Icon(Icons.add, color: Colors.white, size: 30.0),
                 ),
-                StyledButton(onPressed: () {}, child: StyledTitle('Import')),
+                StyledButton(
+                  onPressed: () {},
+                  child: const StyledTitle('Import'),
+                ),
               ],
             ),
             gapH24,

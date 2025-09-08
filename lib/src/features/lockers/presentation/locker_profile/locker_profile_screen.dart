@@ -37,7 +37,7 @@ class LockerProfileScreen extends ConsumerWidget {
           appBar: AppBar(
             title: StyledTitle('Locker Details'.hardcoded),
             leading: IconButton(
-              icon: Icon(Icons.close),
+              icon: const Icon(Icons.close),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
@@ -55,18 +55,18 @@ class LockerProfileScreen extends ConsumerWidget {
                     child: Column(
                       children: [
                         _buildLockerInfoRow(
-                          "Numéro du casier",
+                          'Numéro du casier',
                           locker.number.toString(),
                         ),
-                        _buildLockerInfoRow("Étage", locker.floor),
-                        _buildLockerInfoRow("Responsable", locker.responsible),
-                        _buildLockerInfoRow("Caution", "${locker.caution}.-"),
+                        _buildLockerInfoRow('Étage', locker.floor),
+                        _buildLockerInfoRow('Responsable', locker.responsible),
+                        _buildLockerInfoRow('Caution', '${locker.caution}.-'),
                         _buildLockerInfoRow(
-                          "Nombre de clés",
+                          'Nombre de clés',
                           locker.numberKeys.toString(),
                         ),
                         _buildLockerInfoRow(
-                          "N° de cadenas",
+                          'N° de cadenas',
                           locker.lockNumber.toString(),
                         ),
                       ],
@@ -83,10 +83,10 @@ class LockerProfileScreen extends ConsumerWidget {
                           ),
                           child: Row(
                             children: [
-                              Icon(Icons.person, size: Sizes.p64),
+                              const Icon(Icons.person, size: Sizes.p64),
                               gapW12,
-                              StyledBoldText("-".hardcoded),
-                              Expanded(child: SizedBox()),
+                              StyledBoldText('-'.hardcoded),
+                              const Expanded(child: SizedBox()),
                               Center(
                                 child: Row(
                                   children: [
@@ -94,7 +94,7 @@ class LockerProfileScreen extends ConsumerWidget {
                                       onPressed: () {
                                         linkStudent(locker);
                                       },
-                                      icon: Icon(Icons.link),
+                                      icon: const Icon(Icons.link),
                                     ),
                                   ],
                                 ),
@@ -111,7 +111,7 @@ class LockerProfileScreen extends ConsumerWidget {
                           ),
                           child: Row(
                             children: [
-                              Icon(Icons.person, size: Sizes.p64),
+                              const Icon(Icons.person, size: Sizes.p64),
                               gapW12,
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +121,7 @@ class LockerProfileScreen extends ConsumerWidget {
                                   StyledText(student.job),
                                 ],
                               ),
-                              Expanded(child: SizedBox()),
+                              const Expanded(child: SizedBox()),
                               Center(
                                 child: Row(
                                   children: [
@@ -129,7 +129,7 @@ class LockerProfileScreen extends ConsumerWidget {
                                       onPressed: () {
                                         linkStudent(locker);
                                       },
-                                      icon: Icon(Icons.link),
+                                      icon: const Icon(Icons.link),
                                     ),
                                     IconButton(
                                       onPressed: () {
@@ -137,7 +137,7 @@ class LockerProfileScreen extends ConsumerWidget {
                                           locker.number,
                                         );
                                       },
-                                      icon: Icon(Icons.link_off),
+                                      icon: const Icon(Icons.link_off),
                                     ),
                                   ],
                                 ),
@@ -155,7 +155,7 @@ class LockerProfileScreen extends ConsumerWidget {
                           editLocker(locker);
                         },
                         icon: Icon(Icons.edit, color: AppColors.iconColor),
-                        label: StyledTitle('Update'),
+                        label: const StyledTitle('Update'),
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all<Color>(
                             AppColors.primaryAccent,
@@ -168,7 +168,7 @@ class LockerProfileScreen extends ConsumerWidget {
                       child: TextButton.icon(
                         onPressed: () {},
                         icon: Icon(Icons.delete, color: AppColors.iconColor),
-                        label: StyledTitle('Delete'),
+                        label: const StyledTitle('Delete'),
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all<Color>(
                             AppColors.deleteColor,

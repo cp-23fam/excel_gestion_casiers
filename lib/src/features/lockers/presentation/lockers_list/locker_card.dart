@@ -18,14 +18,14 @@ class LockerCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(Icons.door_front_door, size: Sizes.p24),
+            const Icon(Icons.door_front_door, size: Sizes.p24),
             gapW8,
-            StyledHeading("N° ${locker.number}"),
-            Expanded(child: SizedBox()),
+            StyledHeading('N° ${locker.number}'),
+            const Expanded(child: SizedBox()),
             Center(
               child: IconButton(
                 onPressed: () => infoLocker(locker),
-                icon: Icon(Icons.double_arrow),
+                icon: const Icon(Icons.double_arrow),
               ),
             ),
           ],

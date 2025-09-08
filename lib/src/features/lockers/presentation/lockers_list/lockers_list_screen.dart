@@ -35,7 +35,7 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
               children: [
                 StyledButton(
                   onPressed: () => _createLocker(),
-                  child: Icon(Icons.add, color: Colors.white, size: 30.0),
+                  child: const Icon(Icons.add, color: Colors.white, size: 30.0),
                 ),
                 StyledButton(
                   onPressed: () async {
@@ -52,7 +52,7 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
                       importFile(excel);
                     }
                   },
-                  child: StyledTitle('Import'),
+                  child: const StyledTitle('Import'),
                 ),
               ],
             ),
@@ -97,7 +97,10 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
         );
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
-        final tween = Tween<Offset>(begin: Offset(1, 0), end: Offset(0, 0));
+        final tween = Tween<Offset>(
+          begin: const Offset(1, 0),
+          end: const Offset(0, 0),
+        );
         return SlideTransition(
           position: tween.animate(animation),
           child: child,
@@ -116,7 +119,10 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
         return LockerCreationScreen(locker: locker);
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
-        final tween = Tween<Offset>(begin: Offset(1, 0), end: Offset(0, 0));
+        final tween = Tween<Offset>(
+          begin: const Offset(1, 0),
+          end: const Offset(0, 0),
+        );
         return SlideTransition(
           position: tween.animate(animation),
           child: child,
@@ -140,7 +146,10 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
         );
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
-        final tween = Tween<Offset>(begin: Offset(1, 0), end: Offset(0, 0));
+        final tween = Tween<Offset>(
+          begin: const Offset(1, 0),
+          end: const Offset(0, 0),
+        );
         return SlideTransition(
           position: tween.animate(animation),
           child: child,

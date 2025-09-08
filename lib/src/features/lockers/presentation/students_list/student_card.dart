@@ -18,14 +18,14 @@ class StudentCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(Icons.person, size: Sizes.p24),
+            const Icon(Icons.person, size: Sizes.p24),
             gapW8,
             Expanded(child: StyledBoldText(student.name)),
             gapW8,
             Expanded(child: StyledBoldText(student.surname)),
             gapW8,
             Expanded(child: StyledBoldText(student.job)),
-            Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox()),
             Center(
               child: IconButton(
                 onPressed: () {},
