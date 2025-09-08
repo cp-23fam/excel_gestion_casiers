@@ -21,7 +21,7 @@ class LockerAdapter extends TypeAdapter<Locker> {
       floor: fields[1] as String,
       number: fields[2] as int,
       responsible: fields[3] as String,
-      student: fields[4] as Student?,
+      studentId: fields[4] as String?,
       caution: fields[5] as int,
       numberKeys: fields[6] as int,
       lockNumber: fields[7] as int,
@@ -42,7 +42,7 @@ class LockerAdapter extends TypeAdapter<Locker> {
       ..writeByte(3)
       ..write(obj.responsible)
       ..writeByte(4)
-      ..write(obj.student)
+      ..write(obj.studentId)
       ..writeByte(5)
       ..write(obj.caution)
       ..writeByte(6)

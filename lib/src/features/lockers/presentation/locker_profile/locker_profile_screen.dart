@@ -1,0 +1,185 @@
+import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
+import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
+import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class LockerProfileScreen extends ConsumerWidget {
+  const LockerProfileScreen({super.key, required this.locker});
+  final Locker? locker;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final studentsRepository = ref.read(lockersRepositoryProvider);
+    final Student? student = studentsRepository.getStudentBy(
+      locker?.studentId ?? '',
+    );
+    return Align(
+      alignment: Alignment.centerRight,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.3,
+        height: double.infinity,
+        child: Scaffold(
+          appBar: AppBar(
+            title: StyledTitle('Locker Details'),
+            leading: IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Sizes.p16,
+                      vertical: Sizes.p16,
+                    ),
+                    child: Column(
+                      children: [
+                        _buildLockerInfoRow(
+                          "Numéro du casier",
+                          locker!.number.toString(),
+                        ),
+                        _buildLockerInfoRow("Étage", locker!.floor),
+                        _buildLockerInfoRow("Responsable", locker!.responsible),
+                        _buildLockerInfoRow("Caution", "${locker!.caution}.-"),
+                        _buildLockerInfoRow(
+                          "Nombre de clés",
+                          locker!.numberKeys.toString(),
+                        ),
+                        _buildLockerInfoRow(
+                          "N° de cadenas",
+                          locker!.lockNumber.toString(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                student == null
+                    ? Card(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Sizes.p16,
+                            vertical: Sizes.p8,
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(Icons.person, size: Sizes.p64),
+                              gapW12,
+                              StyledBoldText("-"),
+                              Expanded(child: SizedBox()),
+                              Center(
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(Icons.link),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : Card(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Sizes.p16,
+                            vertical: Sizes.p8,
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(Icons.person, size: Sizes.p64),
+                              gapW12,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  StyledBoldText(student.surname),
+                                  StyledBoldText(student.name),
+                                  StyledText(student.job),
+                                ],
+                              ),
+                              Expanded(child: SizedBox()),
+                              Center(
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(Icons.link),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        studentsRepository.freeLockerByIndex(
+                                          locker!.number,
+                                        );
+                                      },
+                                      icon: Icon(Icons.link_off),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: TextButton.icon(
+                        onPressed: () {},
+                        icon: Icon(Icons.edit, color: AppColors.iconColor),
+                        label: StyledTitle('Update'),
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStateProperty.all<Color>(
+                            AppColors.primaryAccent,
+                          ),
+                        ),
+                      ),
+                    ),
+                    gapW20,
+                    Expanded(
+                      child: TextButton.icon(
+                        onPressed: () {},
+                        icon: Icon(Icons.delete, color: AppColors.iconColor),
+                        label: StyledTitle('Delete'),
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStateProperty.all<Color>(
+                            Colors.red,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLockerInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(child: StyledHeading(label)),
+          gapW8,
+          SizedBox(child: StyledText(value)),
+        ],
+      ),
+    );
+  }
+}

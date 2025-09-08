@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_condition.dart';
-import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 part 'locker.g.dart';
@@ -12,7 +11,7 @@ class Locker extends HiveObject {
     required this.floor,
     required this.number,
     required this.responsible,
-    required this.student,
+    required this.studentId,
     required this.caution,
     required this.numberKeys,
     required this.lockNumber,
@@ -28,7 +27,7 @@ class Locker extends HiveObject {
   @HiveField(3)
   final String responsible;
   @HiveField(4)
-  final Student? student;
+  final String? studentId;
   @HiveField(5)
   final int caution;
   @HiveField(6)
@@ -44,7 +43,7 @@ class Locker extends HiveObject {
       floor: floor,
       number: number,
       responsible: responsible,
-      student: null,
+      studentId: null,
       caution: caution,
       numberKeys: numberKeys,
       lockNumber: lockNumber,
@@ -57,7 +56,7 @@ class Locker extends HiveObject {
     String? floor,
     int? number,
     String? responsible,
-    Student? student,
+    String? student,
     int? caution,
     int? numberKeys,
     int? lockNumber,
@@ -68,7 +67,7 @@ class Locker extends HiveObject {
       floor: floor ?? this.floor,
       number: number ?? this.number,
       responsible: responsible ?? this.responsible,
-      student: student ?? this.student,
+      studentId: student ?? studentId,
       caution: caution ?? this.caution,
       numberKeys: numberKeys ?? this.numberKeys,
       lockNumber: lockNumber ?? this.lockNumber,

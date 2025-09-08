@@ -1,9 +1,13 @@
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/transaction.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class LockersRepository {
+  static LockersRepository get instance => LockersRepository._();
+  LockersRepository._();
+
   final Box<Locker> lockersBox = Hive.box('lockers');
   final Box<Student> studentsBox = Hive.box('students');
 
@@ -42,6 +46,14 @@ class LockersRepository {
 
   // Lockers
 
+  void importLockersFrom(List<Locker> lockers) {
+    lockersBox.deleteAll(lockersBox.keys);
+
+    for (Locker locker in lockers) {
+      lockersBox.put(locker.number, locker);
+    }
+  }
+
   List<Locker> fetchLockersList() {
     final lockers = <Locker>[];
 
@@ -52,8 +64,6 @@ class LockersRepository {
         lockers.add(locker);
       }
     }
-
-    _createStudentListWith(lockers);
 
     return lockers;
   }
@@ -69,8 +79,6 @@ class LockersRepository {
   }
 
   void freeLockerByIndex(int lockerNumber) async {
-    Box<Locker> lockersBox = await Hive.openBox('lockers');
-
     lockersBox.put(
       lockerNumber,
       lockersBox.get(lockerNumber)!.returnFreedLocker(),
@@ -86,7 +94,7 @@ class LockersRepository {
   void addStudentToLockerBy(int number, String studentId) async {
     lockersBox.put(
       number,
-      lockersBox.get(number)!.copyWith(student: studentsBox.get(studentId)!),
+      lockersBox.get(number)!.copyWith(student: studentsBox.get(studentId)!.id),
     );
 
     _saveTransaction(TransactionType.edit, number, lockersBox.get(number)!);
@@ -104,6 +112,10 @@ class LockersRepository {
 
   // Students
 
+  Student? getStudentBy(String id) {
+    return studentsBox.get(id);
+  }
+
   List<Student> fetchStudents() {
     final students = <Student>[];
 
@@ -118,16 +130,6 @@ class LockersRepository {
     return students;
   }
 
-  void _createStudentListWith(List<Locker> lockers) {
-    studentsBox.deleteAll(studentsBox.keys);
-
-    for (Locker locker in lockers) {
-      if (locker.student != null) {
-        studentsBox.put(locker.student!.id, locker.student!);
-      }
-    }
-  }
-
   void createStudent(Student student) {
     studentsBox.put(student.id, student);
   }
@@ -140,3 +142,7 @@ class LockersRepository {
     studentsBox.delete(id);
   }
 }
+
+final lockersRepositoryProvider = Provider<LockersRepository>((ref) {
+  return LockersRepository.instance;
+});

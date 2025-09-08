@@ -1,4 +1,5 @@
 import 'package:excel/excel.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_condition.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
@@ -55,20 +56,19 @@ List<Locker> importIchFromExcelFile(Excel excel) {
         continue;
       }
 
+      final id = uuid.v4();
+
+      LockersRepository.instance.createStudent(
+        Student(id: id, name: results[2], surname: results[3], job: results[4]),
+      );
+
       lockers.add(
         Locker(
           floor: floor.replaceAll('Etage ', ''),
           place: place,
           number: int.parse(results[0]),
           responsible: results[1],
-          student: !isLockerEmpty
-              ? Student(
-                  job: results[2],
-                  name: results[3],
-                  surname: results[4],
-                  id: uuid.v4(),
-                )
-              : null,
+          studentId: !isLockerEmpty ? id : null,
           caution: int.tryParse(results[5]) ?? 0,
           numberKeys: int.parse(results[6]),
           lockNumber: int.parse(results[7]),

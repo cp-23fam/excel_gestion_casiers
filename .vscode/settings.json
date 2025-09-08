@@ -1,6 +1,7 @@
 {
     "material-icon-theme.folders.associations": {
         "features": "packages",
-        "domain": "rules"
+        "domain": "rules",
+        "common_widgets": "components"
     }
 }
