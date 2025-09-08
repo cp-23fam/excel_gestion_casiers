@@ -5,8 +5,13 @@ import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
 
 class StudentCard extends StatelessWidget {
-  const StudentCard({super.key, required this.student});
+  const StudentCard({
+    super.key,
+    required this.student,
+    required this.deleteStudent,
+  });
   final Student student;
+  final Function(String) deleteStudent;
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +23,13 @@ class StudentCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(Icons.person, size: Sizes.p24),
+            const Icon(Icons.person, size: Sizes.p24),
             gapW8,
             Expanded(child: StyledBoldText(student.name)),
             gapW8,
             Expanded(child: StyledBoldText(student.surname)),
             gapW8,
             Expanded(child: StyledBoldText(student.job)),
-            Expanded(child: SizedBox()),
             Center(
               child: IconButton(
                 onPressed: () {},
@@ -34,7 +38,7 @@ class StudentCard extends StatelessWidget {
             ),
             Center(
               child: IconButton(
-                onPressed: () {},
+                onPressed: () => deleteStudent(student.id),
                 icon: Icon(Icons.delete, color: AppColors.deleteColor),
               ),
             ),

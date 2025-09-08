@@ -30,7 +30,7 @@ ThemeData primaryTheme = ThemeData(
   ),
 
   // text
-  textTheme: TextTheme().copyWith(
+  textTheme: const TextTheme().copyWith(
     bodyMedium: TextStyle(
       color: AppColors.textColor,
       fontSize: 16,

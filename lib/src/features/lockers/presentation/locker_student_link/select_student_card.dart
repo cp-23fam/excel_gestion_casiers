@@ -25,7 +25,7 @@ class SelectStudentCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Icon(Icons.person, size: Sizes.p24),
+              const Icon(Icons.person, size: Sizes.p24),
               gapW8,
               Expanded(child: StyledBoldText(student.name)),
               gapW8,

@@ -1,3 +1,4 @@
+import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_button.dart';
@@ -15,6 +16,8 @@ class StudentsListScreen extends ConsumerStatefulWidget {
 }
 
 class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
+  String _searchQuery = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,10 +31,27 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
               children: [
                 StyledButton(
                   onPressed: () {},
-                  child: Icon(Icons.add, color: Colors.white, size: 30.0),
+                  child: const Icon(Icons.add, color: Colors.white, size: 30.0),
                 ),
-                StyledButton(onPressed: () {}, child: StyledTitle('Import')),
+                StyledButton(
+                  onPressed: () {},
+                  child: StyledTitle('Import'.hardcoded),
+                ),
               ],
+            ),
+            gapH24,
+            TextField(
+              style: TextStyle(color: AppColors.titleColor),
+              decoration: InputDecoration(
+                labelText: 'Search by first or last name'.hardcoded,
+                prefixIcon: const Icon(Icons.search),
+                border: const OutlineInputBorder(),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value.trim().toLowerCase();
+                });
+              },
             ),
             gapH24,
             Expanded(
@@ -41,13 +61,36 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                     lockersRepositoryProvider,
                   );
                   final students = studentsRepository.fetchStudents();
-                  return ListView.builder(
-                    itemCount: students.length,
-                    itemBuilder: (_, index) {
-                      final student = students[index];
-                      return StudentCard(student: student);
-                    },
-                  );
+
+                  final filteredStudents = _searchQuery.isEmpty
+                      ? students
+                      : students.where((student) {
+                          final firstName = student.name.toLowerCase();
+                          final lastName = student.surname.toLowerCase();
+                          return firstName.contains(_searchQuery) ||
+                              lastName.contains(_searchQuery);
+                        }).toList();
+
+                  filteredStudents.sort((a, b) {
+                    final lastNameComp = a.surname.compareTo(b.surname);
+                    if (lastNameComp != 0) return lastNameComp;
+                    return a.name.compareTo(b.name);
+                  });
+
+                  return filteredStudents.isEmpty
+                      ? Center(
+                          child: StyledText('Aucun étudiant trouvé.'.hardcoded),
+                        )
+                      : ListView.builder(
+                          itemCount: filteredStudents.length,
+                          itemBuilder: (_, index) {
+                            final student = filteredStudents[index];
+                            return StudentCard(
+                              student: student,
+                              deleteStudent: (id) => deleteStudent(student.id),
+                            );
+                          },
+                        );
                 },
               ),
             ),
@@ -55,5 +98,10 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
         ),
       ),
     );
+  }
+
+  void deleteStudent(String id) {
+    final studentsRepository = ref.read(lockersRepositoryProvider);
+    studentsRepository.erazeStudentBy(id);
   }
 }

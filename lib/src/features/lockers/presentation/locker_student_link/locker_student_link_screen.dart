@@ -1,3 +1,4 @@
+import 'package:excel_gestion_casiers/src/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
@@ -62,7 +63,7 @@ class _LockerStudentLinkScreenState
         width: MediaQuery.of(context).size.width * 0.3,
         height: double.infinity,
         child: Scaffold(
-          appBar: AppBar(title: StyledTitle('Sélectionner un étudiant')),
+          appBar: AppBar(title: const StyledTitle('Sélectionner un étudiant')),
           body: Padding(
             padding: const EdgeInsets.all(Sizes.p16),
             child: Column(
@@ -71,8 +72,8 @@ class _LockerStudentLinkScreenState
                   controller: _searchController,
                   style: TextStyle(color: AppColors.titleColor),
                   decoration: InputDecoration(
-                    hintText: 'Rechercher par nom ou prénom',
-                    prefixIcon: Icon(Icons.search),
+                    hintText: 'Rechercher par nom ou prénom'.hardcoded,
+                    prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(Sizes.p8),
                     ),
@@ -81,7 +82,9 @@ class _LockerStudentLinkScreenState
                 gapH16,
                 Expanded(
                   child: filteredStudents.isEmpty
-                      ? Center(child: StyledText('Aucun étudiant trouvé.'))
+                      ? Center(
+                          child: StyledText('Aucun étudiant trouvé.'.hardcoded),
+                        )
                       : ListView.builder(
                           itemCount: filteredStudents.length,
                           itemBuilder: (_, index) {

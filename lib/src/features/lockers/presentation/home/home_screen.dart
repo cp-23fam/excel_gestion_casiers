@@ -23,12 +23,12 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           },
           destinations: <NavigationRailDestination>[
-            NavigationRailDestination(
+            const NavigationRailDestination(
               icon: Icon(Icons.lock_outline),
               selectedIcon: Icon(Icons.lock),
               label: Text('Lockers'),
             ),
-            NavigationRailDestination(
+            const NavigationRailDestination(
               icon: Icon(Icons.person_outline),
               selectedIcon: Icon(Icons.person),
               label: Text('Students'),
@@ -39,8 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         const VerticalDivider(thickness: 1, width: 1),
         _selectedIndex == 0
-            ? Expanded(child: LockersListScreen())
-            : Expanded(child: StudentsListScreen()),
+            ? const Expanded(child: LockersListScreen())
+            : const Expanded(child: StudentsListScreen()),
       ],
     );
   }

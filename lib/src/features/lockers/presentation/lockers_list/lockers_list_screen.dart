@@ -1,4 +1,5 @@
 import 'package:excel/excel.dart';
+import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
 import 'package:excel_gestion_casiers/utils/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class LockersListScreen extends ConsumerStatefulWidget {
 }
 
 class _LockersListScreenState extends ConsumerState<LockersListScreen> {
+  String _searchQuery = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +37,11 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
               children: [
                 StyledButton(
                   onPressed: () => _createLocker(),
-                  child: Icon(Icons.add, color: Colors.white, size: 30.0),
+                  child: Icon(
+                    Icons.add,
+                    color: AppColors.iconColor,
+                    size: 30.0,
+                  ),
                 ),
                 StyledButton(
                   onPressed: () async {
@@ -52,9 +58,23 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
                       importFile(excel);
                     }
                   },
-                  child: StyledTitle('Import'),
+                  child: StyledTitle('Import'.hardcoded),
                 ),
               ],
+            ),
+            gapH24,
+            TextField(
+              style: TextStyle(color: AppColors.titleColor),
+              decoration: InputDecoration(
+                labelText: 'Search by locker number'.hardcoded,
+                prefixIcon: const Icon(Icons.search),
+                border: const OutlineInputBorder(),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value;
+                });
+              },
             ),
             gapH24,
             Expanded(
@@ -63,17 +83,32 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
                   final lockersRepository = ref.watch(
                     lockersListNotifierProvider,
                   );
-                  final lockers = lockersRepository;
-                  return ListView.builder(
-                    itemCount: lockers.length,
-                    itemBuilder: (_, index) {
-                      final locker = lockers[index];
-                      return LockerCard(
-                        locker: locker,
-                        infoLocker: (locker) => _infoLocker(locker: locker),
-                      );
-                    },
-                  );
+                  List<Locker> lockers = lockersRepository;
+
+                  if (_searchQuery.isNotEmpty) {
+                    lockers = lockers.where((locker) {
+                      final lockerNumberStr = locker.number.toString();
+                      return lockerNumberStr.contains(_searchQuery);
+                    }).toList();
+                  }
+
+                  lockers.sort((a, b) => a.number.compareTo(b.number));
+
+                  return lockers.isEmpty
+                      ? Center(
+                          child: StyledText('Aucun casiers trouvé.'.hardcoded),
+                        )
+                      : ListView.builder(
+                          itemCount: lockers.length,
+                          itemBuilder: (_, index) {
+                            final locker = lockers[index];
+                            return LockerCard(
+                              locker: locker,
+                              infoLocker: (locker) =>
+                                  _infoLocker(locker: locker),
+                            );
+                          },
+                        );
                 },
               ),
             ),
@@ -97,7 +132,10 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
         );
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
-        final tween = Tween<Offset>(begin: Offset(1, 0), end: Offset(0, 0));
+        final tween = Tween<Offset>(
+          begin: const Offset(1, 0),
+          end: const Offset(0, 0),
+        );
         return SlideTransition(
           position: tween.animate(animation),
           child: child,
@@ -116,7 +154,10 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
         return LockerCreationScreen(locker: locker);
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
-        final tween = Tween<Offset>(begin: Offset(1, 0), end: Offset(0, 0));
+        final tween = Tween<Offset>(
+          begin: const Offset(1, 0),
+          end: const Offset(0, 0),
+        );
         return SlideTransition(
           position: tween.animate(animation),
           child: child,
@@ -140,7 +181,10 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
         );
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
-        final tween = Tween<Offset>(begin: Offset(1, 0), end: Offset(0, 0));
+        final tween = Tween<Offset>(
+          begin: const Offset(1, 0),
+          end: const Offset(0, 0),
+        );
         return SlideTransition(
           position: tween.animate(animation),
           child: child,
