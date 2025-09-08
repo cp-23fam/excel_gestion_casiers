@@ -18,12 +18,12 @@ class StudentAdapter extends TypeAdapter<Student> {
     };
     return Student(
       id: fields[0] as String,
-      name: fields[1] as String,
-      genderTitle: fields[2] as String?,
+      name: fields[2] as String,
+      genderTitle: fields[1] as String,
       surname: fields[3] as String,
-      login: fields[4] as String?,
-      formationYear: fields[5] as String?,
-      job: fields[6] as String,
+      login: fields[6] as String,
+      formationYear: fields[5] as int,
+      job: fields[4] as String,
     );
   }
 
@@ -34,17 +34,17 @@ class StudentAdapter extends TypeAdapter<Student> {
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.name)
-      ..writeByte(2)
       ..write(obj.genderTitle)
+      ..writeByte(2)
+      ..write(obj.name)
       ..writeByte(3)
       ..write(obj.surname)
       ..writeByte(4)
-      ..write(obj.login)
+      ..write(obj.job)
       ..writeByte(5)
       ..write(obj.formationYear)
       ..writeByte(6)
-      ..write(obj.job);
+      ..write(obj.login);
   }
 
   @override
