@@ -34,12 +34,6 @@ List<Locker> importLockersFrom(Excel excel) {
       CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row),
     );
     while (cell.value != null) {
-      bool isLockerEmpty =
-          excel[floor]
-              .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: row))
-              .value ==
-          null;
-
       final results = [];
       for (int i = 0; i < 9; i++) {
         var cell = excel[floor].cell(

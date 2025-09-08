@@ -1,4 +1,5 @@
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_condition.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/transaction.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -45,7 +46,6 @@ class LockersRepository {
   }
 
   // Lockers
-
   void importLockersFromList(List<Locker> lockers) {
     lockersBox.deleteAll(lockersBox.keys);
 
@@ -111,7 +111,6 @@ class LockersRepository {
   }
 
   // Students
-
   void importStudentsFromList(List<Student> students) {
     studentsBox.deleteAll(studentsBox.keys);
 
@@ -148,6 +147,38 @@ class LockersRepository {
 
   void erazeStudentBy(String id) {
     studentsBox.delete(id);
+  }
+
+  // Health
+  void runAutoHealthCheckOnLockers() {
+    for (Locker lockerId in lockersBox.keys) {
+      Locker locker = lockersBox.get(lockerId)!;
+      LockerCondition lockerCondition = locker.lockerCondition;
+
+      if (locker.numberKeys == 0) {
+        lockerCondition = lockerCondition.copyWith(
+          isLockerinGoodCondition: false,
+          problems: 'Il n\'y a plus de clés',
+        );
+      }
+
+      locker.copyWith(lockerCondition: lockerCondition);
+
+      lockersBox.put(locker.number, locker);
+    }
+  }
+
+  void runAutoEmptyLockerOnInvalidStudentId() {
+    for (Locker lockerId in lockersBox.keys) {
+      Locker locker = lockersBox.get(lockerId)!;
+
+      if (locker.studentId != null &&
+          !studentsBox.keys.contains(locker.studentId)) {
+        locker = locker.returnFreedLocker();
+
+        lockersBox.put(lockerId, locker);
+      }
+    }
   }
 }
 
