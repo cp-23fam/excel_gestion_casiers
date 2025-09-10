@@ -15,7 +15,6 @@ class Locker extends HiveObject {
     required this.number,
     required this.responsible,
     required this.studentId,
-    required this.caution,
     required this.numberKeys,
     required this.lockNumber,
     required this.lockerCondition,
@@ -33,14 +32,12 @@ class Locker extends HiveObject {
   @HiveField(4)
   final StudentID? studentId;
   @HiveField(5)
-  final int caution;
-  @HiveField(6)
   final int numberKeys;
-  @HiveField(7)
+  @HiveField(6)
   final int lockNumber;
-  @HiveField(8)
+  @HiveField(7)
   final LockerCondition lockerCondition;
-  @HiveField(9)
+  @HiveField(8)
   final LockerID id;
 
   Locker returnFreedLocker() {
@@ -50,7 +47,6 @@ class Locker extends HiveObject {
       number: number,
       responsible: responsible,
       studentId: null,
-      caution: caution,
       numberKeys: numberKeys,
       lockNumber: lockNumber,
       lockerCondition: lockerCondition,
@@ -64,7 +60,6 @@ class Locker extends HiveObject {
     int? number,
     String? responsible,
     StudentID? studentId,
-    int? caution,
     int? numberKeys,
     int? lockNumber,
     LockerCondition? lockerCondition,
@@ -76,7 +71,6 @@ class Locker extends HiveObject {
       number: number ?? this.number,
       responsible: responsible ?? this.responsible,
       studentId: studentId ?? this.studentId,
-      caution: caution ?? this.caution,
       numberKeys: numberKeys ?? this.numberKeys,
       lockNumber: lockNumber ?? this.lockNumber,
       lockerCondition: lockerCondition ?? this.lockerCondition,

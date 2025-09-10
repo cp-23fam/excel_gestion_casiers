@@ -57,6 +57,10 @@ List<Locker> importLockersFrom(Excel excel) {
 
         if (student.surname == results[3] && student.name == results[4]) {
           id = studentId;
+          LockersRepository.studentsBox.put(
+            id,
+            student.copyWith(caution: int.tryParse(results[5]) ?? 0),
+          );
         }
       }
 
@@ -67,7 +71,6 @@ List<Locker> importLockersFrom(Excel excel) {
           number: int.parse(results[0]),
           responsible: results[1],
           studentId: id == '' ? null : id,
-          caution: int.tryParse(results[5]) ?? 0,
           numberKeys: int.parse(results[6]),
           lockNumber: int.parse(results[7]),
           lockerCondition: LockerCondition.good(
@@ -114,6 +117,7 @@ List<Student> importStudentsFrom(Excel excel) {
         login: results[12],
         formationYear: int.parse(results[19]),
         job: results[14],
+        caution: 20,
       ),
     );
 

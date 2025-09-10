@@ -124,7 +124,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
 
   void deleteStudent(String id) {
     final studentsRepository = ref.read(lockersRepositoryProvider);
-    studentsRepository.erazeStudentBy(id);
+    studentsRepository.deleteStudent(id);
   }
 
   void _createStudent({Student? student}) {

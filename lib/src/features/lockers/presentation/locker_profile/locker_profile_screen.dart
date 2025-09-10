@@ -65,7 +65,7 @@ class LockerProfileScreen extends ConsumerWidget {
                         ),
                         _buildLockerInfoRow(
                           'Caution'.hardcoded,
-                          '${locker.caution}.-',
+                          student != null ? '${student.caution}.-' : '-',
                         ),
                         _buildLockerInfoRow(
                           'Nombre de clés'.hardcoded,
@@ -220,7 +220,7 @@ class LockerProfileScreen extends ConsumerWidget {
                     Expanded(
                       child: TextButton.icon(
                         onPressed: () {
-                          studentsRepository.erazeLocker(locker.number);
+                          studentsRepository.deleteLocker(locker.number);
                           Navigator.of(context).pop();
                         },
                         icon: Icon(Icons.delete, color: AppColors.iconColor),

@@ -26,7 +26,6 @@ class _LockerCreationScreenState extends ConsumerState<LockerCreationScreen> {
   late final TextEditingController _numberController;
   late final TextEditingController _floorController;
   late final TextEditingController _responsibleController;
-  late final TextEditingController _cautionController;
   late final TextEditingController _numberKeysController;
   late final TextEditingController _lockNumberController;
 
@@ -44,9 +43,6 @@ class _LockerCreationScreenState extends ConsumerState<LockerCreationScreen> {
     _responsibleController = TextEditingController(
       text: widget.locker?.responsible ?? '',
     );
-    _cautionController = TextEditingController(
-      text: widget.locker?.caution.toString() ?? '',
-    );
     _numberKeysController = TextEditingController(
       text: widget.locker?.numberKeys.toString() ?? '',
     );
@@ -61,7 +57,6 @@ class _LockerCreationScreenState extends ConsumerState<LockerCreationScreen> {
         number: int.parse(_numberController.text.trim()),
         floor: _floorController.text.trim(),
         responsible: _responsibleController.text.trim(),
-        caution: int.parse(_cautionController.text.trim()),
         numberKeys: int.parse(_numberKeysController.text.trim()),
         lockNumber: int.parse(_lockNumberController.text.trim()),
         id: widget.locker?.id ?? uuid.v4(),
@@ -89,7 +84,6 @@ class _LockerCreationScreenState extends ConsumerState<LockerCreationScreen> {
     _numberController.dispose();
     _floorController.dispose();
     _responsibleController.dispose();
-    _cautionController.dispose();
     _numberKeysController.dispose();
     _lockNumberController.dispose();
     super.dispose();
@@ -167,14 +161,6 @@ class _LockerCreationScreenState extends ConsumerState<LockerCreationScreen> {
                       text: 'Responsable',
                       icon: Icons.person,
                       validator: _validateRequired,
-                    ),
-                    gapH20,
-                    LockerTextField(
-                      controller: _cautionController,
-                      text: 'Caution',
-                      icon: Icons.attach_money,
-                      validator: _validateInt,
-                      keyboardType: TextInputType.number,
                     ),
                     gapH20,
                     LockerTextField(

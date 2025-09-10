@@ -1,23 +1,51 @@
-import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-enum TransactionType { add, remove, edit }
+part 'transaction.g.dart';
 
+@HiveType(typeId: 4)
+enum TransactionType {
+  @HiveField(0)
+  add,
+  @HiveField(1)
+  remove,
+  @HiveField(2)
+  edit,
+}
+
+@HiveType(typeId: 3)
 class Transaction {
-  const Transaction(this.type, this.lockerNumber, this.previousValue);
+  const Transaction({
+    required this.id,
+    required this.type,
+    required this.isStudentBox,
+    required this.boxItemId,
+    required this.previousValue,
+  });
 
+  @HiveField(0)
+  final String id;
+  @HiveField(1)
   final TransactionType type;
-  final int lockerNumber;
-  final Locker previousValue;
+  @HiveField(2)
+  final bool isStudentBox;
+  @HiveField(3)
+  final String boxItemId;
+  @HiveField(4)
+  final dynamic previousValue;
 
   Transaction copyWith({
+    String? id,
     TransactionType? type,
-    int? lockerNumber,
-    Locker? previousValue,
+    bool? isStudentBox,
+    String? boxItemId,
+    dynamic previousValue,
   }) {
     return Transaction(
-      type ?? this.type,
-      lockerNumber ?? this.lockerNumber,
-      previousValue ?? this.previousValue,
+      id: id ?? this.id,
+      type: type ?? this.type,
+      isStudentBox: isStudentBox ?? this.isStudentBox,
+      boxItemId: boxItemId ?? this.boxItemId,
+      previousValue: previousValue ?? this.previousValue,
     );
   }
 }

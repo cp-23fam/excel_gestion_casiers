@@ -8,12 +8,13 @@ typedef StudentID = String;
 class Student {
   const Student({
     required this.id,
-    required this.name,
     required this.genderTitle,
+    required this.name,
     required this.surname,
-    required this.login,
-    required this.formationYear,
     required this.job,
+    required this.caution,
+    required this.formationYear,
+    required this.login,
   });
 
   @HiveField(0)
@@ -27,8 +28,10 @@ class Student {
   @HiveField(4)
   final String job;
   @HiveField(5)
-  final int formationYear;
+  final int caution;
   @HiveField(6)
+  final int formationYear;
+  @HiveField(7)
   final String login;
 
   Student copyWith({
@@ -37,6 +40,7 @@ class Student {
     String? name,
     String? surname,
     String? job,
+    int? caution,
     int? formationYear,
     String? login,
   }) {
@@ -48,6 +52,7 @@ class Student {
       job: job ?? this.job,
       formationYear: formationYear ?? this.formationYear,
       login: login ?? this.login,
+      caution: caution ?? this.caution,
     );
   }
 }
