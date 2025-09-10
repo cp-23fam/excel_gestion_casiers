@@ -4,42 +4,101 @@ import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/transaction.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:uuid/uuid.dart';
+
+const uuid = Uuid();
 
 class LockersRepository {
   static final Box<Locker> lockersBox = Hive.box('lockers');
   static final Box<Student> studentsBox = Hive.box('students');
-
-  final _transactions = <Transaction>[];
+  static final Box<Transaction> transactionsBox = Hive.box('transactions');
 
   // Transaction
-  void saveTransaction(TransactionType type, int number, Locker value) {
-    _transactions.add(Transaction(type, number, value));
-
-    if (_transactions.length > 10) {
-      _transactions.removeAt(0);
-    }
-  }
-
-  Future<void> goBack() async {
-    if (_transactions.isEmpty) {
+  void saveTransaction(
+    TransactionType type,
+    bool isStudentBox, {
+    Locker? lockerValue,
+    Student? studentValue,
+  }) {
+    if (isStudentBox && studentValue == null) {
       return;
     }
 
-    final transaction = _transactions.last;
-
-    switch (transaction.type) {
-      case TransactionType.add:
-        lockersBox.delete(transaction.lockerNumber);
-        break;
-      case TransactionType.remove:
-        lockersBox.put(transaction.lockerNumber, transaction.previousValue);
-        break;
-      case TransactionType.edit:
-        lockersBox.put(transaction.lockerNumber, transaction.previousValue);
-        break;
+    if (!isStudentBox && lockerValue == null) {
+      return;
     }
 
-    _transactions.removeLast();
+    final String id = uuid.v4();
+    if (isStudentBox) {
+      transactionsBox.put(
+        id,
+        Transaction(
+          id: id,
+          type: type,
+          boxItemId: studentValue!.id,
+          previousValue: studentValue,
+          isStudentBox: true,
+        ),
+      );
+    } else {
+      transactionsBox.put(
+        id,
+        Transaction(
+          id: id,
+          type: type,
+          boxItemId: lockerValue!.number.toString(),
+          isStudentBox: false,
+          previousValue: lockerValue,
+        ),
+      );
+    }
+  }
+
+  void goBack(String id) {
+    if (transactionsBox.keys.isEmpty) {
+      return;
+    }
+
+    final transaction = transactionsBox.get(id);
+
+    if (transaction == null) {
+      return;
+    }
+
+    if (transaction.isStudentBox) {
+    } else {
+      int lockerNumber = int.parse(transaction.boxItemId);
+
+      Locker locker = transaction.previousValue as Locker;
+
+      switch (transaction.type) {
+        case TransactionType.add:
+          lockersBox.delete(lockerNumber);
+          break;
+        case TransactionType.remove:
+          lockersBox.put(lockerNumber, locker);
+          break;
+        case TransactionType.edit:
+          lockersBox.put(lockerNumber, locker);
+          break;
+      }
+    }
+
+    transactionsBox.delete(id);
+  }
+
+  List<Transaction> fetchTransactionList() {
+    final transactions = <Transaction>[];
+
+    for (int i = 0; i < transactionsBox.length; i++) {
+      final Transaction? transaction = transactionsBox.getAt(i);
+
+      if (transaction != null) {
+        transactions.add(transaction);
+      }
+    }
+
+    return transactions;
   }
 
   // Lockers
@@ -65,48 +124,62 @@ class LockersRepository {
     return lockers;
   }
 
-  Future<void> addLocker(Locker locker) async {
-    lockersBox.put(locker.number, locker);
-    saveTransaction(TransactionType.add, locker.number, locker);
-  }
-
-  Future<void> editLocker(int lockerNumber, Locker editedLocker) async {
-    lockersBox.put(lockerNumber, editedLocker);
-    saveTransaction(TransactionType.edit, lockerNumber, editedLocker);
-  }
-
   Future<void> freeLockerByIndex(int lockerNumber) async {
+    saveTransaction(
+      TransactionType.edit,
+      false,
+      lockerValue: lockersBox.get(lockerNumber)!,
+    );
+
     lockersBox.put(
       lockerNumber,
       lockersBox.get(lockerNumber)!.returnFreedLocker(),
     );
-
-    saveTransaction(
-      TransactionType.edit,
-      lockerNumber,
-      lockersBox.get(lockerNumber)!,
-    );
   }
 
   Future<void> addStudentToLockerBy(int number, String studentId) async {
+    saveTransaction(
+      TransactionType.edit,
+      false,
+      lockerValue: lockersBox.get(number)!,
+    );
+
     lockersBox.put(
       number,
       lockersBox
           .get(number)!
           .copyWith(studentId: studentsBox.get(studentId)!.id),
     );
-
-    saveTransaction(TransactionType.edit, number, lockersBox.get(number)!);
   }
 
-  Future<void> erazeLocker(int lockerNumber) async {
-    saveTransaction(
-      TransactionType.remove,
-      lockerNumber,
-      lockersBox.get(lockerNumber)!,
+  void addLocker(Locker locker) {
+    LockersRepository().saveTransaction(
+      TransactionType.add,
+      false,
+      lockerValue: locker,
     );
 
-    lockersBox.delete(lockerNumber);
+    LockersRepository.lockersBox.put(locker.number, locker);
+  }
+
+  void editLocker(int lockerNumber, Locker editedLocker) {
+    LockersRepository().saveTransaction(
+      TransactionType.edit,
+      false,
+      lockerValue: LockersRepository.lockersBox.get(lockerNumber)!,
+    );
+
+    LockersRepository.lockersBox.put(lockerNumber, editedLocker);
+  }
+
+  void deleteLocker(int lockerNumber) {
+    LockersRepository().saveTransaction(
+      TransactionType.remove,
+      false,
+      lockerValue: LockersRepository.lockersBox.get(lockerNumber)!,
+    );
+
+    LockersRepository.lockersBox.delete(lockerNumber);
   }
 
   // Students
@@ -136,16 +209,34 @@ class LockersRepository {
     return students;
   }
 
-  void createStudent(Student student) {
-    studentsBox.put(student.id, student);
+  void addStudent(Student student) {
+    LockersRepository().saveTransaction(
+      TransactionType.add,
+      true,
+      studentValue: student,
+    );
+
+    LockersRepository.studentsBox.put(student.id, student);
   }
 
-  void editStudent(String id, Student editedStudent) {
-    studentsBox.put(editedStudent.id, editedStudent);
+  void editStudent(Student editedStudent) {
+    LockersRepository().saveTransaction(
+      TransactionType.edit,
+      true,
+      studentValue: LockersRepository.studentsBox.get(editedStudent.id),
+    );
+
+    LockersRepository.studentsBox.put(editedStudent.id, editedStudent);
   }
 
-  void erazeStudentBy(String id) {
-    studentsBox.delete(id);
+  void deleteStudent(String id) {
+    LockersRepository().saveTransaction(
+      TransactionType.remove,
+      true,
+      studentValue: LockersRepository.studentsBox.get(id)!,
+    );
+
+    LockersRepository.studentsBox.delete(id);
   }
 
   // Health
@@ -195,30 +286,64 @@ class LockersListNotifier extends Notifier<List<Locker>> {
     return state.firstWhere((locker) => locker.id == lockerId);
   }
 
-  Future<void> addLocker(Locker locker) async {
-    LockersRepository.lockersBox.put(locker.number, locker);
+  void addLocker(Locker locker) {
     LockersRepository().saveTransaction(
       TransactionType.add,
-      locker.number,
-      locker,
+      false,
+      lockerValue: locker,
     );
+
+    LockersRepository.lockersBox.put(locker.number, locker);
   }
 
-  Future<void> editLocker(int lockerNumber, Locker editedLocker) async {
-    LockersRepository.lockersBox.put(lockerNumber, editedLocker);
+  void editLocker(int lockerNumber, Locker editedLocker) {
     LockersRepository().saveTransaction(
       TransactionType.edit,
-      lockerNumber,
-      editedLocker,
+      false,
+      lockerValue: LockersRepository.lockersBox.get(lockerNumber)!,
     );
+
+    LockersRepository.lockersBox.put(lockerNumber, editedLocker);
   }
 
-  Future<void> addStudent(Student student) async {
+  void deleteLocker(int lockerNumber) {
+    LockersRepository().saveTransaction(
+      TransactionType.remove,
+      false,
+      lockerValue: LockersRepository.lockersBox.get(lockerNumber)!,
+    );
+
+    LockersRepository.lockersBox.delete(lockerNumber);
+  }
+
+  void addStudent(Student student) {
+    LockersRepository().saveTransaction(
+      TransactionType.add,
+      true,
+      studentValue: student,
+    );
+
     LockersRepository.studentsBox.put(student.id, student);
   }
 
-  Future<void> editStudent(Student editedStudent) async {
+  void editStudent(Student editedStudent) {
+    LockersRepository().saveTransaction(
+      TransactionType.edit,
+      true,
+      studentValue: LockersRepository.studentsBox.get(editedStudent.id),
+    );
+
     LockersRepository.studentsBox.put(editedStudent.id, editedStudent);
+  }
+
+  void deleteStudent(String id) {
+    LockersRepository().saveTransaction(
+      TransactionType.remove,
+      true,
+      studentValue: LockersRepository.studentsBox.get(id)!,
+    );
+
+    LockersRepository.studentsBox.delete(id);
   }
 }
 

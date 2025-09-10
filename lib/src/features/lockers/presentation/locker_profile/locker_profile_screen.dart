@@ -174,7 +174,7 @@ class LockerProfileScreen extends ConsumerWidget {
                     Expanded(
                       child: TextButton.icon(
                         onPressed: () {
-                          studentsRepository.erazeLocker(locker.number);
+                          studentsRepository.deleteLocker(locker.number);
                           Navigator.of(context).pop();
                         },
                         icon: Icon(Icons.delete, color: AppColors.iconColor),
