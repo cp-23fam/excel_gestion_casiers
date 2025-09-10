@@ -182,6 +182,16 @@ class LockersRepository {
     LockersRepository.lockersBox.delete(lockerNumber);
   }
 
+  Student? getStudentByLocker(int lockerNumber) {
+    final Locker? locker = lockersBox.get(lockerNumber);
+
+    if (locker == null || locker.studentId == null) {
+      return null;
+    }
+
+    return studentsBox.get(locker.studentId);
+  }
+
   // Students
   void importStudentsFromList(List<Student> students) {
     studentsBox.deleteAll(studentsBox.keys);
@@ -193,6 +203,18 @@ class LockersRepository {
 
   Student? getStudentBy(StudentID id) {
     return studentsBox.get(id);
+  }
+
+  Locker? getLockerByStudent(StudentID id) {
+    for (int lockerNumber in lockersBox.keys) {
+      final Locker locker = lockersBox.get(lockerNumber)!;
+
+      if (locker.studentId == id) {
+        return locker;
+      }
+    }
+
+    return null;
   }
 
   List<Student> fetchStudents() {
