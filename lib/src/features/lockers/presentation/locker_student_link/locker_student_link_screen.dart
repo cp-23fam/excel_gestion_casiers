@@ -64,7 +64,6 @@ class _LockerStudentLinkScreenState
         height: double.infinity,
         child: Scaffold(
           appBar: AppBar(title: const StyledTitle('Sélectionner un étudiant')),
-          appBar: AppBar(title: const StyledTitle('Sélectionner un étudiant')),
           body: Padding(
             padding: const EdgeInsets.all(Sizes.p16),
             child: Column(

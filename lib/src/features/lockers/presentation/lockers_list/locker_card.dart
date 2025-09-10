@@ -33,7 +33,6 @@ class LockerCard extends StatelessWidget {
               child: IconButton(
                 onPressed: () => infoLocker(locker),
                 icon: const Icon(Icons.double_arrow),
-                icon: const Icon(Icons.double_arrow),
               ),
             ),
           ],

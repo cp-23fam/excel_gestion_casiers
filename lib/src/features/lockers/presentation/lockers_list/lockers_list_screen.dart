@@ -55,7 +55,9 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
                     if (pickedFile != null) {
                       var bytes = pickedFile.files.single.bytes!.toList();
                       var excel = Excel.decodeBytes(bytes);
-                      importLockersFrom(excel);
+                      LockersRepository().importLockersFromList(
+                        importLockersFrom(excel),
+                      );
                     }
                   },
                   child: StyledTitle('Import'.hardcoded),
@@ -136,10 +138,6 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
           begin: const Offset(1, 0),
           end: const Offset(0, 0),
         );
-        final tween = Tween<Offset>(
-          begin: const Offset(1, 0),
-          end: const Offset(0, 0),
-        );
         return SlideTransition(
           position: tween.animate(animation),
           child: child,
@@ -158,10 +156,6 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
         return LockerCreationScreen(locker: locker);
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
-        final tween = Tween<Offset>(
-          begin: const Offset(1, 0),
-          end: const Offset(0, 0),
-        );
         final tween = Tween<Offset>(
           begin: const Offset(1, 0),
           end: const Offset(0, 0),
@@ -189,10 +183,6 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
         );
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
-        final tween = Tween<Offset>(
-          begin: const Offset(1, 0),
-          end: const Offset(0, 0),
-        );
         final tween = Tween<Offset>(
           begin: const Offset(1, 0),
           end: const Offset(0, 0),
