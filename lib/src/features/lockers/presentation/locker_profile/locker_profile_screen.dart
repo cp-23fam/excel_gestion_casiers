@@ -128,7 +128,6 @@ class LockerProfileScreen extends ConsumerWidget {
                                 ],
                               ),
                               const Expanded(child: SizedBox()),
-                              const Expanded(child: SizedBox()),
                               Center(
                                 child: Row(
                                   children: [
@@ -153,6 +152,53 @@ class LockerProfileScreen extends ConsumerWidget {
                           ),
                         ),
                       ),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Sizes.p16,
+                      vertical: Sizes.p16,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildLockerInfoRow(
+                          'Problèmes'.hardcoded,
+                          locker.lockerCondition.problems ?? '-',
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              StyledHeading('Commentaires'.hardcoded),
+                              gapH4,
+                              SizedBox(
+                                width: double.infinity,
+                                child: StyledText(
+                                  locker.lockerCondition.comments ??
+                                      'ahlkjhfgkjoAHSDFOJASHGDIKjuhsdbfjHSDFKJhsbdkjfahlkjhfgkjoAHSDFOJASHGDIKjuhsdbfjHSDFKJhsbdkjfahlkjhfgkjoAHSDFOJASHGDIKjuhsdbfjHSDFKJhsbdkjf',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // TextButton.icon(
+                        //   onPressed: () {},
+                        //   icon: Icon(Icons.edit, color: AppColors.iconColor),
+                        //   label: SizedBox(
+                        //     width: double.infinity,
+                        //     child: Center(child: const StyledTitle('Update')),
+                        //   ),
+                        //   style: ButtonStyle(
+                        //     backgroundColor: WidgetStateProperty.all<Color>(
+                        //       AppColors.editColor,
+                        //     ),
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

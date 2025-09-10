@@ -1,3 +1,5 @@
+import 'package:excel_gestion_casiers/src/features/lockers/presentation/links_list/links_list_screen.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/presentation/transactions_list/transactions_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/presentation/lockers_list/lockers_list_screen.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/presentation/students_list/students_list_screen.dart';
@@ -33,6 +35,16 @@ class _HomeScreenState extends State<HomeScreen> {
               selectedIcon: Icon(Icons.person),
               label: Text('Students'),
             ),
+            const NavigationRailDestination(
+              icon: Icon(Icons.link),
+              selectedIcon: Icon(Icons.link_outlined),
+              label: Text('Students'),
+            ),
+            const NavigationRailDestination(
+              icon: Icon(Icons.swap_vertical_circle_outlined),
+              selectedIcon: Icon(Icons.swap_vertical_circle),
+              label: Text('Transactions'),
+            ),
           ],
           useIndicator: true,
           elevation: 5.0,
@@ -40,7 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
         const VerticalDivider(thickness: 1, width: 1),
         _selectedIndex == 0
             ? const Expanded(child: LockersListScreen())
-            : const Expanded(child: StudentsListScreen()),
+            : _selectedIndex == 1
+            ? const Expanded(child: StudentsListScreen())
+            : _selectedIndex == 2
+            ? const Expanded(child: LinksListScreen())
+            : const Expanded(child: TransactionsListScreen()),
       ],
     );
   }
