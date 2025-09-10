@@ -1,4 +1,7 @@
+import 'package:excel/excel.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
+import 'package:excel_gestion_casiers/utils/excel.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_button.dart';
@@ -34,7 +37,20 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                   child: const Icon(Icons.add, color: Colors.white, size: 30.0),
                 ),
                 StyledButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    FilePickerResult? pickedFile = await FilePicker.platform
+                        .pickFiles(
+                          type: FileType.custom,
+                          allowedExtensions: ['xlsx'],
+                          allowMultiple: false,
+                        );
+
+                    if (pickedFile != null) {
+                      var bytes = pickedFile.files.single.bytes!.toList();
+                      var excel = Excel.decodeBytes(bytes);
+                      importStudentsFrom(excel);
+                    }
+                  },
                   child: StyledTitle('Import'.hardcoded),
                 ),
               ],
