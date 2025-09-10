@@ -112,7 +112,7 @@ List<Student> importStudentsFrom(Excel excel) {
         genderTitle: results[5],
         surname: results[7],
         login: results[12],
-        formationYear: results[19],
+        formationYear: int.parse(results[19]),
         job: results[14],
       ),
     );
