@@ -118,7 +118,6 @@ class LockerProfileScreen extends ConsumerWidget {
                           child: Row(
                             children: [
                               const Icon(Icons.person, size: Sizes.p64),
-                              const Icon(Icons.person, size: Sizes.p64),
                               gapW12,
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

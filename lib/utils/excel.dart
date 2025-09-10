@@ -55,7 +55,7 @@ List<Locker> importLockersFrom(Excel excel) {
       for (dynamic studentId in LockersRepository.studentsBox.keys) {
         Student student = LockersRepository.studentsBox.get(studentId)!;
 
-        if (student.name == results[3] && student.surname == results[4]) {
+        if (student.surname == results[3] && student.name == results[4]) {
           id = studentId;
         }
       }
@@ -108,9 +108,9 @@ List<Student> importStudentsFrom(Excel excel) {
     students.add(
       Student(
         id: uuid.v4(),
-        name: results[6],
+        name: results[7],
         genderTitle: results[5],
-        surname: results[7],
+        surname: results[6],
         login: results[12],
         formationYear: int.parse(results[19]),
         job: results[14],

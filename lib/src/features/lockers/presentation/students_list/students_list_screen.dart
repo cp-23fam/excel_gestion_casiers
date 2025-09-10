@@ -1,4 +1,6 @@
 import 'package:excel/excel.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/presentation/student_creation/locker_creation_screen.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
 import 'package:excel_gestion_casiers/utils/excel.dart';
 import 'package:file_picker/file_picker.dart';
@@ -33,7 +35,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
             Row(
               children: [
                 StyledButton(
-                  onPressed: () {},
+                  onPressed: () => _createStudent(),
                   child: const Icon(Icons.add, color: Colors.white, size: 30.0),
                 ),
                 StyledButton(
@@ -106,6 +108,8 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                             return StudentCard(
                               student: student,
                               deleteStudent: (id) => deleteStudent(student.id),
+                              editStudent: (student) =>
+                                  _createStudent(student: student),
                             );
                           },
                         );
@@ -121,5 +125,27 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
   void deleteStudent(String id) {
     final studentsRepository = ref.read(lockersRepositoryProvider);
     studentsRepository.erazeStudentBy(id);
+  }
+
+  void _createStudent({Student? student}) {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: 'Add Student',
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return StudentCreationScreen(student: student);
+      },
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        final tween = Tween<Offset>(
+          begin: const Offset(1, 0),
+          end: const Offset(0, 0),
+        );
+        return SlideTransition(
+          position: tween.animate(animation),
+          child: child,
+        );
+      },
+    );
   }
 }

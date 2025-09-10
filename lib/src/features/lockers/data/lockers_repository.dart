@@ -212,6 +212,14 @@ class LockersListNotifier extends Notifier<List<Locker>> {
       editedLocker,
     );
   }
+
+  Future<void> addStudent(Student student) async {
+    LockersRepository.studentsBox.put(student.id, student);
+  }
+
+  Future<void> editStudent(Student editedStudent) async {
+    LockersRepository.studentsBox.put(editedStudent.id, editedStudent);
+  }
 }
 
 final lockersListNotifierProvider =
