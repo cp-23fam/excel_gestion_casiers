@@ -35,6 +35,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                 StyledButton(
                   onPressed: () {},
                   child: const Icon(Icons.add, color: Colors.white, size: 30.0),
+                  child: const Icon(Icons.add, color: Colors.white, size: 30.0),
                 ),
                 StyledButton(
                   onPressed: () async {
@@ -54,6 +55,20 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                   child: StyledTitle('Import'.hardcoded),
                 ),
               ],
+            ),
+            gapH24,
+            TextField(
+              style: TextStyle(color: AppColors.titleColor),
+              decoration: InputDecoration(
+                labelText: 'Search by first or last name'.hardcoded,
+                prefixIcon: const Icon(Icons.search),
+                border: const OutlineInputBorder(),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value.trim().toLowerCase();
+                });
+              },
             ),
             gapH24,
             TextField(

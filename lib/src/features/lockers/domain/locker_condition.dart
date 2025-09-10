@@ -1,34 +1,33 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:hive_flutter/hive_flutter.dart';
 
 part 'locker_condition.g.dart';
 
 @HiveType(typeId: 2)
 class LockerCondition {
-  const LockerCondition(
-    this.isLockerinGoodCondition, {
+  const LockerCondition({
+    this.isConditionGood = true,
     this.comments,
     this.problems,
   });
 
   @HiveField(0)
-  final bool isLockerinGoodCondition;
+  final bool isConditionGood;
   @HiveField(1)
   final String? comments;
   @HiveField(2)
   final String? problems;
 
   factory LockerCondition.good({String? comments}) {
-    return LockerCondition(true, comments: comments);
+    return LockerCondition(isConditionGood: true, comments: comments);
   }
 
   LockerCondition copyWith({
-    bool? isLockerinGoodCondition,
+    bool? isConditionGood,
     String? comments,
     String? problems,
   }) {
     return LockerCondition(
-      isLockerinGoodCondition ?? this.isLockerinGoodCondition,
+      isConditionGood: isConditionGood ?? this.isConditionGood,
       comments: comments ?? this.comments,
       problems: problems ?? this.problems,
     );

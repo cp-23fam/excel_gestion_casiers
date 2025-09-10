@@ -17,7 +17,7 @@ class LockerConditionAdapter extends TypeAdapter<LockerCondition> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return LockerCondition(
-      fields[0] as bool,
+      isConditionGood: fields[0] as bool,
       comments: fields[1] as String?,
       problems: fields[2] as String?,
     );
@@ -28,7 +28,7 @@ class LockerConditionAdapter extends TypeAdapter<LockerCondition> {
     writer
       ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.isLockerinGoodCondition)
+      ..write(obj.isConditionGood)
       ..writeByte(1)
       ..write(obj.comments)
       ..writeByte(2)

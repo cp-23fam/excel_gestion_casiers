@@ -20,7 +20,7 @@ class LockersRepository {
     }
   }
 
-  void goBack() async {
+  Future<void> goBack() async {
     if (_transactions.isEmpty) {
       return;
     }
@@ -65,17 +65,17 @@ class LockersRepository {
     return lockers;
   }
 
-  void addLocker(Locker locker) async {
+  Future<void> addLocker(Locker locker) async {
     lockersBox.put(locker.number, locker);
     saveTransaction(TransactionType.add, locker.number, locker);
   }
 
-  void editLocker(int lockerNumber, Locker editedLocker) async {
+  Future<void> editLocker(int lockerNumber, Locker editedLocker) async {
     lockersBox.put(lockerNumber, editedLocker);
     saveTransaction(TransactionType.edit, lockerNumber, editedLocker);
   }
 
-  void freeLockerByIndex(int lockerNumber) async {
+  Future<void> freeLockerByIndex(int lockerNumber) async {
     lockersBox.put(
       lockerNumber,
       lockersBox.get(lockerNumber)!.returnFreedLocker(),
@@ -88,7 +88,7 @@ class LockersRepository {
     );
   }
 
-  void addStudentToLockerBy(int number, String studentId) async {
+  Future<void> addStudentToLockerBy(int number, String studentId) async {
     lockersBox.put(
       number,
       lockersBox
@@ -99,7 +99,7 @@ class LockersRepository {
     saveTransaction(TransactionType.edit, number, lockersBox.get(number)!);
   }
 
-  void erazeLocker(int lockerNumber) async {
+  Future<void> erazeLocker(int lockerNumber) async {
     saveTransaction(
       TransactionType.remove,
       lockerNumber,
@@ -156,7 +156,7 @@ class LockersRepository {
 
       if (locker.numberKeys == 0) {
         lockerCondition = lockerCondition.copyWith(
-          isLockerinGoodCondition: false,
+          isConditionGood: false,
           problems: 'Il n\'y a plus de clés',
         );
       }
@@ -195,7 +195,7 @@ class LockersListNotifier extends Notifier<List<Locker>> {
     return state.firstWhere((locker) => locker.id == lockerId);
   }
 
-  void addLocker(Locker locker) async {
+  Future<void> addLocker(Locker locker) async {
     LockersRepository.lockersBox.put(locker.number, locker);
     LockersRepository().saveTransaction(
       TransactionType.add,
@@ -204,7 +204,7 @@ class LockersListNotifier extends Notifier<List<Locker>> {
     );
   }
 
-  void editLocker(int lockerNumber, Locker editedLocker) async {
+  Future<void> editLocker(int lockerNumber, Locker editedLocker) async {
     LockersRepository.lockersBox.put(lockerNumber, editedLocker);
     LockersRepository().saveTransaction(
       TransactionType.edit,

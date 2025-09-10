@@ -19,35 +19,35 @@ class Student {
   @HiveField(0)
   final StudentID id;
   @HiveField(1)
-  final String name;
+  final String genderTitle;
   @HiveField(2)
-  final String? genderTitle;
+  final String name;
   @HiveField(3)
   final String surname;
   @HiveField(4)
-  final String? login;
-  @HiveField(5)
-  final String? formationYear;
-  @HiveField(6)
   final String job;
+  @HiveField(5)
+  final int formationYear;
+  @HiveField(6)
+  final String login;
 
   Student copyWith({
-    String? id,
-    String? name,
+    StudentID? id,
     String? genderTitle,
+    String? name,
     String? surname,
-    String? login,
-    String? formationYear,
     String? job,
+    int? formationYear,
+    String? login,
   }) {
     return Student(
       id: id ?? this.id,
-      name: name ?? this.name,
       genderTitle: genderTitle ?? this.genderTitle,
+      name: name ?? this.name,
       surname: surname ?? this.surname,
-      login: login ?? this.login,
-      formationYear: formationYear ?? this.formationYear,
       job: job ?? this.job,
+      formationYear: formationYear ?? this.formationYear,
+      login: login ?? this.login,
     );
   }
 }

@@ -5,7 +5,7 @@ import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_conditi
 import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
 import 'package:uuid/uuid.dart';
 
-final uuid = const Uuid();
+const uuid = Uuid();
 
 List<Locker> importLockersFrom(Excel excel) {
   final lockers = <Locker>[];
@@ -112,7 +112,7 @@ List<Student> importStudentsFrom(Excel excel) {
         genderTitle: results[5],
         surname: results[7],
         login: results[12],
-        formationYear: results[19],
+        formationYear: int.parse(results[19]),
         job: results[14],
       ),
     );

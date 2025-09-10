@@ -38,6 +38,7 @@ class LockerProfileScreen extends ConsumerWidget {
             title: StyledTitle('Locker Details'.hardcoded),
             leading: IconButton(
               icon: const Icon(Icons.close),
+              icon: const Icon(Icons.close),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
@@ -90,7 +91,10 @@ class LockerProfileScreen extends ConsumerWidget {
                           child: Row(
                             children: [
                               const Icon(Icons.person, size: Sizes.p64),
+                              const Icon(Icons.person, size: Sizes.p64),
                               gapW12,
+                              StyledBoldText('-'.hardcoded),
+                              const Expanded(child: SizedBox()),
                               StyledBoldText('-'.hardcoded),
                               const Expanded(child: SizedBox()),
                               Center(
@@ -100,6 +104,7 @@ class LockerProfileScreen extends ConsumerWidget {
                                       onPressed: () {
                                         linkStudent(locker);
                                       },
+                                      icon: const Icon(Icons.link),
                                       icon: const Icon(Icons.link),
                                     ),
                                   ],
@@ -118,6 +123,7 @@ class LockerProfileScreen extends ConsumerWidget {
                           child: Row(
                             children: [
                               const Icon(Icons.person, size: Sizes.p64),
+                              const Icon(Icons.person, size: Sizes.p64),
                               gapW12,
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,6 +134,7 @@ class LockerProfileScreen extends ConsumerWidget {
                                 ],
                               ),
                               const Expanded(child: SizedBox()),
+                              const Expanded(child: SizedBox()),
                               Center(
                                 child: Row(
                                   children: [
@@ -136,6 +143,7 @@ class LockerProfileScreen extends ConsumerWidget {
                                         linkStudent(locker);
                                       },
                                       icon: const Icon(Icons.link),
+                                      icon: const Icon(Icons.link),
                                     ),
                                     IconButton(
                                       onPressed: () {
@@ -143,6 +151,7 @@ class LockerProfileScreen extends ConsumerWidget {
                                           locker.number,
                                         );
                                       },
+                                      icon: const Icon(Icons.link_off),
                                       icon: const Icon(Icons.link_off),
                                     ),
                                   ],
@@ -162,6 +171,7 @@ class LockerProfileScreen extends ConsumerWidget {
                         },
                         icon: Icon(Icons.edit, color: AppColors.iconColor),
                         label: const StyledTitle('Update'),
+                        label: const StyledTitle('Update'),
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all<Color>(
                             AppColors.primaryAccent,
@@ -177,6 +187,7 @@ class LockerProfileScreen extends ConsumerWidget {
                           Navigator.of(context).pop();
                         },
                         icon: Icon(Icons.delete, color: AppColors.iconColor),
+                        label: const StyledTitle('Delete'),
                         label: const StyledTitle('Delete'),
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all<Color>(
