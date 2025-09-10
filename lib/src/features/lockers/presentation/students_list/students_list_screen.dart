@@ -1,6 +1,6 @@
 import 'package:excel/excel.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
-import 'package:excel_gestion_casiers/src/features/lockers/presentation/student_creation/locker_creation_screen.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/presentation/student_creation/student_creation_screen.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
 import 'package:excel_gestion_casiers/utils/excel.dart';
 import 'package:file_picker/file_picker.dart';

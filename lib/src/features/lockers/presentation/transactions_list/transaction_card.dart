@@ -23,7 +23,7 @@ class TransactionCard extends StatelessWidget {
               gapW8,
               Expanded(child: StyledBoldText('${transaction.type}')),
               gapW8,
-              Expanded(child: StyledBoldText('${transaction.lockerNumber}')),
+              // Expanded(child: StyledBoldText('${transaction.lockerNumber}')),
             ],
           ),
         ),
