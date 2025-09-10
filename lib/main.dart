@@ -19,5 +19,8 @@ void main() async {
   await Hive.openBox<Locker>('lockers');
   await Hive.openBox<Student>('students');
 
+  // await Hive.deleteBoxFromDisk('lockers');
+  // await Hive.deleteBoxFromDisk('students');
+
   runApp(const ProviderScope(child: MyApp()));
 }

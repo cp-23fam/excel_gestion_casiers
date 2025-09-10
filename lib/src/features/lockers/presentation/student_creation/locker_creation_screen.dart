@@ -26,6 +26,7 @@ class _StudentCreationScreenState extends ConsumerState<StudentCreationScreen> {
   late final TextEditingController _genderTitleController;
   late final TextEditingController _surnameController;
   late final TextEditingController _loginController;
+  late final TextEditingController _cautionController;
   late final TextEditingController _formationYearController;
   late final TextEditingController _jobController;
 
@@ -48,6 +49,9 @@ class _StudentCreationScreenState extends ConsumerState<StudentCreationScreen> {
     _loginController = TextEditingController(
       text: widget.student?.login.toString() ?? '',
     );
+    _cautionController = TextEditingController(
+      text: widget.student?.caution.toString() ?? '20',
+    );
     _formationYearController = TextEditingController(
       text: widget.student?.formationYear.toString() ?? '',
     );
@@ -64,6 +68,7 @@ class _StudentCreationScreenState extends ConsumerState<StudentCreationScreen> {
         genderTitle: _genderTitleController.text.trim(),
         surname: _surnameController.text.trim(),
         login: _loginController.text.trim(),
+        caution: int.parse(_cautionController.text.trim()),
         formationYear: int.parse(_formationYearController.text.trim()),
         job: _jobController.text.trim(),
       );
@@ -88,6 +93,7 @@ class _StudentCreationScreenState extends ConsumerState<StudentCreationScreen> {
     _genderTitleController.dispose();
     _surnameController.dispose();
     _loginController.dispose();
+    _cautionController.dispose();
     _formationYearController.dispose();
     _jobController.dispose();
     super.dispose();
@@ -171,6 +177,14 @@ class _StudentCreationScreenState extends ConsumerState<StudentCreationScreen> {
                       text: 'Login de l\'élève',
                       icon: Icons.alternate_email,
                       validator: _validateRequired,
+                    ),
+                    gapH20,
+                    LockerTextField(
+                      controller: _cautionController,
+                      text: 'Caution de l\'élève',
+                      icon: Icons.money,
+                      validator: _validateInt,
+                      keyboardType: TextInputType.number,
                     ),
                     gapH20,
                     LockerTextField(

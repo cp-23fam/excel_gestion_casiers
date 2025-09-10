@@ -65,7 +65,7 @@ class LockerProfileScreen extends ConsumerWidget {
                         ),
                         _buildLockerInfoRow(
                           'Caution'.hardcoded,
-                          '${locker.caution}.-',
+                          student != null ? '${student.caution}.-' : '-',
                         ),
                         _buildLockerInfoRow(
                           'Nombre de clés'.hardcoded,
