@@ -1,0 +1,50 @@
+import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
+
+List<Student> searchInStudents(List<Student> students, String searchValue) {
+  if (searchValue.isEmpty) {
+    return students;
+  }
+
+  List<Student> returnStudents = <Student>[];
+
+  if (int.tryParse(searchValue) != null) {
+    List<Locker> lockers = LockersRepository().fetchLockersList();
+
+    for (Locker locker in lockers) {
+      if (locker.studentId == null) {
+        continue;
+      }
+
+      if (locker.number.toString().toLowerCase().contains(
+        searchValue.toLowerCase(),
+      )) {
+        Student student = LockersRepository().getStudentByLocker(
+          locker.number,
+        )!;
+
+        returnStudents.add(student);
+      }
+    }
+  } else {
+    returnStudents.addAll(
+      students.where(
+        (student) =>
+            student.name.toLowerCase().contains(searchValue.toLowerCase()),
+      ),
+    );
+
+    returnStudents.addAll(
+      students.where(
+        (student) =>
+            student.surname.toLowerCase().contains(searchValue.toLowerCase()),
+      ),
+    );
+  }
+
+  returnStudents = returnStudents.toSet().toList();
+  returnStudents.sort((a, b) => a.surname.compareTo(b.surname));
+
+  return returnStudents;
+}
