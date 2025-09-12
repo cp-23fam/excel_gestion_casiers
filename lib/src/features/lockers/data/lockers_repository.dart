@@ -66,6 +66,19 @@ class LockersRepository {
     }
 
     if (transaction.isStudentBox) {
+      Student student = transaction.previousValue as Student;
+
+      switch (transaction.type) {
+        case TransactionType.add:
+          studentsBox.delete(transaction.boxItemId);
+          break;
+        case TransactionType.remove:
+          studentsBox.put(transaction.boxItemId, student);
+          break;
+        case TransactionType.edit:
+          studentsBox.put(transaction.boxItemId, student);
+          break;
+      }
     } else {
       int lockerNumber = int.parse(transaction.boxItemId);
 
