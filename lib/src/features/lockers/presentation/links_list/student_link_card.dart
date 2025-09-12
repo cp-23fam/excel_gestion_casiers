@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
-import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
 
 class StudentLinkCard extends StatelessWidget {
   const StudentLinkCard({

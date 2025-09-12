@@ -1,13 +1,13 @@
 import 'package:excel_gestion_casiers/src/common_widgets/styled_button.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
-// import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
-// import 'package:excel_gestion_casiers/src/features/lockers/domain/transaction.dart';
-// import 'package:excel_gestion_casiers/src/features/lockers/presentation/transactions_list/transaction_card.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/transaction.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/presentation/transactions_list/transaction_card.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
 import 'package:excel_gestion_casiers/src/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TransactionsListScreen extends StatefulWidget {
   const TransactionsListScreen({super.key});
@@ -19,6 +19,7 @@ class TransactionsListScreen extends StatefulWidget {
 class _TransactionsListScreenState extends State<TransactionsListScreen> {
   @override
   Widget build(BuildContext context) {
+    List<Transaction> transactions = LockersRepository().fetchTransactionList();
     return Scaffold(
       appBar: AppBar(title: StyledTitle('Transactions'.hardcoded)),
       body: Padding(
@@ -29,7 +30,8 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
             Row(
               children: [
                 StyledButton(
-                  onPressed: () {},
+                  onPressed: () =>
+                      LockersRepository().goBack(transactions.last.id),
                   child: Row(
                     children: [
                       Icon(
@@ -45,30 +47,25 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
               ],
             ),
             gapH24,
-            // Expanded(
-            //   child: Consumer(
-            //     builder: (context, ref, child) {
-            //       final transactionsRepository = ref.watch(
-            //         lockersListNotifierProvider,
-            //       );
-            // List<Transaction> transactions = transactionsRepository;
-
-            //   return transactions.isEmpty
-            //       ? Center(
-            //           child: StyledText(
-            //             'Aucune transaction effectuée.'.hardcoded,
-            //           ),
-            //         )
-            //       : ListView.builder(
-            //           itemCount: transactions.length,
-            //           itemBuilder: (_, index) {
-            //             final transaction = transactions[index];
-            //             return TransactionCard(transaction: transaction);
-            //           },
-            //         );
-            // },
-            // ),
-            // ),
+            Expanded(
+              child: Consumer(
+                builder: (context, ref, child) {
+                  return transactions.isEmpty
+                      ? Center(
+                          child: StyledText(
+                            'Aucune transaction effectuée.'.hardcoded,
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: transactions.length,
+                          itemBuilder: (_, index) {
+                            final transaction = transactions[index];
+                            return TransactionCard(transaction: transaction);
+                          },
+                        );
+                },
+              ),
+            ),
           ],
         ),
       ),
