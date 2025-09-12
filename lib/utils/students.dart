@@ -48,3 +48,39 @@ List<Student> searchInStudents(List<Student> students, String searchValue) {
 
   return returnStudents;
 }
+
+List<Student> filterStudents(
+  List<Student> students, {
+  String? genderTitle,
+  String? job,
+  int? caution,
+  int? formationYear,
+}) {
+  List<Student> returnStudents = students;
+
+  if (genderTitle != null) {
+    returnStudents = returnStudents
+        .where((student) => student.genderTitle == genderTitle)
+        .toList();
+  }
+
+  if (job != null) {
+    returnStudents = returnStudents
+        .where((student) => student.job == job)
+        .toList();
+  }
+
+  if (caution != null) {
+    returnStudents = returnStudents
+        .where((student) => student.caution == caution)
+        .toList();
+  }
+
+  if (formationYear != null) {
+    returnStudents = returnStudents
+        .where((student) => student.formationYear == formationYear)
+        .toList();
+  }
+
+  return returnStudents;
+}

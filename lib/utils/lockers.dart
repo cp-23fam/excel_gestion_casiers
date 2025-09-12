@@ -79,3 +79,39 @@ List<Locker> searchInLockers(List<Locker> lockers, String searchValue) {
   returnLockers.sort((a, b) => a.number - b.number);
   return returnLockers;
 }
+
+List<Locker> filterLockers(
+  List<Locker> lockers, {
+  String? floor,
+  String? responsible,
+  bool hasComments = false,
+  bool hasProblems = false,
+}) {
+  List<Locker> returnLockers = lockers;
+
+  if (floor != null) {
+    returnLockers = returnLockers
+        .where((locker) => locker.floor == floor)
+        .toList();
+  }
+
+  if (responsible != null) {
+    returnLockers = returnLockers
+        .where((locker) => locker.responsible == responsible)
+        .toList();
+  }
+
+  if (hasComments) {
+    returnLockers = returnLockers
+        .where((locker) => locker.lockerCondition.comments != null)
+        .toList();
+  }
+
+  if (hasProblems) {
+    returnLockers = returnLockers
+        .where((locker) => locker.lockerCondition.problems != null)
+        .toList();
+  }
+
+  return returnLockers;
+}
