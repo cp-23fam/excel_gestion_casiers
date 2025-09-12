@@ -37,7 +37,7 @@ class LockerProfileScreen extends ConsumerWidget {
           appBar: AppBar(
             title: StyledTitle('Locker Details'.hardcoded),
             leading: IconButton(
-              icon: const Icon(Icons.close),
+              icon: const Icon(Icons.arrow_back),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
@@ -175,8 +175,7 @@ class LockerProfileScreen extends ConsumerWidget {
                               SizedBox(
                                 width: double.infinity,
                                 child: StyledText(
-                                  locker.lockerCondition.comments ??
-                                      'ahlkjhfgkjoAHSDFOJASHGDIKjuhsdbfjHSDFKJhsbdkjfahlkjhfgkjoAHSDFOJASHGDIKjuhsdbfjHSDFKJhsbdkjfahlkjhfgkjoAHSDFOJASHGDIKjuhsdbfjHSDFKJhsbdkjf',
+                                  locker.lockerCondition.comments ?? '',
                                 ),
                               ),
                             ],
