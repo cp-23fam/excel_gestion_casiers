@@ -28,7 +28,7 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
   @override
   void write(BinaryWriter writer, Transaction obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -38,7 +38,9 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       ..writeByte(3)
       ..write(obj.boxItemId)
       ..writeByte(4)
-      ..write(obj.previousValue);
+      ..write(obj.previousValue)
+      ..writeByte(5)
+      ..write(obj.timestamp);
   }
 
   @override

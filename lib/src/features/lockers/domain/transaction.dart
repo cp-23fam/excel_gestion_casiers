@@ -14,13 +14,13 @@ enum TransactionType {
 
 @HiveType(typeId: 3)
 class Transaction {
-  const Transaction({
+  Transaction({
     required this.id,
     required this.type,
     required this.isStudentBox,
     required this.boxItemId,
     required this.previousValue,
-  });
+  }) : timestamp = DateTime.now().millisecondsSinceEpoch;
 
   @HiveField(0)
   final String id;
@@ -32,6 +32,8 @@ class Transaction {
   final String boxItemId;
   @HiveField(4)
   final dynamic previousValue;
+  @HiveField(5)
+  final int timestamp;
 
   Transaction copyWith({
     String? id,
