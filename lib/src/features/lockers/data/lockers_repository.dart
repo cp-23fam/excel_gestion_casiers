@@ -138,6 +138,16 @@ class LockersRepository {
     return lockers;
   }
 
+  Locker? getLockerById(int lockerNumber) {
+    try {
+      return lockersBox.values.firstWhere(
+        (locker) => locker.number == lockerNumber,
+      );
+    } on StateError {
+      return null;
+    }
+  }
+
   Future<void> freeLockerByIndex(int lockerNumber) async {
     saveTransaction(
       TransactionType.edit,
@@ -212,6 +222,22 @@ class LockersRepository {
 
     for (Student student in students) {
       studentsBox.put(student.id, student);
+    }
+
+    for (Locker locker in lockersBox.values) {
+      final studentIdInLocker = locker.studentId ?? '';
+      bool willReset = true;
+
+      for (Student student in students) {
+        if (student.id == studentIdInLocker) {
+          willReset = false;
+          break;
+        }
+      }
+
+      if (willReset) {
+        lockersBox.put(locker.number, locker.copyWith(studentId: null));
+      }
     }
   }
 
