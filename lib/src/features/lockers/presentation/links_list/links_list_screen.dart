@@ -2,12 +2,15 @@ import 'package:excel_gestion_casiers/src/common_widgets/styled_button.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/presentation/links_list/locker_link_card.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/presentation/links_list/student_link_card.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
 import 'package:excel_gestion_casiers/src/localization/string_hardcoded.dart';
+import 'package:excel_gestion_casiers/utils/lockers.dart';
+import 'package:excel_gestion_casiers/utils/students.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -80,19 +83,16 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                           child: Consumer(
                             builder: (context, ref, child) {
                               final lockersRepository = ref.watch(
-                                lockersRepositoryProvider,
+                                lockersRepositoryProvider.notifier,
                               );
                               List<Locker> lockers = lockersRepository
                                   .fetchFreeLockers();
 
                               if (lockerSearchQuery.isNotEmpty) {
-                                lockers = lockers.where((locker) {
-                                  final lockerNumberStr = locker.number
-                                      .toString();
-                                  return lockerNumberStr.contains(
-                                    lockerSearchQuery,
-                                  );
-                                }).toList();
+                                lockers = searchInLockers(
+                                  lockers,
+                                  lockerSearchQuery,
+                                );
                               }
 
                               lockers.sort(
@@ -154,7 +154,7 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                           child: Consumer(
                             builder: (context, ref, child) {
                               final studentsRepository = ref.watch(
-                                lockersRepositoryProvider,
+                                studentRepositoryProvider.notifier,
                               );
                               final students = studentsRepository
                                   .fetchStudents();
@@ -162,16 +162,10 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                               final filteredStudents =
                                   studentSearchQuery.isEmpty
                                   ? students
-                                  : students.where((student) {
-                                      final firstName = student.name
-                                          .toLowerCase();
-                                      final lastName = student.surname
-                                          .toLowerCase();
-                                      return firstName.contains(
-                                            studentSearchQuery,
-                                          ) ||
-                                          lastName.contains(studentSearchQuery);
-                                    }).toList();
+                                  : searchInStudents(
+                                      students,
+                                      studentSearchQuery,
+                                    );
 
                               filteredStudents.sort((a, b) {
                                 final lastNameComp = a.surname.compareTo(

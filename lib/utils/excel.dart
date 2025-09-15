@@ -1,5 +1,6 @@
 import 'package:excel/excel.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_condition.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
@@ -52,12 +53,12 @@ List<Locker> importLockersFrom(Excel excel) {
 
       String id = '';
 
-      for (dynamic studentId in LockersRepository.studentsBox.keys) {
-        Student student = LockersRepository.studentsBox.get(studentId)!;
+      for (dynamic studentId in StudentsRepository.studentsBox.keys) {
+        Student student = StudentsRepository.studentsBox.get(studentId)!;
 
         if (student.surname == results[3] && student.name == results[4]) {
           id = studentId;
-          LockersRepository.studentsBox.put(
+          StudentsRepository.studentsBox.put(
             id,
             student.copyWith(caution: int.tryParse(results[5]) ?? 0),
           );
@@ -142,6 +143,6 @@ void importFile(Excel excel) {
   if (doImportLockers) {
     LockersRepository().importLockersFromList(importLockersFrom(excel));
   } else {
-    LockersRepository().importStudentsFromList(importStudentsFrom(excel));
+    StudentsRepository().importStudentsFromList(importStudentsFrom(excel));
   }
 }

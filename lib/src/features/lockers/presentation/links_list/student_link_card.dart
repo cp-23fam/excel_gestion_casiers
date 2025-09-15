@@ -1,4 +1,4 @@
-import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ class StudentLinkCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Locker? possedLocker = LockersRepository().getLockerByStudent(student.id);
+    Locker? possedLocker = StudentsRepository().getLockerByStudent(student.id);
     return GestureDetector(
       onTap: () => selectStudent(student),
       child: Card(

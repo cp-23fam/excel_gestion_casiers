@@ -1,7 +1,7 @@
 import 'package:excel_gestion_casiers/src/common_widgets/styled_button.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
-import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/data/transaction_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/transaction.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/presentation/transactions_list/transaction_card.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
@@ -19,7 +19,10 @@ class TransactionsListScreen extends StatefulWidget {
 class _TransactionsListScreenState extends State<TransactionsListScreen> {
   @override
   Widget build(BuildContext context) {
-    List<Transaction> transactions = LockersRepository().fetchTransactionList();
+    List<Transaction> transactions = TransactionRepository()
+        .fetchTransactionList();
+
+    transactions.sort((a, b) => b.timestamp - a.timestamp);
     return Scaffold(
       appBar: AppBar(title: StyledTitle('Transactions'.hardcoded)),
       body: Padding(
@@ -30,8 +33,9 @@ class _TransactionsListScreenState extends State<TransactionsListScreen> {
             Row(
               children: [
                 StyledButton(
-                  onPressed: () =>
-                      LockersRepository().goBack(transactions.last.id),
+                  onPressed: () => setState(() {
+                    TransactionRepository().goBack(transactions.last.id);
+                  }),
                   child: Row(
                     children: [
                       Icon(

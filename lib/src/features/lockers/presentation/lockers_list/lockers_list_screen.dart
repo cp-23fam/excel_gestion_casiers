@@ -1,6 +1,7 @@
 import 'package:excel/excel.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
 import 'package:excel_gestion_casiers/utils/excel.dart';
+import 'package:excel_gestion_casiers/utils/lockers.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -83,15 +84,12 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
               child: Consumer(
                 builder: (context, ref, child) {
                   final lockersRepository = ref.watch(
-                    lockersListNotifierProvider,
+                    lockersRepositoryProvider.notifier,
                   );
-                  List<Locker> lockers = lockersRepository;
+                  List<Locker> lockers = lockersRepository.fetchLockersList();
 
                   if (_searchQuery.isNotEmpty) {
-                    lockers = lockers.where((locker) {
-                      final lockerNumberStr = locker.number.toString();
-                      return lockerNumberStr.contains(_searchQuery);
-                    }).toList();
+                    lockers = searchInLockers(lockers, _searchQuery);
                   }
 
                   lockers.sort((a, b) => a.number.compareTo(b.number));

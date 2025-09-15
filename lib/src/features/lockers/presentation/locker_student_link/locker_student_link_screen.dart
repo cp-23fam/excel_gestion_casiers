@@ -1,3 +1,4 @@
+import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
 import 'package:excel_gestion_casiers/src/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,7 +50,7 @@ class _LockerStudentLinkScreenState
 
   @override
   Widget build(BuildContext context) {
-    final studentsRepository = ref.watch(lockersRepositoryProvider);
+    final studentsRepository = ref.watch(studentRepositoryProvider.notifier);
     final allStudents = studentsRepository.fetchStudents();
 
     final filteredStudents = allStudents.where((student) {
@@ -93,7 +94,7 @@ class _LockerStudentLinkScreenState
                               student: student,
                               onTap: () {
                                 ref
-                                    .read(lockersListNotifierProvider.notifier)
+                                    .read(lockersRepositoryProvider.notifier)
                                     .editLocker(
                                       widget.locker.number,
                                       widget.locker.copyWith(

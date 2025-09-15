@@ -62,10 +62,10 @@ class _LockerCreationScreenState extends ConsumerState<LockerCreationScreen> {
         id: widget.locker?.id ?? uuid.v4(),
         place: '',
         lockerCondition: LockerCondition.good(),
-        studentId: null,
+        studentId: widget.locker?.studentId,
       );
 
-      final notifier = ref.read(lockersListNotifierProvider.notifier);
+      final notifier = ref.read(lockersRepositoryProvider.notifier);
 
       if (widget.locker == null) {
         // création
