@@ -9,14 +9,16 @@ import 'package:excel_gestion_casiers/src/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TransactionsListScreen extends StatefulWidget {
+class TransactionsListScreen extends ConsumerStatefulWidget {
   const TransactionsListScreen({super.key});
 
   @override
-  State<TransactionsListScreen> createState() => _TransactionsListScreenState();
+  ConsumerState<TransactionsListScreen> createState() =>
+      _TransactionsListScreenState();
 }
 
-class _TransactionsListScreenState extends State<TransactionsListScreen> {
+class _TransactionsListScreenState
+    extends ConsumerState<TransactionsListScreen> {
   @override
   Widget build(BuildContext context) {
     List<Transaction> transactions = LockersRepository().fetchTransactionList();

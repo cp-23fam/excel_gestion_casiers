@@ -2,6 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
 
 class AppColors {
+  static Color primaryColor = const Color.fromRGBO(78, 87, 95, 1);
+  static Color primaryAccent = const Color.fromRGBO(63, 70, 77, 1);
+  static Color secondaryColor = const Color.fromRGBO(42, 48, 54, 1);
+  static Color secondaryAccent = const Color.fromRGBO(33, 37, 41, 1);
+  static Color titleColor = const Color.fromRGBO(200, 200, 200, 1);
+  static Color textColor = const Color.fromARGB(255, 165, 165, 165);
+  static Color iconColor = const Color.fromARGB(255, 255, 255, 255);
+
+  static Color importantColor = const Color.fromARGB(255, 23, 143, 255);
+  static Color goodColor = const Color.fromRGBO(76, 175, 80, 1);
+  static Color editColor = const Color.fromARGB(255, 23, 143, 255);
+  static Color deleteColor = const Color.fromRGBO(244, 67, 54, 1);
+}
+
+class AppBlueColors {
   static Color primaryColor = const Color.fromRGBO(141, 169, 196, 1);
   static Color primaryAccent = const Color.fromRGBO(19, 64, 116, 1);
   static Color secondaryColor = const Color.fromRGBO(19, 49, 92, 1);
@@ -10,6 +25,7 @@ class AppColors {
   static Color textColor = const Color.fromARGB(255, 165, 165, 165);
   static Color iconColor = const Color.fromARGB(255, 255, 255, 255);
 
+  static Color importantColor = const Color.fromARGB(255, 23, 143, 255);
   static Color editColor = const Color.fromRGBO(76, 175, 80, 1);
   static Color deleteColor = const Color.fromRGBO(244, 67, 54, 1);
 }

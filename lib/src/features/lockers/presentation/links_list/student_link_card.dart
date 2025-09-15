@@ -6,7 +6,7 @@ import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
 
-class StudentLinkCard extends StatelessWidget {
+class StudentLinkCard extends StatefulWidget {
   const StudentLinkCard({
     super.key,
     required this.student,
@@ -18,50 +18,76 @@ class StudentLinkCard extends StatelessWidget {
   final bool isSelected;
 
   @override
+  State<StudentLinkCard> createState() => _StudentLinkCardState();
+}
+
+class _StudentLinkCardState extends State<StudentLinkCard> {
+  bool isHover = false;
+  @override
   Widget build(BuildContext context) {
-    Locker? possedLocker = LockersRepository().getLockerByStudent(student.id);
+    Locker? possedLocker = LockersRepository().getLockerByStudent(
+      widget.student.id,
+    );
     return GestureDetector(
-      onTap: () => selectStudent(student),
-      child: Card(
-        color: isSelected ? AppColors.primaryAccent : null,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Sizes.p16,
-            vertical: Sizes.p8,
-          ),
-          child: Row(
-            children: [
-              const Icon(Icons.person, size: Sizes.p24),
-              gapW8,
-              Expanded(
-                child: StyledBoldText(
-                  '${student.genderTitle} ${student.surname}',
+      onTap: () => widget.selectStudent(widget.student),
+      child: MouseRegion(
+        onEnter: (event) {
+          setState(() {
+            isHover = true;
+          });
+        },
+        onExit: (event) {
+          setState(() {
+            isHover = false;
+          });
+        },
+        child: Card(
+          color: widget.isSelected
+              ? AppColors.importantColor
+              : isHover
+              ? AppColors.primaryAccent
+              : null,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Sizes.p16,
+              vertical: Sizes.p8,
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.person, size: Sizes.p24),
+                gapW8,
+                Expanded(
+                  child: StyledBoldText(
+                    '${widget.student.genderTitle} ${widget.student.surname}',
+                  ),
                 ),
-              ),
-              gapW8,
-              Expanded(child: StyledBoldText(student.name)),
-              gapW8,
-              possedLocker == null
-                  ? const Expanded(child: StyledBoldText('-'))
-                  : Expanded(
-                      child: StyledBoldText('Casier N° ${possedLocker.number}'),
-                    ),
-              // gapW8,
-              // Expanded(child: StyledBoldText('${student.formationYear} année')),
-              // gapW8,
-              // Expanded(child: StyledBoldText(student.login)),
-              possedLocker == null
-                  ? const SizedBox(height: Sizes.p48, width: Sizes.p48)
-                  : Center(
-                      child: IconButton(
-                        onPressed: () {
-                          selectStudent(student);
-                          // studentsRepository.freeLockerByIndex(locker.number);
-                        },
-                        icon: const Icon(Icons.link_off),
+                gapW8,
+                Expanded(child: StyledBoldText(widget.student.name)),
+                gapW8,
+                possedLocker == null
+                    ? const Expanded(child: StyledBoldText('-'))
+                    : Expanded(
+                        child: StyledBoldText(
+                          'Casier N° ${possedLocker.number}',
+                        ),
                       ),
-                    ),
-            ],
+                // gapW8,
+                // Expanded(child: StyledBoldText('${student.formationYear} année')),
+                // gapW8,
+                // Expanded(child: StyledBoldText(student.login)),
+                possedLocker == null
+                    ? const SizedBox(height: Sizes.p48, width: Sizes.p48)
+                    : Center(
+                        child: IconButton(
+                          onPressed: () {
+                            widget.selectStudent(widget.student);
+                            // studentsRepository.freeLockerByIndex(locker.number);
+                          },
+                          icon: const Icon(Icons.link_off),
+                        ),
+                      ),
+              ],
+            ),
           ),
         ),
       ),

@@ -16,7 +16,7 @@ class StyledButton extends StatelessWidget {
           horizontal: Sizes.p20,
         ),
         decoration: BoxDecoration(
-          color: AppColors.primaryAccent,
+          color: AppColors.importantColor,
           borderRadius: const BorderRadius.all(Radius.circular(Sizes.p8)),
         ),
         child: child,

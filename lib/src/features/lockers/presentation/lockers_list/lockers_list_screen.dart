@@ -1,4 +1,5 @@
 import 'package:excel/excel.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/presentation/locker_condition_update/locker_condition_update_screen.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
 import 'package:excel_gestion_casiers/utils/excel.dart';
 import 'package:file_picker/file_picker.dart';
@@ -131,6 +132,7 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
           lockerId: locker!.id,
           editLocker: (locker) => _createLocker(locker: locker),
           linkStudent: (locker) => _selectStudent(locker: locker),
+          editLockerCondition: (locker) => _editLockerCondition(locker: locker),
         );
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
@@ -181,6 +183,28 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
             setState(() {});
           },
         );
+      },
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        final tween = Tween<Offset>(
+          begin: const Offset(1, 0),
+          end: const Offset(0, 0),
+        );
+        return SlideTransition(
+          position: tween.animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
+
+  void _editLockerCondition({required Locker locker}) {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: 'Select Student',
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return LockerConditionUpdateScreen(locker: locker);
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
         final tween = Tween<Offset>(

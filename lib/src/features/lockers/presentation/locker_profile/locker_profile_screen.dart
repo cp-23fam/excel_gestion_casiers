@@ -12,12 +12,14 @@ class LockerProfileScreen extends ConsumerWidget {
   final String lockerId;
   final Function(Locker locker) editLocker;
   final Function(Locker locker) linkStudent;
+  final Function(Locker locker) editLockerCondition;
 
   const LockerProfileScreen({
     super.key,
     required this.lockerId,
     required this.editLocker,
     required this.linkStudent,
+    required this.editLockerCondition,
   });
 
   @override
@@ -153,49 +155,71 @@ class LockerProfileScreen extends ConsumerWidget {
                         ),
                       ),
                 Card(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Sizes.p16,
-                      vertical: Sizes.p16,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildLockerInfoRow(
-                          'Problèmes'.hardcoded,
-                          locker.lockerCondition.problems ?? '-',
+                  child: Column(
+                    children: [
+                      locker.lockerCondition.isConditionGood
+                          ? Container(
+                              width: double.infinity,
+                              color: AppColors.goodColor,
+                              child: const Icon(Icons.check),
+                            )
+                          : Container(
+                              width: double.infinity,
+                              color: AppColors.deleteColor,
+                              child: const Icon(Icons.close),
+                            ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Sizes.p16,
+                          vertical: Sizes.p16,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              StyledHeading('Commentaires'.hardcoded),
-                              gapH4,
-                              SizedBox(
-                                width: double.infinity,
-                                child: StyledText(
-                                  locker.lockerCondition.comments ?? '',
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildLockerInfoRow(
+                              'Problèmes'.hardcoded,
+                              locker.lockerCondition.problems ?? '-',
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  StyledHeading('Commentaires'.hardcoded),
+                                  gapH4,
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: StyledText(
+                                      locker.lockerCondition.comments ?? '',
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: TextButton.icon(
+                                onPressed: () {
+                                  editLockerCondition(locker);
+                                },
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: AppColors.iconColor,
+                                ),
+                                label: const StyledTitle('Update'),
+                                style: TextButton.styleFrom(
+                                  backgroundColor: AppColors.editColor,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 8,
+                                  ),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        // TextButton.icon(
-                        //   onPressed: () {},
-                        //   icon: Icon(Icons.edit, color: AppColors.iconColor),
-                        //   label: SizedBox(
-                        //     width: double.infinity,
-                        //     child: Center(child: const StyledTitle('Update')),
-                        //   ),
-                        //   style: ButtonStyle(
-                        //     backgroundColor: WidgetStateProperty.all<Color>(
-                        //       AppColors.editColor,
-                        //     ),
-                        //   ),
-                        // ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 Row(
@@ -210,7 +234,7 @@ class LockerProfileScreen extends ConsumerWidget {
                         label: const StyledTitle('Update'),
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all<Color>(
-                            AppColors.primaryAccent,
+                            AppColors.editColor,
                           ),
                         ),
                       ),
