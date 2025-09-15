@@ -10,10 +10,6 @@ const uuid = Uuid();
 List<Locker> importLockersFrom(Excel excel) {
   final lockers = <Locker>[];
 
-  if (!excel.sheets.keys.contains('Etage')) {
-    throw Error();
-  }
-
   for (final floor in excel.sheets.keys.where((key) => key.contains('Etage'))) {
     if (!['Etage B', 'Etage C', 'Etage D', 'Etage E'].contains(floor)) {
       continue;

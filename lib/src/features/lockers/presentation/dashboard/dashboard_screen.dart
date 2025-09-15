@@ -26,7 +26,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 .read(lockersRepositoryProvider.notifier)
                 .fetchLockersList();
 
-            final lockersError = filterLockers(lockers, hasProblems: true);
+            final lockersErrorCount = filterLockers(
+              lockers,
+              hasProblems: true,
+            ).length;
             final keysWarningCount = filterLockers(
               lockers,
               numberKeys: 1,
@@ -46,14 +49,17 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               children: [
                 DashboardCard(
                   text: 'Casiers',
-                  condition: lockersError.isEmpty ? 0 : 2,
-                  comment: lockersError.isEmpty
+                  condition: lockersErrorCount < 1 ? 0 : 2,
+                  comment: lockersErrorCount < 1
                       ? 'Tous les casiers sont en ordre'
-                      : lockersError.length == 1
+                      : lockersErrorCount == 1
                       ? '1 casier à des problèmes'
-                      : '${lockersError.length} casiers ont des problèmes',
+                      : '$lockersErrorCount casiers ont des problèmes',
                   logo: Icons.lock,
-                  value: 1 - lockersError.length / lockers.length,
+                  value:
+                      1 -
+                      lockersErrorCount /
+                          (lockers.isEmpty ? 1 : lockers.length),
                 ),
                 DashboardCard(
                   text: 'Élèves',
@@ -64,7 +70,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                       ? '1 élève n\'a pas de casier'
                       : '$studentsErrorCount élèves n\'ont pas de casier',
                   logo: Icons.person,
-                  value: 1 - studentsErrorCount / studentsCount,
+                  value:
+                      1 -
+                      studentsErrorCount /
+                          (studentsCount == 0 ? 1 : studentsCount),
                 ),
                 DashboardCard(
                   text: 'Clés',
@@ -75,22 +84,24 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                       ? '1 casier n\'a pas de rechange'
                       : '$keysWarningCount casiers n\'ont pas de rechange',
                   logo: Icons.key,
-                  value: 1 - keysWarningCount / lockers.length,
+                  value:
+                      1 -
+                      keysWarningCount / (lockers.isEmpty ? 1 : lockers.length),
                 ),
                 DashboardCard(
                   text: 'Général',
-                  condition: (lockersError.isNotEmpty || studentsErrorCount > 0)
+                  condition: (lockersErrorCount > 1 || studentsErrorCount > 0)
                       ? 2
                       : (keysWarningCount > 0)
                       ? 1
                       : 0,
                   comment:
-                      (lockersError.length +
+                      (lockersErrorCount +
                               studentsErrorCount +
                               keysWarningCount) ==
                           1
                       ? '1 problème majeur ou mineur'
-                      : '${lockersError.length + studentsErrorCount + keysWarningCount} problèmes majeurs ou mineurs',
+                      : '${lockersErrorCount + studentsErrorCount + keysWarningCount} problèmes majeurs ou mineurs',
                   logo: Icons.inbox,
                   value: 0.96,
                 ),
