@@ -1,10 +1,10 @@
+import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_button.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
-import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/presentation/locker_creation/locker_text_field.dart';
 import 'package:excel_gestion_casiers/src/localization/string_hardcoded.dart';
 import 'package:uuid/uuid.dart';
@@ -73,7 +73,7 @@ class _StudentCreationScreenState extends ConsumerState<StudentCreationScreen> {
         job: _jobController.text.trim(),
       );
 
-      final notifier = ref.read(lockersListNotifierProvider.notifier);
+      final notifier = ref.read(studentRepositoryProvider.notifier);
 
       if (widget.student == null) {
         // création

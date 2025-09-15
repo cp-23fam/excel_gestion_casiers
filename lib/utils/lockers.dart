@@ -1,5 +1,7 @@
 import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_condition.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
 
 List<Locker> searchInLockers(List<Locker> lockers, String searchValue) {
@@ -34,7 +36,7 @@ List<Locker> searchInLockers(List<Locker> lockers, String searchValue) {
     );
 
     if (returnLockers.isEmpty) {
-      List<Student> students = LockersRepository().fetchStudents();
+      List<Student> students = StudentsRepository().fetchStudents();
 
       List<Student> searchStudent = [];
 
@@ -55,7 +57,7 @@ List<Locker> searchInLockers(List<Locker> lockers, String searchValue) {
       searchStudent = searchStudent.toSet().toList();
 
       for (Student student in searchStudent) {
-        Locker? locker = LockersRepository().getLockerByStudent(student.id);
+        Locker? locker = StudentsRepository().getLockerByStudent(student.id);
         if (locker != null) {
           returnLockers.add(locker);
         }
@@ -114,4 +116,35 @@ List<Locker> filterLockers(
   }
 
   return returnLockers;
+}
+
+void runAutoHealthCheckOnLockers() {
+  for (Locker lockerId in LockersRepository.lockersBox.keys) {
+    Locker locker = LockersRepository.lockersBox.get(lockerId)!;
+    LockerCondition lockerCondition = locker.lockerCondition;
+
+    if (locker.numberKeys == 0) {
+      lockerCondition = lockerCondition.copyWith(
+        isConditionGood: false,
+        problems: 'Il n\'y a plus de clés',
+      );
+    }
+
+    locker.copyWith(lockerCondition: lockerCondition);
+
+    LockersRepository.lockersBox.put(locker.number, locker);
+  }
+}
+
+void runAutoEmptyLockerOnInvalidStudentId() {
+  for (Locker lockerId in LockersRepository.lockersBox.keys) {
+    Locker locker = LockersRepository.lockersBox.get(lockerId)!;
+
+    if (locker.studentId != null &&
+        !StudentsRepository.studentsBox.keys.contains(locker.studentId)) {
+      locker = locker.returnFreedLocker();
+
+      LockersRepository.lockersBox.put(lockerId, locker);
+    }
+  }
 }

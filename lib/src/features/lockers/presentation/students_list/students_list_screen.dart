@@ -1,15 +1,16 @@
 import 'package:excel/excel.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/presentation/student_creation/student_creation_screen.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
 import 'package:excel_gestion_casiers/utils/excel.dart';
+import 'package:excel_gestion_casiers/utils/students.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_button.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
-import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/presentation/students_list/student_card.dart';
 import 'package:excel_gestion_casiers/src/localization/string_hardcoded.dart';
 
@@ -50,7 +51,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                     if (pickedFile != null) {
                       var bytes = pickedFile.files.single.bytes!.toList();
                       var excel = Excel.decodeBytes(bytes);
-                      LockersRepository().importStudentsFromList(
+                      StudentsRepository().importStudentsFromList(
                         importStudentsFrom(excel),
                       );
                     }
@@ -78,18 +79,13 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
               child: Consumer(
                 builder: (context, ref, child) {
                   final studentsRepository = ref.watch(
-                    lockersRepositoryProvider,
+                    studentRepositoryProvider.notifier,
                   );
                   final students = studentsRepository.fetchStudents();
 
                   final filteredStudents = _searchQuery.isEmpty
                       ? students
-                      : students.where((student) {
-                          final firstName = student.name.toLowerCase();
-                          final lastName = student.surname.toLowerCase();
-                          return firstName.contains(_searchQuery) ||
-                              lastName.contains(_searchQuery);
-                        }).toList();
+                      : searchInStudents(students, _searchQuery);
 
                   filteredStudents.sort((a, b) {
                     final lastNameComp = a.surname.compareTo(b.surname);
@@ -123,7 +119,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
   }
 
   void deleteStudent(String id) {
-    final studentsRepository = ref.read(lockersRepositoryProvider);
+    final studentsRepository = ref.read(studentRepositoryProvider.notifier);
     studentsRepository.deleteStudent(id);
   }
 

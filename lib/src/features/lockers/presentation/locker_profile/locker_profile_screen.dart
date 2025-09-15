@@ -1,3 +1,4 @@
+import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
@@ -24,12 +25,15 @@ class LockerProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final lockers = ref.watch(lockersListNotifierProvider);
+    final lockersRepository = ref.watch(lockersRepositoryProvider.notifier);
+    final studentsRepository = ref.watch(studentRepositoryProvider.notifier);
+
+    final lockers = lockersRepository.fetchLockersList();
     final locker = lockers.firstWhere((l) => l.id == lockerId);
-    final studentsRepository = ref.read(lockersRepositoryProvider);
     final Student? student = studentsRepository.getStudentBy(
       locker.studentId ?? '',
     );
+
     return Align(
       alignment: Alignment.centerRight,
       child: SizedBox(
@@ -141,7 +145,7 @@ class LockerProfileScreen extends ConsumerWidget {
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                        studentsRepository.freeLockerByIndex(
+                                        lockersRepository.freeLockerByIndex(
                                           locker.number,
                                         );
                                       },
@@ -243,7 +247,7 @@ class LockerProfileScreen extends ConsumerWidget {
                     Expanded(
                       child: TextButton.icon(
                         onPressed: () {
-                          studentsRepository.deleteLocker(locker.number);
+                          lockersRepository.deleteLocker(locker.number);
                           Navigator.of(context).pop();
                         },
                         icon: Icon(Icons.delete, color: AppColors.iconColor),

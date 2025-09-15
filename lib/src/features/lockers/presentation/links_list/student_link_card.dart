@@ -1,4 +1,5 @@
 import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _StudentLinkCardState extends State<StudentLinkCard> {
   bool isHover = false;
   @override
   Widget build(BuildContext context) {
-    Locker? possedLocker = LockersRepository().getLockerByStudent(
+    Locker? possedLocker = StudentsRepository().getLockerByStudent(
       widget.student.id,
     );
     return GestureDetector(
