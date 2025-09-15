@@ -10,10 +10,12 @@ class AppColors {
   static Color textColor = const Color.fromARGB(255, 165, 165, 165);
   static Color iconColor = const Color.fromARGB(255, 255, 255, 255);
 
-  static Color importantColor = const Color.fromARGB(255, 23, 143, 255);
   static Color goodColor = const Color.fromRGBO(76, 175, 80, 1);
+  static Color importantColor = const Color.fromARGB(255, 23, 143, 255);
   static Color editColor = const Color.fromARGB(255, 23, 143, 255);
   static Color deleteColor = const Color.fromRGBO(244, 67, 54, 1);
+  static Color problemeColor = const Color.fromRGBO(244, 67, 54, 1);
+  static Color warningColor = const Color.fromARGB(255, 234, 255, 44);
 }
 
 class AppBlueColors {

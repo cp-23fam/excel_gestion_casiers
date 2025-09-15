@@ -1,7 +1,9 @@
+import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/presentation/dashboard/dashboard_card.dart';
+import 'package:excel_gestion_casiers/src/localization/string_hardcoded.dart';
 import 'package:excel_gestion_casiers/utils/lockers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +19,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: StyledTitle('Dashboard'.hardcoded)),
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p24),
         child: Consumer(
@@ -42,60 +44,75 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 .fetchNoLockerStudents()
                 .length;
 
-            return Wrap(
-              children: [
-                DashboardCard(
-                  text: 'Casiers',
-                  condition: lockersError.isEmpty ? 0 : 2,
-                  comment: lockersError.isEmpty
-                      ? 'Tous les casiers sont en ordre'
-                      : lockersError.length == 1
-                      ? '1 casier à des problèmes'
-                      : '${lockersError.length} casiers ont des problèmes',
-                  logo: Icons.lock,
-                  value: 1 - lockersError.length / lockers.length,
-                ),
-                DashboardCard(
-                  text: 'Élèves',
-                  condition: studentsErrorCount > 0 ? 2 : 0,
-                  comment: studentsErrorCount < 1
-                      ? 'Tous les élèves sont en ordre'
-                      : studentsErrorCount == 1
-                      ? '1 élève n\'a pas de casier'
-                      : '$studentsErrorCount élèves n\'ont pas de casier',
-                  logo: Icons.person,
-                  value: 1 - studentsErrorCount / studentsCount,
-                ),
-                DashboardCard(
-                  text: 'Clés',
-                  condition: keysWarningCount > 0 ? 1 : 0,
-                  comment: keysWarningCount < 1
-                      ? 'Tous les casiers possèdent des rechanges'
-                      : keysWarningCount == 1
-                      ? '1 casier n\'a pas de rechange'
-                      : '$keysWarningCount casiers n\'ont pas de rechange',
-                  logo: Icons.key,
-                  value: 1 - keysWarningCount / lockers.length,
-                ),
-                DashboardCard(
-                  text: 'Général',
-                  condition: (lockersError.isNotEmpty || studentsErrorCount > 0)
-                      ? 2
-                      : (keysWarningCount > 0)
-                      ? 1
-                      : 0,
-                  comment:
-                      (lockersError.length +
-                              studentsErrorCount +
-                              keysWarningCount) ==
-                          1
-                      ? '1 problème majeur ou mineur'
-                      : '${lockersError.length + studentsErrorCount + keysWarningCount} problèmes majeurs ou mineurs',
-                  logo: Icons.inbox,
-                  value: 0.96,
-                ),
-              ],
-            );
+            return lockers.isEmpty
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(child: StyledTitle('Bienvenu'.hardcoded)),
+                      gapH12,
+                      Center(
+                        child: StyledText(
+                          'Pour commencer à utiliser l\'application, veuillez d\'abord importez une liste d\'élèves puis une liste de casiers'
+                              .hardcoded,
+                        ),
+                      ),
+                    ],
+                  )
+                : Wrap(
+                    children: [
+                      DashboardCard(
+                        text: 'Casiers',
+                        condition: lockersError.isEmpty ? 0 : 2,
+                        comment: lockersError.isEmpty
+                            ? 'Tous les casiers sont en ordre'
+                            : lockersError.length == 1
+                            ? '1 casier à des problèmes'
+                            : '${lockersError.length} casiers ont des problèmes',
+                        logo: Icons.lock,
+                        value: 1 - lockersError.length / lockers.length,
+                      ),
+                      DashboardCard(
+                        text: 'Élèves',
+                        condition: studentsErrorCount > 0 ? 2 : 0,
+                        comment: studentsErrorCount < 1
+                            ? 'Tous les élèves sont en ordre'
+                            : studentsErrorCount == 1
+                            ? '1 élève n\'a pas de casier'
+                            : '$studentsErrorCount élèves n\'ont pas de casier',
+                        logo: Icons.person,
+                        value: 1 - studentsErrorCount / studentsCount,
+                      ),
+                      DashboardCard(
+                        text: 'Clés',
+                        condition: keysWarningCount > 0 ? 1 : 0,
+                        comment: keysWarningCount < 1
+                            ? 'Tous les casiers possèdent des rechanges'
+                            : keysWarningCount == 1
+                            ? '1 casier n\'a pas de rechange'
+                            : '$keysWarningCount casiers n\'ont pas de rechange',
+                        logo: Icons.key,
+                        value: 1 - keysWarningCount / lockers.length,
+                      ),
+                      DashboardCard(
+                        text: 'Général',
+                        condition:
+                            (lockersError.isNotEmpty || studentsErrorCount > 0)
+                            ? 2
+                            : (keysWarningCount > 0)
+                            ? 1
+                            : 0,
+                        comment:
+                            (lockersError.length +
+                                    studentsErrorCount +
+                                    keysWarningCount) ==
+                                1
+                            ? '1 problème majeur ou mineur'
+                            : '${lockersError.length + studentsErrorCount + keysWarningCount} problèmes majeurs ou mineurs',
+                        logo: Icons.inbox,
+                        value: 0.96,
+                      ),
+                    ],
+                  );
           },
         ),
       ),

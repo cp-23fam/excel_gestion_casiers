@@ -1,5 +1,6 @@
 import 'package:excel/excel.dart';
-// ignore: unused_import
+import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/presentation/filter/filter_button.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/presentation/filter/filter_dropdown.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/presentation/locker_condition_update/locker_condition_update_screen.dart';
@@ -105,19 +106,42 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
                 ),
                 StyledButton(
                   onPressed: () async {
-                    FilePickerResult? pickedFile = await FilePicker.platform
-                        .pickFiles(
-                          type: FileType.custom,
-                          allowedExtensions: ['xlsx'],
-                          allowMultiple: false,
-                        );
-
-                    if (pickedFile != null) {
-                      var bytes = pickedFile.files.single.bytes!.toList();
-                      var excel = Excel.decodeBytes(bytes);
-                      LockersRepository().importLockersFromList(
-                        importLockersFrom(excel),
+                    List<Student> students = StudentsRepository()
+                        .fetchStudents();
+                    if (students.isEmpty) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            backgroundColor: AppColors.secondaryColor,
+                            title: const StyledTitle('Erreur'),
+                            content: const Text(
+                              'Aucun étudiant trouvé. Veuillez importer les données des étudiants avant.',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
                       );
+                    } else {
+                      FilePickerResult? pickedFile = await FilePicker.platform
+                          .pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: ['xlsx'],
+                            allowMultiple: false,
+                          );
+
+                      if (pickedFile != null) {
+                        var bytes = pickedFile.files.single.bytes!.toList();
+                        var excel = Excel.decodeBytes(bytes);
+                        LockersRepository().importLockersFromList(
+                          importLockersFrom(excel),
+                        );
+                      }
                     }
                   },
                   child: StyledTitle('Import'.hardcoded),

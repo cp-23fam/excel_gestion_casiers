@@ -71,21 +71,8 @@ class _StudentLinkCardState extends State<StudentLinkCard> {
                           'Casier N° ${possedLocker.number}',
                         ),
                       ),
-                // gapW8,
-                // Expanded(child: StyledBoldText('${student.formationYear} année')),
-                // gapW8,
-                // Expanded(child: StyledBoldText(student.login)),
-                possedLocker == null
-                    ? const SizedBox(height: Sizes.p48, width: Sizes.p48)
-                    : Center(
-                        child: IconButton(
-                          onPressed: () {
-                            widget.selectStudent(widget.student);
-                            // studentsRepository.freeLockerByIndex(locker.number);
-                          },
-                          icon: const Icon(Icons.link_off),
-                        ),
-                      ),
+                gapW8,
+                StyledBoldText('${widget.student.formationYear} année'),
               ],
             ),
           ),

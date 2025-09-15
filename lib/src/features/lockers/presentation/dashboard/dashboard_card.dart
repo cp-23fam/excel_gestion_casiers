@@ -50,13 +50,12 @@ class DashboardCard extends StatelessWidget {
               condition == 0
                   ? Icon(Icons.check_box, color: AppColors.goodColor)
                   : condition == 1
-                  ? Icon(Icons.warning, color: AppColors.importantColor)
+                  ? Icon(Icons.warning, color: AppColors.warningColor)
                   : Icon(Icons.error, color: AppColors.deleteColor),
               Text(comment),
             ],
           ),
-
-          StyledText('Last check : 00:00:00'),
+          const StyledText('Last check : 00:00:00'),
         ],
       ),
     );
