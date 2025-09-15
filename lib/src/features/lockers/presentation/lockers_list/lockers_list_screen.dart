@@ -1,4 +1,7 @@
 import 'package:excel/excel.dart';
+// ignore: unused_import
+import 'package:excel_gestion_casiers/src/features/lockers/presentation/filter/filter_button.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/presentation/filter/filter_dropdown.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/presentation/locker_condition_update/locker_condition_update_screen.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
 import 'package:excel_gestion_casiers/utils/excel.dart';
@@ -26,6 +29,12 @@ class LockersListScreen extends ConsumerStatefulWidget {
 
 class _LockersListScreenState extends ConsumerState<LockersListScreen> {
   String _searchQuery = '';
+  String filter = 'number';
+  String? selectedFloor;
+  String? selectedResponsible;
+  bool hasComments = false;
+  bool hasProblems = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +46,55 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
           children: [
             Row(
               children: [
+                FilterDropdown(
+                  title: 'Floor',
+                  selected: selectedFloor,
+                  isSelected: (String? newValue) {
+                    setState(() {
+                      selectedFloor = newValue;
+                    });
+                  },
+                  list: <String?>[null, 'A', 'B', 'C', 'D', 'E'],
+                ),
+                gapW24,
+                FilterDropdown(
+                  title: 'Responsible',
+                  selected: selectedResponsible,
+                  isSelected: (String? newValue) {
+                    setState(() {
+                      selectedResponsible = newValue;
+                    });
+                  },
+                  list: <String?>[null, 'JHI', 'PAC'],
+                ),
+                gapW24,
+                FilterButton(
+                  onPressed: () {
+                    setState(() {
+                      if (hasComments) {
+                        hasComments = false;
+                      } else {
+                        hasComments = true;
+                      }
+                    });
+                  },
+                  isSelected: hasComments,
+                  child: const StyledTitle('has Comments'),
+                ),
+                FilterButton(
+                  onPressed: () {
+                    setState(() {
+                      if (hasProblems) {
+                        hasProblems = false;
+                      } else {
+                        hasProblems = true;
+                      }
+                    });
+                  },
+                  isSelected: hasProblems,
+                  child: const StyledTitle('has Problems'),
+                ),
+                const Expanded(child: SizedBox()),
                 StyledButton(
                   onPressed: () => _createLocker(),
                   child: Icon(
@@ -88,6 +146,24 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
                     lockersRepositoryProvider.notifier,
                   );
                   List<Locker> lockers = lockersRepository.fetchLockersList();
+                  if (selectedFloor != null) {
+                    lockers = filterLockers(lockers, floor: selectedFloor!);
+                  }
+
+                  if (selectedResponsible != null) {
+                    lockers = filterLockers(
+                      lockers,
+                      responsible: selectedResponsible!,
+                    );
+                  }
+
+                  if (hasComments) {
+                    lockers = filterLockers(lockers, hasComments: true);
+                  }
+
+                  if (hasProblems) {
+                    lockers = filterLockers(lockers, hasProblems: true);
+                  }
 
                   if (_searchQuery.isNotEmpty) {
                     lockers = searchInLockers(lockers, _searchQuery);

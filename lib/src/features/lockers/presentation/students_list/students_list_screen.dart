@@ -1,6 +1,7 @@
 import 'package:excel/excel.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/presentation/filter/filter_dropdown.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/presentation/student_creation/student_creation_screen.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
 import 'package:excel_gestion_casiers/utils/excel.dart';
@@ -23,6 +24,10 @@ class StudentsListScreen extends ConsumerStatefulWidget {
 
 class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
   String _searchQuery = '';
+  String? selectedGenderTitle;
+  String? selectedJob;
+  String? selectedCaution;
+  String? selectedFormationYear;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +40,50 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
           children: [
             Row(
               children: [
+                FilterDropdown(
+                  title: 'Gender',
+                  selected: selectedGenderTitle,
+                  isSelected: (String? newValue) {
+                    setState(() {
+                      selectedGenderTitle = newValue;
+                    });
+                  },
+                  list: <String?>[null, 'M.', 'Mme'],
+                ),
+                gapW24,
+                FilterDropdown(
+                  title: 'Job',
+                  selected: selectedJob,
+                  isSelected: (String? newValue) {
+                    setState(() {
+                      selectedJob = newValue;
+                    });
+                  },
+                  list: <String?>[null, 'OIC', 'ICH'],
+                ),
+                gapW24,
+                FilterDropdown(
+                  title: 'Caution',
+                  selected: selectedCaution,
+                  isSelected: (String? newValue) {
+                    setState(() {
+                      selectedCaution = newValue;
+                    });
+                  },
+                  list: <String?>[null, '0', '20'],
+                ),
+                gapW24,
+                FilterDropdown(
+                  title: 'Year',
+                  selected: selectedFormationYear,
+                  isSelected: (String? newValue) {
+                    setState(() {
+                      selectedFormationYear = newValue;
+                    });
+                  },
+                  list: <String?>[null, '1', '2', '3', '4'],
+                ),
+                const Expanded(child: SizedBox()),
                 StyledButton(
                   onPressed: () => _createStudent(),
                   child: const Icon(Icons.add, color: Colors.white, size: 30.0),
@@ -81,7 +130,28 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                   final studentsRepository = ref.watch(
                     studentRepositoryProvider.notifier,
                   );
-                  final students = studentsRepository.fetchStudents();
+                  List<Student> students = studentsRepository.fetchStudents();
+                  if (selectedGenderTitle != null) {
+                    students = filterStudents(
+                      students,
+                      genderTitle: selectedGenderTitle!,
+                    );
+                  }
+                  if (selectedJob != null) {
+                    students = filterStudents(students, job: selectedJob!);
+                  }
+                  if (selectedCaution != null) {
+                    students = filterStudents(
+                      students,
+                      caution: int.parse(selectedCaution!),
+                    );
+                  }
+                  if (selectedFormationYear != null) {
+                    students = filterStudents(
+                      students,
+                      formationYear: int.parse(selectedFormationYear!),
+                    );
+                  }
 
                   final filteredStudents = _searchQuery.isEmpty
                       ? students
