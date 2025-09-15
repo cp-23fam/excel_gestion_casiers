@@ -100,9 +100,11 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                     if (pickedFile != null) {
                       var bytes = pickedFile.files.single.bytes!.toList();
                       var excel = Excel.decodeBytes(bytes);
-                      StudentsRepository().importStudentsFromList(
-                        importStudentsFrom(excel),
-                      );
+                      setState(() {
+                        StudentsRepository().importStudentsFromList(
+                          importStudentsFrom(excel),
+                        );
+                      });
                     }
                   },
                   child: StyledTitle('Import'.hardcoded),
@@ -173,7 +175,9 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                             final student = filteredStudents[index];
                             return StudentCard(
                               student: student,
-                              deleteStudent: (id) => deleteStudent(student.id),
+                              deleteStudent: (id) => setState(() {
+                                studentsRepository.deleteStudent(student.id);
+                              }),
                               editStudent: (student) =>
                                   _createStudent(student: student),
                             );
@@ -186,11 +190,6 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
         ),
       ),
     );
-  }
-
-  void deleteStudent(String id) {
-    final studentsRepository = ref.read(studentRepositoryProvider.notifier);
-    studentsRepository.deleteStudent(id);
   }
 
   void _createStudent({Student? student}) {

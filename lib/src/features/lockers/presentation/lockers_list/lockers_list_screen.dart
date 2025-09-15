@@ -115,9 +115,11 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
                     if (pickedFile != null) {
                       var bytes = pickedFile.files.single.bytes!.toList();
                       var excel = Excel.decodeBytes(bytes);
-                      LockersRepository().importLockersFromList(
-                        importLockersFrom(excel),
-                      );
+                      setState(() {
+                        LockersRepository().importLockersFromList(
+                          importLockersFrom(excel),
+                        );
+                      });
                     }
                   },
                   child: StyledTitle('Import'.hardcoded),
