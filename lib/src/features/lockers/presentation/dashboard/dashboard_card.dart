@@ -33,6 +33,7 @@ class DashboardCard extends StatelessWidget {
         spacing: 8.0,
         children: [
           Row(
+            spacing: 8.0,
             children: [
               Icon(logo ?? Icons.circle_outlined, size: 48.0),
               StyledHeading(text),

@@ -40,7 +40,7 @@ class StudentsRepository extends Notifier<List<Student>> {
   List<Student> fetchNoLockerStudents() {
     final lockers = <Student>[];
 
-    for (int i = 0; i < LockersRepository.lockersBox.length; i++) {
+    for (int i = 0; i < studentsBox.length; i++) {
       final Student? student = studentsBox.getAt(i);
 
       if (student != null) {

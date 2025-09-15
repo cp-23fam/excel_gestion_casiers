@@ -157,7 +157,7 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                                 studentRepositoryProvider.notifier,
                               );
                               final students = studentsRepository
-                                  .fetchStudents();
+                                  .fetchNoLockerStudents();
 
                               final filteredStudents =
                                   studentSearchQuery.isEmpty
