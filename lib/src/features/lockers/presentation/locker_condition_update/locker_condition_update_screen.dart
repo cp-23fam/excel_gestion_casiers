@@ -55,7 +55,7 @@ class _LockerConditionUpdateScreenState
             : _commentsController.text.trim(),
       );
 
-      final notifier = ref.read(lockersListNotifierProvider.notifier);
+      final notifier = ref.read(lockersRepositoryProvider.notifier);
 
       final updatedLocker = widget.locker.copyWith(
         lockerCondition: newCondition,
