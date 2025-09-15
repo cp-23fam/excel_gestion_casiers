@@ -1,3 +1,4 @@
+import 'package:excel_gestion_casiers/src/features/lockers/presentation/dashboard/dashboard_screen.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/presentation/links_list/links_list_screen.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/presentation/transactions_list/transactions_list_screen.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,11 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           destinations: <NavigationRailDestination>[
             const NavigationRailDestination(
+              icon: Icon(Icons.home_outlined),
+              selectedIcon: Icon(Icons.home),
+              label: Text('Dashboard'),
+            ),
+            const NavigationRailDestination(
               icon: Icon(Icons.lock_outline),
               selectedIcon: Icon(Icons.lock),
               label: Text('Lockers'),
@@ -51,10 +57,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         const VerticalDivider(thickness: 1, width: 1),
         _selectedIndex == 0
-            ? const Expanded(child: LockersListScreen())
+            ? const Expanded(child: DashboardScreen())
             : _selectedIndex == 1
-            ? const Expanded(child: StudentsListScreen())
+            ? const Expanded(child: LockersListScreen())
             : _selectedIndex == 2
+            ? const Expanded(child: StudentsListScreen())
+            : _selectedIndex == 3
             ? const Expanded(child: LinksListScreen())
             : const Expanded(child: TransactionsListScreen()),
       ],

@@ -86,6 +86,7 @@ List<Locker> filterLockers(
   List<Locker> lockers, {
   String? floor,
   String? responsible,
+  int? numberKeys,
   bool hasComments = false,
   bool hasProblems = false,
 }) {
@@ -100,6 +101,12 @@ List<Locker> filterLockers(
   if (responsible != null) {
     returnLockers = returnLockers
         .where((locker) => locker.responsible == responsible)
+        .toList();
+  }
+
+  if (numberKeys != null) {
+    returnLockers = returnLockers
+        .where((locker) => locker.numberKeys == numberKeys)
         .toList();
   }
 
