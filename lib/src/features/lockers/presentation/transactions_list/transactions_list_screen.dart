@@ -29,50 +29,75 @@ class _TransactionsListScreenState
       appBar: AppBar(title: StyledTitle('Transactions'.hardcoded)),
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+        child: Consumer(
+          builder: (context, ref, child) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                StyledButton(
-                  onPressed: () => setState(() {
-                    TransactionRepository().goBack(transactions.last.id);
-                  }),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.arrow_back,
-                        color: AppColors.iconColor,
-                        size: 30.0,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    StyledButton(
+                      onPressed: () => setState(() {
+                        ref
+                            .read(transactionRepositoryProvider.notifier)
+                            .goBack(transactions.last.id);
+                      }),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.arrow_back,
+                            color: AppColors.iconColor,
+                            size: 30.0,
+                          ),
+                          gapW12,
+                          StyledTitle('Previous'.hardcoded),
+                        ],
                       ),
-                      gapW12,
-                      StyledTitle('Previous'.hardcoded),
-                    ],
+                    ),
+                    StyledButton(
+                      onPressed: () => setState(() {
+                        ref
+                            .read(transactionRepositoryProvider.notifier)
+                            .clearTransactions();
+                      }),
+                      child: StyledTitle('Clear'.hardcoded),
+                    ),
+                  ],
+                ),
+                gapH24,
+                Expanded(
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      return transactions.isEmpty
+                          ? Center(
+                              child: StyledText(
+                                'Aucune transaction effectuée.'.hardcoded,
+                              ),
+                            )
+                          : ListView.builder(
+                              itemCount: transactions.length,
+                              itemBuilder: (_, index) {
+                                final transaction = transactions[index];
+                                return TransactionCard(
+                                  transaction: transaction,
+                                  onTap: (id) => setState(() {
+                                    ref
+                                        .read(
+                                          transactionRepositoryProvider
+                                              .notifier,
+                                        )
+                                        .goBack(id);
+                                  }),
+                                );
+                              },
+                            );
+                    },
                   ),
                 ),
               ],
-            ),
-            gapH24,
-            Expanded(
-              child: Consumer(
-                builder: (context, ref, child) {
-                  return transactions.isEmpty
-                      ? Center(
-                          child: StyledText(
-                            'Aucune transaction effectuée.'.hardcoded,
-                          ),
-                        )
-                      : ListView.builder(
-                          itemCount: transactions.length,
-                          itemBuilder: (_, index) {
-                            final transaction = transactions[index];
-                            return TransactionCard(transaction: transaction);
-                          },
-                        );
-                },
-              ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

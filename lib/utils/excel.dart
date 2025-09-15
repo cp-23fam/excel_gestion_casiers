@@ -1,5 +1,4 @@
 import 'package:excel/excel.dart';
-import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_condition.dart';
@@ -10,6 +9,10 @@ const uuid = Uuid();
 
 List<Locker> importLockersFrom(Excel excel) {
   final lockers = <Locker>[];
+
+  if (!excel.sheets.keys.contains('Etage')) {
+    throw Error();
+  }
 
   for (final floor in excel.sheets.keys.where((key) => key.contains('Etage'))) {
     if (!['Etage B', 'Etage C', 'Etage D', 'Etage E'].contains(floor)) {
@@ -97,6 +100,10 @@ List<Student> importStudentsFrom(Excel excel) {
 
   final sheet = excel[excel.sheets.keys.first];
 
+  if (sheet.sheetName != 'ESMA-Export') {
+    throw Error();
+  }
+
   var cell = sheet.cell(CellIndex.indexByString('A1'));
   int row = 1;
 
@@ -128,21 +135,4 @@ List<Student> importStudentsFrom(Excel excel) {
   }
 
   return students;
-}
-
-void importFile(Excel excel) {
-  bool doImportLockers = false;
-
-  for (String sheet in excel.sheets.keys) {
-    if (sheet.contains('Etage')) {
-      doImportLockers = true;
-      break;
-    }
-  }
-
-  if (doImportLockers) {
-    LockersRepository().importLockersFromList(importLockersFrom(excel));
-  } else {
-    StudentsRepository().importStudentsFromList(importStudentsFrom(excel));
-  }
 }

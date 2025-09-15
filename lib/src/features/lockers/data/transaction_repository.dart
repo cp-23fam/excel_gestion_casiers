@@ -113,6 +113,12 @@ class TransactionRepository extends Notifier<List<Transaction>> {
     return transactions;
   }
 
+  void clearTransactions() {
+    for (int i = 0; i < transactionsBox.length; i++) {
+      transactionsBox.deleteAt(i);
+    }
+  }
+
   @override
   build() {
     return [];
