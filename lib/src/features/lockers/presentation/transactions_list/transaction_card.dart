@@ -1,13 +1,17 @@
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
-import 'package:excel_gestion_casiers/src/features/lockers/data/transaction_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/transaction.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 class TransactionCard extends StatefulWidget {
-  const TransactionCard({super.key, required this.transaction});
+  const TransactionCard({
+    super.key,
+    required this.transaction,
+    required this.onTap,
+  });
   final Transaction transaction;
+  final Function(String id) onTap;
 
   @override
   State<TransactionCard> createState() => _TransactionCardState();
@@ -24,7 +28,7 @@ class _TransactionCardState extends State<TransactionCard> {
       transactionItem = widget.transaction.previousValue;
     }
     return GestureDetector(
-      onTap: () => TransactionRepository().goBack(widget.transaction.id),
+      onTap: () => widget.onTap(widget.transaction.id),
       child: MouseRegion(
         onEnter: (event) {
           setState(() {
