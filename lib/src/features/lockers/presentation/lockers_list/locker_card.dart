@@ -1,4 +1,4 @@
-import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
+import 'package:excel_gestion_casiers/src/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';

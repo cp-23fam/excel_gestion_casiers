@@ -1,12 +1,12 @@
-import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
+import 'package:excel_gestion_casiers/src/features/students/data/students_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
-import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
-import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
+import 'package:excel_gestion_casiers/src/features/students/domain/student.dart';
+import 'package:excel_gestion_casiers/src/theme/theme.dart';
 import 'package:excel_gestion_casiers/src/localization/string_hardcoded.dart';
 
 class LockerProfileScreen extends ConsumerWidget {

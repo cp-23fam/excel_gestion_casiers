@@ -1,4 +1,4 @@
-import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
+import 'package:excel_gestion_casiers/src/features/students/data/students_repository.dart';
 import 'package:excel_gestion_casiers/src/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +7,7 @@ import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/presentation/locker_student_link/select_student_card.dart';
-import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
+import 'package:excel_gestion_casiers/src/theme/theme.dart';
 
 class LockerStudentLinkScreen extends ConsumerStatefulWidget {
   const LockerStudentLinkScreen({

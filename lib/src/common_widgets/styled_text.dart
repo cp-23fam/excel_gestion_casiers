@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
+import 'package:excel_gestion_casiers/src/theme/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StyledText extends StatelessWidget {

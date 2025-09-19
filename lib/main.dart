@@ -1,8 +1,8 @@
 import 'package:excel_gestion_casiers/src/app.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_condition.dart';
-import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
-import 'package:excel_gestion_casiers/src/features/lockers/domain/transaction.dart';
+import 'package:excel_gestion_casiers/src/features/students/domain/student.dart';
+import 'package:excel_gestion_casiers/src/features/transactions/domain/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -22,10 +22,6 @@ void main() async {
   await Hive.openBox<Locker>('lockers');
   await Hive.openBox<Student>('students');
   await Hive.openBox<Transaction>('transactions');
-
-  // await Hive.deleteBoxFromDisk('lockers');
-  // await Hive.deleteBoxFromDisk('students');
-  // await Hive.deleteBoxFromDisk('transactions');
 
   runApp(const ProviderScope(child: MyApp()));
 }

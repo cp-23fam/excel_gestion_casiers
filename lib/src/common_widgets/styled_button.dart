@@ -1,5 +1,5 @@
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
-import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
+import 'package:excel_gestion_casiers/src/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 class StyledButton extends StatelessWidget {

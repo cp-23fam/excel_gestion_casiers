@@ -1,9 +1,9 @@
-import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
-import 'package:excel_gestion_casiers/src/features/lockers/data/transaction_repository.dart';
+import 'package:excel_gestion_casiers/src/features/students/data/students_repository.dart';
+import 'package:excel_gestion_casiers/src/features/transactions/data/transaction_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
-import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
-import 'package:excel_gestion_casiers/src/features/lockers/domain/transaction.dart';
-import 'package:excel_gestion_casiers/utils/lockers.dart';
+import 'package:excel_gestion_casiers/src/features/students/domain/student.dart';
+import 'package:excel_gestion_casiers/src/features/transactions/domain/transaction.dart';
+import 'package:excel_gestion_casiers/src/utils/lockers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
@@ -18,7 +18,7 @@ class LockersRepository extends Notifier<List<Locker>> {
     lockersBox.deleteAll(lockersBox.keys);
 
     for (Locker locker in lockers) {
-      lockersBox.put(locker.number, locker);
+      lockersBox.put(locker.number, runAutoHealthCheckOnLocker(locker));
     }
   }
 
