@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
 
+// Black
 class AppColors {
   static Color primaryColor = const Color.fromRGBO(78, 87, 95, 1);
   static Color primaryAccent = const Color.fromRGBO(63, 70, 77, 1);
@@ -18,6 +19,25 @@ class AppColors {
   static Color warningColor = const Color.fromARGB(255, 234, 255, 44);
 }
 
+// White
+class AppWhiteColors {
+  static Color primaryColor = const Color.fromARGB(255, 190, 190, 190);
+  static Color primaryAccent = const Color.fromARGB(255, 212, 212, 212);
+  static Color secondaryColor = const Color.fromARGB(255, 236, 236, 236);
+  static Color secondaryAccent = const Color.fromARGB(255, 255, 255, 255);
+  static Color titleColor = const Color.fromARGB(255, 83, 83, 83);
+  static Color textColor = const Color.fromARGB(255, 87, 87, 87);
+  static Color iconColor = const Color.fromARGB(255, 61, 61, 61);
+
+  static Color goodColor = const Color.fromRGBO(76, 175, 80, 1);
+  static Color importantColor = const Color.fromARGB(255, 72, 167, 255);
+  static Color editColor = const Color.fromARGB(255, 72, 167, 255);
+  static Color deleteColor = const Color.fromRGBO(244, 67, 54, 1);
+  static Color problemeColor = const Color.fromRGBO(244, 67, 54, 1);
+  static Color warningColor = const Color.fromARGB(255, 234, 255, 44);
+}
+
+// Blue
 class AppBlueColors {
   static Color primaryColor = const Color.fromRGBO(141, 169, 196, 1);
   static Color primaryAccent = const Color.fromRGBO(19, 64, 116, 1);
@@ -27,9 +47,12 @@ class AppBlueColors {
   static Color textColor = const Color.fromARGB(255, 165, 165, 165);
   static Color iconColor = const Color.fromARGB(255, 255, 255, 255);
 
+  static Color goodColor = const Color.fromRGBO(76, 175, 80, 1);
   static Color importantColor = const Color.fromARGB(255, 23, 143, 255);
-  static Color editColor = const Color.fromRGBO(76, 175, 80, 1);
+  static Color editColor = const Color.fromARGB(255, 23, 143, 255);
   static Color deleteColor = const Color.fromRGBO(244, 67, 54, 1);
+  static Color problemeColor = const Color.fromRGBO(244, 67, 54, 1);
+  static Color warningColor = const Color.fromARGB(255, 234, 255, 44);
 }
 
 ThemeData primaryTheme = ThemeData(
