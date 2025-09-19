@@ -118,29 +118,33 @@ List<Locker> filterLockers(
 
   if (hasProblems) {
     returnLockers = returnLockers
-        .where((locker) => locker.lockerCondition.problems != null)
+        .where(
+          (locker) =>
+              (locker.lockerCondition.problems != null ||
+              locker.lockerCondition.isConditionGood == false),
+        )
         .toList();
   }
 
   return returnLockers;
 }
 
-void runAutoHealthCheckOnLockers() {
-  for (Locker lockerId in LockersRepository.lockersBox.keys) {
-    Locker locker = LockersRepository.lockersBox.get(lockerId)!;
-    LockerCondition lockerCondition = locker.lockerCondition;
+Locker runAutoHealthCheckOnLocker(Locker locker) {
+  LockerCondition lockerCondition = locker.lockerCondition;
 
-    if (locker.numberKeys == 0) {
-      lockerCondition = lockerCondition.copyWith(
-        isConditionGood: false,
-        problems: 'Il n\'y a plus de clés',
-      );
-    }
-
-    locker.copyWith(lockerCondition: lockerCondition);
-
-    LockersRepository.lockersBox.put(locker.number, locker);
+  if (locker.numberKeys == 0) {
+    lockerCondition = lockerCondition.copyWith(
+      isConditionGood: false,
+      problems: 'Il n\'y a plus de clés',
+    );
+  } else if (locker.numberKeys == 1) {
+    lockerCondition = lockerCondition.copyWith(
+      isConditionGood: true,
+      problems: 'Il n\'y a plus de rechanges',
+    );
   }
+
+  return locker.copyWith(lockerCondition: lockerCondition);
 }
 
 void runAutoEmptyLockerOnInvalidStudentId() {

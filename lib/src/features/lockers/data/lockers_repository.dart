@@ -3,6 +3,7 @@ import 'package:excel_gestion_casiers/src/features/lockers/data/transaction_repo
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/transaction.dart';
+import 'package:excel_gestion_casiers/utils/lockers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
@@ -90,23 +91,27 @@ class LockersRepository extends Notifier<List<Locker>> {
   }
 
   void addLocker(Locker locker) {
+    final checkedLocker = runAutoHealthCheckOnLocker(locker);
+
     TransactionRepository().saveTransaction(
       TransactionType.add,
       false,
       lockerValue: locker,
     );
 
-    LockersRepository.lockersBox.put(locker.number, locker);
+    LockersRepository.lockersBox.put(locker.number, checkedLocker);
   }
 
   void editLocker(int lockerNumber, Locker editedLocker) {
+    final checkedLocker = runAutoHealthCheckOnLocker(editedLocker);
+
     TransactionRepository().saveTransaction(
       TransactionType.edit,
       false,
       lockerValue: LockersRepository.lockersBox.get(lockerNumber)!,
     );
 
-    LockersRepository.lockersBox.put(lockerNumber, editedLocker);
+    LockersRepository.lockersBox.put(lockerNumber, checkedLocker);
   }
 
   void deleteLocker(int lockerNumber) {
