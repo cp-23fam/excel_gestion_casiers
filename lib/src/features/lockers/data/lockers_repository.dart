@@ -63,7 +63,7 @@ class LockersRepository extends Notifier<List<Locker>> {
   Future<void> freeLockerByIndex(int lockerNumber) async {
     TransactionRepository().saveTransaction(
       TransactionType.edit,
-      false,
+      isStudentBox: false,
       lockerValue: lockersBox.get(lockerNumber)!,
     );
 
@@ -76,7 +76,7 @@ class LockersRepository extends Notifier<List<Locker>> {
   Future<void> addStudentToLockerBy(int number, String studentId) async {
     TransactionRepository().saveTransaction(
       TransactionType.edit,
-      false,
+      isStudentBox: false,
       lockerValue: lockersBox.get(number)!,
     );
 
@@ -95,7 +95,7 @@ class LockersRepository extends Notifier<List<Locker>> {
 
     TransactionRepository().saveTransaction(
       TransactionType.add,
-      false,
+      isStudentBox: false,
       lockerValue: locker,
     );
 
@@ -107,7 +107,7 @@ class LockersRepository extends Notifier<List<Locker>> {
 
     TransactionRepository().saveTransaction(
       TransactionType.edit,
-      false,
+      isStudentBox: false,
       lockerValue: LockersRepository.lockersBox.get(lockerNumber)!,
     );
 
@@ -117,7 +117,7 @@ class LockersRepository extends Notifier<List<Locker>> {
   void deleteLocker(int lockerNumber) {
     TransactionRepository().saveTransaction(
       TransactionType.remove,
-      false,
+      isStudentBox: false,
       lockerValue: LockersRepository.lockersBox.get(lockerNumber)!,
     );
 

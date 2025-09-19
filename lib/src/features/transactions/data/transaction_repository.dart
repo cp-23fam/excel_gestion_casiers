@@ -14,8 +14,8 @@ class TransactionRepository extends Notifier<List<Transaction>> {
 
   // Transaction
   void saveTransaction(
-    TransactionType type,
-    bool isStudentBox, {
+    TransactionType type, {
+    required bool isStudentBox,
     Locker? lockerValue,
     Student? studentValue,
   }) {

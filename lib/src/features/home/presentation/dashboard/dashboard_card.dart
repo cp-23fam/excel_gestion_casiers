@@ -1,7 +1,6 @@
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
 import 'package:excel_gestion_casiers/src/theme/theme.dart';
-import 'package:excel_gestion_casiers/src/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 class DashboardCard extends StatelessWidget {

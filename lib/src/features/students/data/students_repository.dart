@@ -86,7 +86,7 @@ class StudentsRepository extends Notifier<List<Student>> {
   void addStudent(Student student) {
     TransactionRepository().saveTransaction(
       TransactionType.add,
-      true,
+      isStudentBox: true,
       studentValue: student,
     );
 
@@ -96,7 +96,7 @@ class StudentsRepository extends Notifier<List<Student>> {
   void editStudent(Student editedStudent) {
     TransactionRepository().saveTransaction(
       TransactionType.edit,
-      true,
+      isStudentBox: true,
       studentValue: studentsBox.get(editedStudent.id),
     );
 
@@ -106,7 +106,7 @@ class StudentsRepository extends Notifier<List<Student>> {
   void deleteStudent(String id) {
     TransactionRepository().saveTransaction(
       TransactionType.remove,
-      true,
+      isStudentBox: true,
       studentValue: studentsBox.get(id)!,
     );
 

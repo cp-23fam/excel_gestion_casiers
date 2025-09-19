@@ -6,7 +6,6 @@ linter:
     prefer_const_constructors: true
     # avoid_positional_boolean_parameters: true
     # avoid_void_async: true
-    # lines_longer_than_80_chars: true
     # prefer_const_declarations: true
     # unnecessary_async: true
     # unnecessary_ignore: true
