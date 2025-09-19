@@ -51,7 +51,7 @@ class _TransactionsListScreenState
                             size: 30.0,
                           ),
                           gapW12,
-                          StyledTitle('Previous'.hardcoded),
+                          StyledTitle('Précédent'.hardcoded),
                         ],
                       ),
                     ),
@@ -61,7 +61,7 @@ class _TransactionsListScreenState
                             .read(transactionRepositoryProvider.notifier)
                             .clearTransactions();
                       }),
-                      child: StyledTitle('Clear'.hardcoded),
+                      child: StyledTitle('Vider'.hardcoded),
                     ),
                   ],
                 ),

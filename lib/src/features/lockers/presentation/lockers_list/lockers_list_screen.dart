@@ -39,7 +39,7 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: StyledTitle('Lockers'.hardcoded)),
+      appBar: AppBar(title: StyledTitle('Casiers'.hardcoded)),
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p24),
         child: Column(
@@ -48,7 +48,7 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
             Row(
               children: [
                 FilterDropdown(
-                  title: 'Floor',
+                  title: 'Étage'.hardcoded,
                   selected: selectedFloor,
                   isSelected: (String? newValue) {
                     setState(() {
@@ -59,7 +59,7 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
                 ),
                 gapW24,
                 FilterDropdown(
-                  title: 'Responsible',
+                  title: 'Responsable'.hardcoded,
                   selected: selectedResponsible,
                   isSelected: (String? newValue) {
                     setState(() {
@@ -80,7 +80,7 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
                     });
                   },
                   isSelected: hasComments,
-                  child: const StyledTitle('has Comments'),
+                  child: StyledTitle('avec commentaires'.hardcoded),
                 ),
                 FilterButton(
                   onPressed: () {
@@ -93,7 +93,7 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
                     });
                   },
                   isSelected: hasProblems,
-                  child: const StyledTitle('has Problems'),
+                  child: StyledTitle('avec problèmes'.hardcoded),
                 ),
                 const Expanded(child: SizedBox()),
                 StyledButton(
@@ -114,9 +114,10 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
                         builder: (context) {
                           return AlertDialog(
                             backgroundColor: AppColors.secondaryColor,
-                            title: const StyledTitle('Erreur'),
-                            content: const Text(
-                              'Aucun étudiant trouvé. Veuillez importer les données des étudiants avant.',
+                            title: StyledTitle('Erreur'.hardcoded),
+                            content: Text(
+                              'Aucun étudiant trouvé. Veuillez importer les données des étudiants avant.'
+                                  .hardcoded,
                             ),
                             actions: [
                               TextButton(
@@ -146,7 +147,7 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
                       }
                     }
                   },
-                  child: StyledTitle('Import'.hardcoded),
+                  child: StyledTitle('Importer'.hardcoded),
                 ),
               ],
             ),
@@ -154,7 +155,7 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
             TextField(
               style: TextStyle(color: AppColors.titleColor),
               decoration: InputDecoration(
-                labelText: 'Search by locker number'.hardcoded,
+                labelText: 'Recherche par numero de casier'.hardcoded,
                 prefixIcon: const Icon(Icons.search),
                 border: const OutlineInputBorder(),
               ),
@@ -195,7 +196,25 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
                     lockers = searchInLockers(lockers, _searchQuery);
                   }
 
-                  lockers.sort((a, b) => a.number.compareTo(b.number));
+                  lockers.sort((a, b) {
+                    int getPriority(Locker l) {
+                      if (!l.lockerCondition.isConditionGood) return 0;
+                      if (l.lockerCondition.problems != null &&
+                          l.lockerCondition.problems!.trim().isNotEmpty) {
+                        return 1;
+                      }
+                      return 2;
+                    }
+
+                    final priorityA = getPriority(a);
+                    final priorityB = getPriority(b);
+
+                    if (priorityA != priorityB) {
+                      return priorityA.compareTo(priorityB);
+                    }
+
+                    return a.number.compareTo(b.number);
+                  });
 
                   return lockers.isEmpty
                       ? Center(

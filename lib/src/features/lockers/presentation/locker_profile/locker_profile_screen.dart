@@ -41,7 +41,7 @@ class LockerProfileScreen extends ConsumerWidget {
         height: double.infinity,
         child: Scaffold(
           appBar: AppBar(
-            title: StyledTitle('Locker Details'.hardcoded),
+            title: StyledTitle('Details'.hardcoded),
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () => Navigator.of(context).pop(),
@@ -210,7 +210,7 @@ class LockerProfileScreen extends ConsumerWidget {
                                   Icons.edit,
                                   color: AppColors.iconColor,
                                 ),
-                                label: const StyledTitle('Update'),
+                                label: const StyledTitle('Modifier'),
                                 style: TextButton.styleFrom(
                                   backgroundColor: AppColors.editColor,
                                   padding: const EdgeInsets.symmetric(
@@ -235,7 +235,7 @@ class LockerProfileScreen extends ConsumerWidget {
                           editLocker(locker);
                         },
                         icon: Icon(Icons.edit, color: AppColors.iconColor),
-                        label: const StyledTitle('Update'),
+                        label: const StyledTitle('Modifier'),
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all<Color>(
                             AppColors.editColor,
@@ -251,7 +251,7 @@ class LockerProfileScreen extends ConsumerWidget {
                           Navigator.of(context).pop();
                         },
                         icon: Icon(Icons.delete, color: AppColors.iconColor),
-                        label: const StyledTitle('Delete'),
+                        label: const StyledTitle('Supprimer'),
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all<Color>(
                             AppColors.deleteColor,

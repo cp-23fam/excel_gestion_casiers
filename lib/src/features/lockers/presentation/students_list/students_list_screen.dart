@@ -32,7 +32,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: StyledTitle('Students'.hardcoded)),
+      appBar: AppBar(title: StyledTitle('Élèves'.hardcoded)),
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p24),
         child: Column(
@@ -41,7 +41,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
             Row(
               children: [
                 FilterDropdown(
-                  title: 'Gender',
+                  title: 'Genre'.hardcoded,
                   selected: selectedGenderTitle,
                   isSelected: (String? newValue) {
                     setState(() {
@@ -52,7 +52,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                 ),
                 gapW24,
                 FilterDropdown(
-                  title: 'Job',
+                  title: 'Métier'.hardcoded,
                   selected: selectedJob,
                   isSelected: (String? newValue) {
                     setState(() {
@@ -63,7 +63,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                 ),
                 gapW24,
                 FilterDropdown(
-                  title: 'Caution',
+                  title: 'Caution'.hardcoded,
                   selected: selectedCaution,
                   isSelected: (String? newValue) {
                     setState(() {
@@ -74,7 +74,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                 ),
                 gapW24,
                 FilterDropdown(
-                  title: 'Year',
+                  title: 'Année'.hardcoded,
                   selected: selectedFormationYear,
                   isSelected: (String? newValue) {
                     setState(() {
@@ -107,7 +107,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                       });
                     }
                   },
-                  child: StyledTitle('Import'.hardcoded),
+                  child: StyledTitle('Importer'.hardcoded),
                 ),
               ],
             ),
@@ -115,7 +115,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
             TextField(
               style: TextStyle(color: AppColors.titleColor),
               decoration: InputDecoration(
-                labelText: 'Search by first or last name'.hardcoded,
+                labelText: 'Recherche par nom ou prénom'.hardcoded,
                 prefixIcon: const Icon(Icons.search),
                 border: const OutlineInputBorder(),
               ),
