@@ -182,7 +182,7 @@ class _LockerCreationScreenState extends ConsumerState<LockerCreationScreen> {
                     Center(
                       child: StyledButton(
                         onPressed: handleSubmit,
-                        child: StyledHeading(
+                        child: StyledTitle(
                           isEditing
                               ? 'Modifier le casier'.hardcoded
                               : 'Créer le casier'.hardcoded,

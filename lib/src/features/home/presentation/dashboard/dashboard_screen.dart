@@ -53,22 +53,41 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Center(
-                        child: StyledTitle(
-                          'Aucune données disponnible'.hardcoded,
-                        ),
-                      ),
+                      Center(child: StyledTitle('Bienvenue'.hardcoded)),
                       gapH12,
                       Center(
                         child: StyledText(
-                          'Importez une liste d\'élèves puis une liste de casiers'
-                              .hardcoded,
+                          'Aucune donée disponible...'.hardcoded,
                         ),
                       ),
                     ],
                   )
                 : Wrap(
                     children: [
+                      DashboardCard(
+                        text: 'Général',
+                        condition:
+                            (lockersErrorCount != 0 || studentsErrorCount > 0)
+                            ? 2
+                            : (keysWarningCount > 0)
+                            ? 1
+                            : 0,
+                        comment:
+                            (lockersErrorCount +
+                                    studentsErrorCount +
+                                    keysWarningCount) ==
+                                1
+                            ? '1 problème majeur ou mineur'
+                            : '${lockersErrorCount + studentsErrorCount + keysWarningCount} problèmes majeurs ou mineurs',
+                        logo: Icons.inbox,
+                        value:
+                            (2 * lockers.length +
+                                studentsCount -
+                                (lockersErrorCount +
+                                    studentsErrorCount +
+                                    keysWarningCount)) /
+                            (2 * lockers.length + studentsCount),
+                      ),
                       DashboardCard(
                         text: 'Casiers',
                         condition: lockersErrorCount == 0 ? 0 : 2,
@@ -101,30 +120,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                             : '$keysWarningCount casiers n\'ont pas de rechange',
                         logo: Icons.key,
                         value: 1 - keysWarningCount / lockers.length,
-                      ),
-                      DashboardCard(
-                        text: 'Général',
-                        condition:
-                            (lockersErrorCount != 0 || studentsErrorCount > 0)
-                            ? 2
-                            : (keysWarningCount > 0)
-                            ? 1
-                            : 0,
-                        comment:
-                            (lockersErrorCount +
-                                    studentsErrorCount +
-                                    keysWarningCount) ==
-                                1
-                            ? '1 problème majeur ou mineur'
-                            : '${lockersErrorCount + studentsErrorCount + keysWarningCount} problèmes majeurs ou mineurs',
-                        logo: Icons.inbox,
-                        value:
-                            (2 * lockers.length +
-                                studentsCount -
-                                (lockersErrorCount +
-                                    studentsErrorCount +
-                                    keysWarningCount)) /
-                            (2 * lockers.length + studentsCount),
                       ),
                     ],
                   );

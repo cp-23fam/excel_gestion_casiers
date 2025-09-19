@@ -115,7 +115,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
             TextField(
               style: TextStyle(color: AppColors.titleColor),
               decoration: InputDecoration(
-                labelText: 'Recherche par nom ou prénom'.hardcoded,
+                labelText: 'Rechercher un étudiant'.hardcoded,
                 prefixIcon: const Icon(Icons.search),
                 border: const OutlineInputBorder(),
               ),

@@ -122,7 +122,7 @@ class _LockerConditionUpdateScreenState
                   Center(
                     child: StyledButton(
                       onPressed: handleSubmit,
-                      child: const StyledHeading('Enregistrer'),
+                      child: const StyledTitle('Enregistrer'),
                     ),
                   ),
                 ],

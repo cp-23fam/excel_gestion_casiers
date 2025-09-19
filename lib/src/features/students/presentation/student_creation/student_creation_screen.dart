@@ -205,7 +205,7 @@ class _StudentCreationScreenState extends ConsumerState<StudentCreationScreen> {
                     Center(
                       child: StyledButton(
                         onPressed: handleSubmit,
-                        child: StyledHeading(
+                        child: StyledTitle(
                           isEditing
                               ? 'Modifier l\'élève'.hardcoded
                               : 'Créer l\'élève'.hardcoded,

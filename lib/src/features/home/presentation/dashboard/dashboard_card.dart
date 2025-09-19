@@ -56,7 +56,6 @@ class DashboardCard extends StatelessWidget {
               Text(comment),
             ],
           ),
-          StyledText('Dernière verification : 00:00:00'.hardcoded),
         ],
       ),
     );

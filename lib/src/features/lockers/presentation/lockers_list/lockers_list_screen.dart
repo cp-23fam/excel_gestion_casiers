@@ -155,7 +155,7 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
             TextField(
               style: TextStyle(color: AppColors.titleColor),
               decoration: InputDecoration(
-                labelText: 'Recherche par numero de casier'.hardcoded,
+                labelText: 'Rechercher un casier'.hardcoded,
                 prefixIcon: const Icon(Icons.search),
                 border: const OutlineInputBorder(),
               ),
@@ -218,7 +218,7 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
 
                   return lockers.isEmpty
                       ? Center(
-                          child: StyledText('Aucun casiers trouvé.'.hardcoded),
+                          child: StyledText('Aucun casier trouvé.'.hardcoded),
                         )
                       : ListView.builder(
                           itemCount: lockers.length,

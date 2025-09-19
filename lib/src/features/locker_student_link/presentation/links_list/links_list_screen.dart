@@ -68,8 +68,7 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                         TextField(
                           style: TextStyle(color: AppColors.titleColor),
                           decoration: InputDecoration(
-                            labelText:
-                                'Recherche par numero de casier'.hardcoded,
+                            labelText: 'Rechercher un casier'.hardcoded,
                             prefixIcon: const Icon(Icons.search),
                             border: const OutlineInputBorder(),
                           ),
@@ -106,8 +105,10 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                                     const SizedBox(width: 8),
                                     Text(
                                       count == 0
-                                          ? 'Plus aucun casiers n\'est libre'
-                                          : '$count casier(s) libre',
+                                          ? 'Plus de casiers disponibles'
+                                          : count == 1
+                                          ? '1 casier libre'
+                                          : '$count casiers libre',
                                       style: TextStyle(
                                         color: AppColors.titleColor,
                                         fontWeight: FontWeight.bold,
@@ -142,7 +143,7 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                               return lockers.isEmpty
                                   ? Center(
                                       child: StyledText(
-                                        'Aucun casiers trouvé.'.hardcoded,
+                                        'Aucun casier trouvé.'.hardcoded,
                                       ),
                                     )
                                   : ListView.builder(
@@ -179,7 +180,7 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                         TextField(
                           style: TextStyle(color: AppColors.titleColor),
                           decoration: InputDecoration(
-                            labelText: 'Recherche par nom ou prénom'.hardcoded,
+                            labelText: 'Rechercher un étudiant'.hardcoded,
                             prefixIcon: const Icon(Icons.search),
                             border: const OutlineInputBorder(),
                           ),
@@ -215,7 +216,11 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                                           ),
                                     const SizedBox(width: 8),
                                     Text(
-                                      '$count étudiant(s) sans casier',
+                                      count == 0
+                                          ? 'Tous les élèves sont en ordre'
+                                          : count == 1
+                                          ? '1 étudiant sans casier'
+                                          : '$count étudiants sans casier',
                                       style: TextStyle(
                                         color: AppColors.titleColor,
                                         fontWeight: FontWeight.bold,
