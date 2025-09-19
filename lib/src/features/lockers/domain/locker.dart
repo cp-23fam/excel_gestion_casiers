@@ -1,4 +1,4 @@
-import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
+import 'package:excel_gestion_casiers/src/features/students/domain/student.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_condition.dart';
