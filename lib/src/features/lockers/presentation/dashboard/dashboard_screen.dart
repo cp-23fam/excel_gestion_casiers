@@ -53,11 +53,15 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Center(child: StyledTitle('Bienvenu'.hardcoded)),
+                      Center(
+                        child: StyledTitle(
+                          'Aucune données disponnible'.hardcoded,
+                        ),
+                      ),
                       gapH12,
                       Center(
                         child: StyledText(
-                          'Pour commencer à utiliser l\'application, veuillez d\'abord importez une liste d\'élèves puis une liste de casiers'
+                          'Importez une liste d\'élèves puis une liste de casiers'
                               .hardcoded,
                         ),
                       ),

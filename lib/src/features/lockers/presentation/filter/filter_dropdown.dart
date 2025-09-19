@@ -37,7 +37,7 @@ class _FilterDropdownState extends State<FilterDropdown> {
           items: widget.list.map((String? responsible) {
             return DropdownMenuItem<String>(
               value: responsible,
-              child: StyledText(responsible ?? 'All'),
+              child: StyledText(responsible ?? 'Tous'),
             );
           }).toList(),
           onChanged: widget.isSelected,

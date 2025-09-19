@@ -12,6 +12,11 @@ class LockerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      surfaceTintColor: !locker.lockerCondition.isConditionGood
+          ? AppColors.problemeColor
+          : locker.lockerCondition.problems != null
+          ? AppColors.warningColor
+          : null,
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: Sizes.p16,
@@ -28,7 +33,11 @@ class LockerCard extends StatelessWidget {
             Expanded(child: StyledHeading('Responsable ${locker.responsible}')),
             gapW8,
             Expanded(
-              child: StyledHeading(locker.lockerCondition.comments ?? '-'),
+              child: !locker.lockerCondition.isConditionGood
+                  ? Icon(Icons.error, color: AppColors.problemeColor)
+                  : locker.lockerCondition.problems != null
+                  ? Icon(Icons.warning, color: AppColors.warningColor)
+                  : const Icon(Icons.check),
             ),
             Center(
               child: IconButton(

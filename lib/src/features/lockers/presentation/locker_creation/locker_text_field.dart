@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
-import 'package:excel_gestion_casiers/src/localization/string_hardcoded.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LockerTextField extends StatelessWidget {
@@ -29,7 +28,7 @@ class LockerTextField extends StatelessWidget {
       validator: validator,
       decoration: InputDecoration(
         prefixIcon: Icon(icon),
-        label: StyledText(text.hardcoded),
+        label: StyledText(text),
       ),
       style: GoogleFonts.kanit(
         textStyle: Theme.of(context).textTheme.bodyMedium,

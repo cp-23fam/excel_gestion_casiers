@@ -30,7 +30,7 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: StyledTitle('Links'.hardcoded)),
+      appBar: AppBar(title: StyledTitle('Liaisons'.hardcoded)),
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p24),
         child: Column(
@@ -68,7 +68,8 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                         TextField(
                           style: TextStyle(color: AppColors.titleColor),
                           decoration: InputDecoration(
-                            labelText: 'Search by locker number'.hardcoded,
+                            labelText:
+                                'Recherche par numero de casier'.hardcoded,
                             prefixIcon: const Icon(Icons.search),
                             border: const OutlineInputBorder(),
                           ),
@@ -78,7 +79,46 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                             });
                           },
                         ),
-                        gapH24,
+                        gapH12,
+                        Consumer(
+                          builder: (context, ref, child) {
+                            final lockersRepository = ref.watch(
+                              lockersRepositoryProvider.notifier,
+                            );
+                            final lockers = lockersRepository
+                                .fetchFreeLockers();
+                            final count = lockers.length;
+
+                            return Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Row(
+                                  children: [
+                                    count == 0
+                                        ? Icon(
+                                            Icons.error,
+                                            color: AppColors.problemeColor,
+                                          )
+                                        : Icon(
+                                            Icons.check,
+                                            color: AppColors.textColor,
+                                          ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      count == 0
+                                          ? 'Plus aucun casiers n\'est libre'
+                                          : '$count casier(s) libre',
+                                      style: TextStyle(
+                                        color: AppColors.titleColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                         Expanded(
                           child: Consumer(
                             builder: (context, ref, child) {
@@ -139,7 +179,7 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                         TextField(
                           style: TextStyle(color: AppColors.titleColor),
                           decoration: InputDecoration(
-                            labelText: 'Search by first or last name'.hardcoded,
+                            labelText: 'Recherche par nom ou prénom'.hardcoded,
                             prefixIcon: const Icon(Icons.search),
                             border: const OutlineInputBorder(),
                           ),
@@ -149,7 +189,44 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                             });
                           },
                         ),
-                        gapH24,
+                        gapH12,
+                        Consumer(
+                          builder: (context, ref, child) {
+                            final studentsRepository = ref.watch(
+                              studentRepositoryProvider.notifier,
+                            );
+                            final students = studentsRepository
+                                .fetchNoLockerStudents();
+                            final count = students.length;
+
+                            return Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Row(
+                                  children: [
+                                    count == 0
+                                        ? Icon(
+                                            Icons.check,
+                                            color: AppColors.textColor,
+                                          )
+                                        : Icon(
+                                            Icons.error,
+                                            color: AppColors.deleteColor,
+                                          ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      '$count étudiant(s) sans casier',
+                                      style: TextStyle(
+                                        color: AppColors.titleColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                         Expanded(
                           child: Consumer(
                             builder: (context, ref, child) {

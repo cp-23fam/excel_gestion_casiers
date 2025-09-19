@@ -1,6 +1,7 @@
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
 import 'package:excel_gestion_casiers/src/features/theme/theme.dart';
+import 'package:excel_gestion_casiers/src/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 class DashboardCard extends StatelessWidget {
@@ -26,7 +27,7 @@ class DashboardCard extends StatelessWidget {
       padding: const EdgeInsets.all(Sizes.p16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
-        color: AppColors.primaryColor,
+        color: AppColors.secondaryColor,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -55,7 +56,7 @@ class DashboardCard extends StatelessWidget {
               Text(comment),
             ],
           ),
-          const StyledText('Last check : 00:00:00'),
+          StyledText('Dernière verification : 00:00:00'.hardcoded),
         ],
       ),
     );
