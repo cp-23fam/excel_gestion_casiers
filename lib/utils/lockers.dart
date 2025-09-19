@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_condition.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
+import 'package:uuid/uuid.dart';
 
 List<Locker> searchInLockers(List<Locker> lockers, String searchValue) {
   if (searchValue.isEmpty) {
@@ -158,4 +161,38 @@ void runAutoEmptyLockerOnInvalidStudentId() {
       LockersRepository.lockersBox.put(lockerId, locker);
     }
   }
+}
+
+void setDemoLockersList() {
+  const uuid = Uuid();
+  final random = Random();
+  final lockers = <Locker>[];
+
+  int studentIndex = 0;
+
+  for (int i = 0; i < 60; i++) {
+    lockers.add(
+      Locker(
+        place: random.nextBool() ? 'Ancien bâtiment' : 'Nouveau bâtiment',
+        floor: 'ABCDEF'[random.nextInt(6)],
+        number: i + 1,
+        responsible: random.nextBool() ? 'JHI' : 'PAC',
+        studentId: (random.nextInt(2) != 0 && studentIndex < 40)
+            ? StudentsRepository().fetchStudents()[studentIndex++].id
+            : null,
+        numberKeys: random.nextInt(7),
+        lockNumber: random.nextInt(9000) + 1,
+        lockerCondition: LockerCondition.good(),
+        id: uuid.v4(),
+      ),
+    );
+  }
+
+  lockers[14] = lockers[14].copyWith(
+    lockerCondition: const LockerCondition(
+      comments: 'La 4ème clé ne fonctionne pas',
+    ),
+  );
+
+  LockersRepository().importLockersFromList(lockers);
 }

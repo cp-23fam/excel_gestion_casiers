@@ -28,10 +28,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 .read(lockersRepositoryProvider.notifier)
                 .fetchLockersList();
 
-            final lockersErrorCount = filterLockers(
-              lockers,
-              hasProblems: true,
-            ).length;
+            final lockersErrorCount = lockers
+                .where(
+                  (locker) => locker.lockerCondition.isConditionGood == false,
+                )
+                .length;
 
             final keysWarningCount = filterLockers(
               lockers,

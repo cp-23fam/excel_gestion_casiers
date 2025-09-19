@@ -18,7 +18,7 @@ class LockersRepository extends Notifier<List<Locker>> {
     lockersBox.deleteAll(lockersBox.keys);
 
     for (Locker locker in lockers) {
-      lockersBox.put(locker.number, locker);
+      lockersBox.put(locker.number, runAutoHealthCheckOnLocker(locker));
     }
   }
 

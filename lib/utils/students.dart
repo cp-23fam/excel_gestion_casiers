@@ -1,6 +1,10 @@
+import 'dart:math';
+
 import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
+import 'package:excel_gestion_casiers/src/features/lockers/data/students_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/student.dart';
+import 'package:uuid/uuid.dart';
 
 List<Student> searchInStudents(List<Student> students, String searchValue) {
   if (searchValue.isEmpty) {
@@ -83,4 +87,86 @@ List<Student> filterStudents(
   }
 
   return returnStudents;
+}
+
+void setDemoStudentsList() {
+  const uuid = Uuid();
+  final random = Random();
+
+  final names = [
+    'Alexandre',
+    'Benjamin',
+    'Claire',
+    'Diane',
+    'Émile',
+    'Fabian',
+    'Gabriel',
+    'Hugo',
+    'Isabelle',
+    'Julien',
+    'Kévin',
+    'Laura',
+    'Maxime',
+    'Nora',
+    'Olivier',
+    'Pauline',
+    'Quentin',
+    'Ryan',
+    'Sophie',
+    'Thomas',
+    'Urielle',
+    'Valentin',
+    'Wendy',
+    'Xavier',
+    'Yasmine',
+    'Zoé',
+  ];
+
+  final surnames = [
+    'Arpello',
+    'Bracello',
+    'Chapuis',
+    'Donzé',
+    'Eronné',
+    'Faure',
+    'Garnier',
+    'Hoft',
+    'Iriny',
+    'Jacquet',
+    'Keller',
+    'Lemoine',
+    'Marti',
+    'Nobs',
+    'Oudin',
+    'Perrin',
+    'Quere',
+    'Roche',
+    'Samuni',
+    'Thériault',
+    'Ulmann',
+    'Vidal',
+    'Wagner',
+    'Xiberras',
+    'Yvon',
+    'Zimmermann',
+  ];
+
+  final students = <Student>[];
+
+  for (int i = 0; i < 45; i++) {
+    students.add(
+      Student(
+        id: uuid.v4(),
+        genderTitle: random.nextBool() ? 'M.' : 'Mme',
+        name: names[random.nextInt(names.length)],
+        surname: surnames[random.nextInt(surnames.length)],
+        job: random.nextInt(5) == 0 ? 'OIC' : 'ICH',
+        caution: random.nextBool() ? 0 : 20,
+        formationYear: random.nextInt(4) + 1,
+        login: 'cp-23fam',
+      ),
+    );
+  }
+
+  StudentsRepository().importStudentsFromList(students);
 }
