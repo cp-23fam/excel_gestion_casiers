@@ -107,25 +107,28 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                           );
                         });
                       } catch (e) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              backgroundColor: AppColors.secondaryColor,
-                              title: StyledTitle('Erreur'.hardcoded),
-                              content: Text(
-                                'Veuillez vérifier votre fichier excel'
-                                    .hardcoded,
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.of(context).pop(),
-                                  child: const Text('OK'),
+                        if (context.mounted) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                backgroundColor: AppColors.secondaryColor,
+                                title: StyledTitle('Erreur'.hardcoded),
+                                content: Text(
+                                  'Veuillez vérifier votre fichier excel'
+                                      .hardcoded,
                                 ),
-                              ],
-                            );
-                          },
-                        );
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
                       }
                     }
                   },
