@@ -55,4 +55,30 @@ class Student {
       caution: caution ?? this.caution,
     );
   }
+
+  @override
+  bool operator ==(covariant Student other) {
+    if (identical(this, other)) return true;
+
+    return other.id == id &&
+        other.genderTitle == genderTitle &&
+        other.name == name &&
+        other.surname == surname &&
+        other.job == job &&
+        other.caution == caution &&
+        other.formationYear == formationYear &&
+        other.login == login;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        genderTitle.hashCode ^
+        name.hashCode ^
+        surname.hashCode ^
+        job.hashCode ^
+        caution.hashCode ^
+        formationYear.hashCode ^
+        login.hashCode;
+  }
 }

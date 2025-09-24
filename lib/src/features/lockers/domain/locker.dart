@@ -1,7 +1,7 @@
-import 'package:excel_gestion_casiers/src/features/students/domain/student.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_condition.dart';
+import 'package:excel_gestion_casiers/src/features/students/domain/student.dart';
 
 part 'locker.g.dart';
 
@@ -76,5 +76,33 @@ class Locker extends HiveObject {
       lockerCondition: lockerCondition ?? this.lockerCondition,
       id: id ?? this.id,
     );
+  }
+
+  @override
+  bool operator ==(covariant Locker other) {
+    if (identical(this, other)) return true;
+
+    return other.place == place &&
+        other.floor == floor &&
+        other.number == number &&
+        other.responsible == responsible &&
+        other.studentId == studentId &&
+        other.numberKeys == numberKeys &&
+        other.lockNumber == lockNumber &&
+        other.lockerCondition == lockerCondition &&
+        other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    return place.hashCode ^
+        floor.hashCode ^
+        number.hashCode ^
+        responsible.hashCode ^
+        studentId.hashCode ^
+        numberKeys.hashCode ^
+        lockNumber.hashCode ^
+        lockerCondition.hashCode ^
+        id.hashCode;
   }
 }

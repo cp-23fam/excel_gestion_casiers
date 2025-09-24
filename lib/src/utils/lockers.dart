@@ -5,9 +5,16 @@ import 'package:excel_gestion_casiers/src/features/students/data/students_reposi
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker_condition.dart';
 import 'package:excel_gestion_casiers/src/features/students/domain/student.dart';
+import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-List<Locker> searchInLockers(List<Locker> lockers, String searchValue) {
+List<Locker> searchInLockers(
+  List<Locker> lockers,
+  String searchValue, {
+  @visibleForTesting StudentsRepository? repository,
+}) {
+  repository = repository ?? StudentsRepository();
+
   if (searchValue.isEmpty) {
     return lockers;
   }
@@ -39,7 +46,7 @@ List<Locker> searchInLockers(List<Locker> lockers, String searchValue) {
     );
 
     if (returnLockers.isEmpty) {
-      List<Student> students = StudentsRepository().fetchStudents();
+      List<Student> students = repository.fetchStudents();
 
       List<Student> searchStudent = [];
 
@@ -60,7 +67,7 @@ List<Locker> searchInLockers(List<Locker> lockers, String searchValue) {
       searchStudent = searchStudent.toSet().toList();
 
       for (Student student in searchStudent) {
-        Locker? locker = StudentsRepository().getLockerByStudent(student.id);
+        Locker? locker = repository.getLockerByStudent(student.id);
         if (locker != null) {
           returnLockers.add(locker);
         }

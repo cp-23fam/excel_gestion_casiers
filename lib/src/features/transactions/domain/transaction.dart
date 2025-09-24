@@ -50,4 +50,26 @@ class Transaction {
       previousValue: previousValue ?? this.previousValue,
     );
   }
+
+  @override
+  bool operator ==(covariant Transaction other) {
+    if (identical(this, other)) return true;
+
+    return other.id == id &&
+        other.type == type &&
+        other.isStudentBox == isStudentBox &&
+        other.boxItemId == boxItemId &&
+        other.previousValue == previousValue &&
+        other.timestamp == timestamp;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        type.hashCode ^
+        isStudentBox.hashCode ^
+        boxItemId.hashCode ^
+        previousValue.hashCode ^
+        timestamp.hashCode;
+  }
 }

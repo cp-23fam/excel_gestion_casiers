@@ -32,4 +32,17 @@ class LockerCondition {
       problems: problems ?? this.problems,
     );
   }
+
+  @override
+  bool operator ==(covariant LockerCondition other) {
+    if (identical(this, other)) return true;
+
+    return other.isConditionGood == isConditionGood &&
+        other.comments == comments &&
+        other.problems == problems;
+  }
+
+  @override
+  int get hashCode =>
+      isConditionGood.hashCode ^ comments.hashCode ^ problems.hashCode;
 }

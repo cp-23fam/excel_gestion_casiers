@@ -4,9 +4,16 @@ import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_reposito
 import 'package:excel_gestion_casiers/src/features/students/data/students_repository.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 import 'package:excel_gestion_casiers/src/features/students/domain/student.dart';
+import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-List<Student> searchInStudents(List<Student> students, String searchValue) {
+List<Student> searchInStudents(
+  List<Student> students,
+  String searchValue, {
+  @visibleForTesting LockersRepository? repository,
+}) {
+  repository = repository ?? LockersRepository();
+
   if (searchValue.isEmpty) {
     return students;
   }
@@ -14,7 +21,7 @@ List<Student> searchInStudents(List<Student> students, String searchValue) {
   List<Student> returnStudents = <Student>[];
 
   if (int.tryParse(searchValue) != null) {
-    List<Locker> lockers = LockersRepository().fetchLockersList();
+    List<Locker> lockers = repository.fetchLockersList();
 
     for (Locker locker in lockers) {
       if (locker.studentId == null) {
@@ -24,9 +31,7 @@ List<Student> searchInStudents(List<Student> students, String searchValue) {
       if (locker.number.toString().toLowerCase().contains(
         searchValue.toLowerCase(),
       )) {
-        Student student = LockersRepository().getStudentByLocker(
-          locker.number,
-        )!;
+        Student student = repository.getStudentByLocker(locker.number)!;
 
         returnStudents.add(student);
       }
