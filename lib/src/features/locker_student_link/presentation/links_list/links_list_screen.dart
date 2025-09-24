@@ -41,12 +41,14 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                 StyledButton(
                   onPressed: () {
                     if (selectedLocker != null && selectedStudent != null) {
-                      LockersRepository().editLocker(
-                        selectedLocker!.number,
-                        selectedLocker!.copyWith(
-                          studentId: selectedStudent!.id,
-                        ),
-                      );
+                      setState(() {
+                        LockersRepository().editLocker(
+                          selectedLocker!.number,
+                          selectedLocker!.copyWith(
+                            studentId: selectedStudent!.id,
+                          ),
+                        );
+                      });
                     }
                   },
                   child: Icon(

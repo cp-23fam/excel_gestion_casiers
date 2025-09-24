@@ -26,7 +26,7 @@ class _TransactionsListScreenState
 
     transactions.sort((a, b) => b.timestamp - a.timestamp);
     return Scaffold(
-      appBar: AppBar(title: StyledTitle('Transactions'.hardcoded)),
+      appBar: AppBar(title: StyledTitle('Actions'.hardcoded)),
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p24),
         child: Consumer(
@@ -72,7 +72,7 @@ class _TransactionsListScreenState
                       return transactions.isEmpty
                           ? Center(
                               child: StyledText(
-                                'Aucune transaction effectuée.'.hardcoded,
+                                'Aucune action effectuée.'.hardcoded,
                               ),
                             )
                           : ListView.builder(

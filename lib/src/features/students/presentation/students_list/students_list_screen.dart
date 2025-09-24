@@ -98,13 +98,35 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                         );
 
                     if (pickedFile != null) {
-                      var bytes = pickedFile.files.single.bytes!.toList();
-                      var excel = Excel.decodeBytes(bytes);
-                      setState(() {
-                        StudentsRepository().importStudentsFromList(
-                          importStudentsFrom(excel),
+                      try {
+                        var bytes = pickedFile.files.single.bytes!.toList();
+                        var excel = Excel.decodeBytes(bytes);
+                        setState(() {
+                          StudentsRepository().importStudentsFromList(
+                            importStudentsFrom(excel),
+                          );
+                        });
+                      } catch (e) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              backgroundColor: AppColors.secondaryColor,
+                              title: StyledTitle('Erreur'.hardcoded),
+                              content: Text(
+                                'Veuillez vérifier votre fichier excel'
+                                    .hardcoded,
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
                         );
-                      });
+                      }
                     }
                   },
                   child: StyledTitle('Importer'.hardcoded),
