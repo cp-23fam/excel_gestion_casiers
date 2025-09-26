@@ -46,7 +46,7 @@ List<Locker> searchInLockers(
     );
 
     if (returnLockers.isEmpty) {
-      List<Student> students = repository.fetchStudents();
+      List<Student> students = repository.getStudentList();
 
       List<Student> searchStudent = [];
 
@@ -68,7 +68,7 @@ List<Locker> searchInLockers(
 
       for (Student student in searchStudent) {
         Locker? locker = repository.getLockerByStudent(student.id);
-        if (locker != null) {
+        if (locker != null && lockers.contains(locker)) {
           returnLockers.add(locker);
         }
       }
@@ -185,7 +185,7 @@ void setDemoLockersList() {
         number: i + 1,
         responsible: random.nextBool() ? 'JHI' : 'PAC',
         studentId: (random.nextInt(2) != 0 && studentIndex < 40)
-            ? StudentsRepository().fetchStudents()[studentIndex++].id
+            ? StudentsRepository().getStudentList()[studentIndex++].id
             : null,
         numberKeys: random.nextInt(7),
         lockNumber: random.nextInt(9000) + 1,

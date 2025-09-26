@@ -33,69 +33,75 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
       appBar: AppBar(title: StyledTitle('Liaisons'.hardcoded)),
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                StyledButton(
-                  onPressed: () {
-                    if (selectedLocker != null && selectedStudent != null) {
-                      setState(() {
-                        LockersRepository().editLocker(
-                          selectedLocker!.number,
-                          selectedLocker!.copyWith(
-                            studentId: selectedStudent!.id,
-                          ),
-                        );
-                      });
-                    }
-                  },
-                  child: Icon(
-                    Icons.link,
-                    color: AppColors.iconColor,
-                    size: 30.0,
-                  ),
-                ),
-              ],
-            ),
-            gapH12,
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextField(
-                          style: TextStyle(color: AppColors.titleColor),
-                          decoration: InputDecoration(
-                            labelText: 'Rechercher un casier'.hardcoded,
-                            prefixIcon: const Icon(Icons.search),
-                            border: const OutlineInputBorder(),
-                          ),
-                          onChanged: (value) {
-                            setState(() {
-                              lockerSearchQuery = value;
-                            });
-                          },
-                        ),
-                        gapH12,
-                        Consumer(
-                          builder: (context, ref, child) {
-                            final lockersRepository = ref.watch(
-                              lockersRepositoryProvider.notifier,
-                            );
-                            final lockers = lockersRepository
-                                .fetchFreeLockers();
-                            final count = lockers.length;
+        child: Consumer(
+          builder: (context, ref, child) {
+            List<Student> students = ref
+                .read(studentRepositoryProvider.notifier)
+                .getFreeStudents();
+            List<Locker> lockers = ref
+                .read(lockersRepositoryProvider.notifier)
+                .getFreeLockers();
 
-                            return Card(
+            lockers = searchInLockers(lockers, lockerSearchQuery);
+            students = searchInStudents(students, studentSearchQuery);
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    StyledButton(
+                      onPressed: () {
+                        if (selectedLocker != null && selectedStudent != null) {
+                          setState(() {
+                            ref
+                                .read(lockersRepositoryProvider.notifier)
+                                .editLocker(
+                                  selectedLocker!.number,
+                                  selectedLocker!.copyWith(
+                                    studentId: selectedStudent!.id,
+                                  ),
+                                );
+                          });
+                        }
+                      },
+                      child: Icon(
+                        Icons.link,
+                        color: AppColors.iconColor,
+                        size: 30.0,
+                      ),
+                    ),
+                  ],
+                ),
+                gapH12,
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextField(
+                              style: TextStyle(color: AppColors.titleColor),
+                              decoration: InputDecoration(
+                                labelText: 'Rechercher un casier'.hardcoded,
+                                prefixIcon: const Icon(Icons.search),
+                                border: const OutlineInputBorder(),
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  lockerSearchQuery = value;
+                                });
+                              },
+                            ),
+                            gapH12,
+
+                            Card(
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Row(
                                   children: [
-                                    count == 0
+                                    lockers.isEmpty
                                         ? Icon(
                                             Icons.error,
                                             color: AppColors.problemeColor,
@@ -106,11 +112,11 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                                           ),
                                     const SizedBox(width: 8),
                                     Text(
-                                      count == 0
+                                      lockers.isEmpty
                                           ? 'Plus de casiers disponibles'
-                                          : count == 1
+                                          : lockers.length == 1
                                           ? '1 casier libre'
-                                          : '$count casiers libre',
+                                          : '${lockers.length} casiers libre',
                                       style: TextStyle(
                                         color: AppColors.titleColor,
                                         fontWeight: FontWeight.bold,
@@ -119,30 +125,9 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                                   ],
                                 ),
                               ),
-                            );
-                          },
-                        ),
-                        Expanded(
-                          child: Consumer(
-                            builder: (context, ref, child) {
-                              final lockersRepository = ref.watch(
-                                lockersRepositoryProvider.notifier,
-                              );
-                              List<Locker> lockers = lockersRepository
-                                  .fetchFreeLockers();
-
-                              if (lockerSearchQuery.isNotEmpty) {
-                                lockers = searchInLockers(
-                                  lockers,
-                                  lockerSearchQuery,
-                                );
-                              }
-
-                              lockers.sort(
-                                (a, b) => a.number.compareTo(b.number),
-                              );
-
-                              return lockers.isEmpty
+                            ),
+                            Expanded(
+                              child: lockers.isEmpty
                                   ? Center(
                                       child: StyledText(
                                         'Aucun casier trouvé.'.hardcoded,
@@ -166,48 +151,39 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                                           isSelected: locker == selectedLocker,
                                         );
                                       },
-                                    );
-                            },
-                          ),
+                                    ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  gapW12,
-                  // const VerticalDivider(thickness: 1, width: 1),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextField(
-                          style: TextStyle(color: AppColors.titleColor),
-                          decoration: InputDecoration(
-                            labelText: 'Rechercher un étudiant'.hardcoded,
-                            prefixIcon: const Icon(Icons.search),
-                            border: const OutlineInputBorder(),
-                          ),
-                          onChanged: (value) {
-                            setState(() {
-                              studentSearchQuery = value.trim().toLowerCase();
-                            });
-                          },
-                        ),
-                        gapH12,
-                        Consumer(
-                          builder: (context, ref, child) {
-                            final studentsRepository = ref.watch(
-                              studentRepositoryProvider.notifier,
-                            );
-                            final students = studentsRepository
-                                .fetchNoLockerStudents();
-                            final count = students.length;
-
-                            return Card(
+                      ),
+                      gapW12,
+                      // const VerticalDivider(thickness: 1, width: 1),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextField(
+                              style: TextStyle(color: AppColors.titleColor),
+                              decoration: InputDecoration(
+                                labelText: 'Rechercher un étudiant'.hardcoded,
+                                prefixIcon: const Icon(Icons.search),
+                                border: const OutlineInputBorder(),
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  studentSearchQuery = value
+                                      .trim()
+                                      .toLowerCase();
+                                });
+                              },
+                            ),
+                            gapH12,
+                            Card(
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Row(
                                   children: [
-                                    count == 0
+                                    students.isEmpty
                                         ? Icon(
                                             Icons.check,
                                             color: AppColors.textColor,
@@ -218,11 +194,11 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                                           ),
                                     const SizedBox(width: 8),
                                     Text(
-                                      count == 0
+                                      students.isEmpty
                                           ? 'Tous les élèves sont en ordre'
-                                          : count == 1
+                                          : students.length == 1
                                           ? '1 étudiant sans casier'
-                                          : '$count étudiants sans casier',
+                                          : '${students.length} étudiants sans casier',
                                       style: TextStyle(
                                         color: AppColors.titleColor,
                                         fontWeight: FontWeight.bold,
@@ -231,44 +207,18 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                                   ],
                                 ),
                               ),
-                            );
-                          },
-                        ),
-                        Expanded(
-                          child: Consumer(
-                            builder: (context, ref, child) {
-                              final studentsRepository = ref.watch(
-                                studentRepositoryProvider.notifier,
-                              );
-                              final students = studentsRepository
-                                  .fetchNoLockerStudents();
-
-                              final filteredStudents =
-                                  studentSearchQuery.isEmpty
-                                  ? students
-                                  : searchInStudents(
-                                      students,
-                                      studentSearchQuery,
-                                    );
-
-                              filteredStudents.sort((a, b) {
-                                final lastNameComp = a.surname.compareTo(
-                                  b.surname,
-                                );
-                                if (lastNameComp != 0) return lastNameComp;
-                                return a.name.compareTo(b.name);
-                              });
-
-                              return filteredStudents.isEmpty
+                            ),
+                            Expanded(
+                              child: students.isEmpty
                                   ? Center(
                                       child: StyledText(
                                         'Aucun étudiant trouvé.'.hardcoded,
                                       ),
                                     )
                                   : ListView.builder(
-                                      itemCount: filteredStudents.length,
+                                      itemCount: students.length,
                                       itemBuilder: (_, index) {
-                                        final student = filteredStudents[index];
+                                        final student = students[index];
                                         return StudentLinkCard(
                                           student: student,
                                           selectStudent: (Student student) {
@@ -284,17 +234,17 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                                               student == selectedStudent,
                                         );
                                       },
-                                    );
-                            },
-                          ),
+                                    ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ],
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

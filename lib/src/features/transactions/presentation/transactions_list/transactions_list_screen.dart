@@ -21,16 +21,16 @@ class _TransactionsListScreenState
     extends ConsumerState<TransactionsListScreen> {
   @override
   Widget build(BuildContext context) {
-    List<Transaction> transactions = TransactionRepository()
-        .fetchTransactionList();
-
-    transactions.sort((a, b) => b.timestamp - a.timestamp);
     return Scaffold(
       appBar: AppBar(title: StyledTitle('Actions'.hardcoded)),
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p24),
         child: Consumer(
           builder: (context, ref, child) {
+            List<Transaction> transactions = ref
+                .read(transactionRepositoryProvider.notifier)
+                .getTransactionList();
+
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -38,11 +38,12 @@ class _TransactionsListScreenState
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     StyledButton(
-                      onPressed: () => setState(() {
-                        ref
+                      onPressed: () => setState(
+                        () => ref
                             .read(transactionRepositoryProvider.notifier)
-                            .goBack(transactions.last.id);
-                      }),
+                            .goBack(transactions.last.id),
+                      ),
+
                       child: Row(
                         children: [
                           Icon(
@@ -56,44 +57,39 @@ class _TransactionsListScreenState
                       ),
                     ),
                     StyledButton(
-                      onPressed: () => setState(() {
-                        ref
+                      onPressed: () => setState(
+                        () => ref
                             .read(transactionRepositoryProvider.notifier)
-                            .clearTransactions();
-                      }),
+                            .clearTransactions(),
+                      ),
                       child: StyledTitle('Vider'.hardcoded),
                     ),
                   ],
                 ),
                 gapH24,
                 Expanded(
-                  child: Consumer(
-                    builder: (context, ref, child) {
-                      return transactions.isEmpty
-                          ? Center(
-                              child: StyledText(
-                                'Aucune action effectuée.'.hardcoded,
+                  child: transactions.isEmpty
+                      ? Center(
+                          child: StyledText(
+                            'Aucune action effectuée.'.hardcoded,
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: transactions.length,
+                          itemBuilder: (_, index) {
+                            final transaction = transactions[index];
+                            return TransactionCard(
+                              transaction: transaction,
+                              onTap: (id) => setState(
+                                () => ref
+                                    .read(
+                                      transactionRepositoryProvider.notifier,
+                                    )
+                                    .goBack(id),
                               ),
-                            )
-                          : ListView.builder(
-                              itemCount: transactions.length,
-                              itemBuilder: (_, index) {
-                                final transaction = transactions[index];
-                                return TransactionCard(
-                                  transaction: transaction,
-                                  onTap: (id) => setState(() {
-                                    ref
-                                        .read(
-                                          transactionRepositoryProvider
-                                              .notifier,
-                                        )
-                                        .goBack(id);
-                                  }),
-                                );
-                              },
                             );
-                    },
-                  ),
+                          },
+                        ),
                 ),
               ],
             );

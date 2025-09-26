@@ -107,7 +107,7 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
                 StyledButton(
                   onPressed: () async {
                     List<Student> students = StudentsRepository()
-                        .fetchStudents();
+                        .getStudentList();
                     if (students.isEmpty) {
                       showDialog(
                         context: context,
@@ -169,28 +169,14 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
             Expanded(
               child: Consumer(
                 builder: (context, ref, child) {
-                  final lockersRepository = ref.watch(
-                    lockersRepositoryProvider.notifier,
+                  List<Locker> lockers = ref.watch(lockersRepositoryProvider);
+                  lockers = filterLockers(
+                    lockers,
+                    floor: selectedFloor,
+                    responsible: selectedResponsible,
+                    hasComments: hasComments,
+                    hasProblems: hasProblems,
                   );
-                  List<Locker> lockers = lockersRepository.fetchLockersList();
-                  if (selectedFloor != null) {
-                    lockers = filterLockers(lockers, floor: selectedFloor!);
-                  }
-
-                  if (selectedResponsible != null) {
-                    lockers = filterLockers(
-                      lockers,
-                      responsible: selectedResponsible!,
-                    );
-                  }
-
-                  if (hasComments) {
-                    lockers = filterLockers(lockers, hasComments: true);
-                  }
-
-                  if (hasProblems) {
-                    lockers = filterLockers(lockers, hasProblems: true);
-                  }
 
                   if (_searchQuery.isNotEmpty) {
                     lockers = searchInLockers(lockers, _searchQuery);

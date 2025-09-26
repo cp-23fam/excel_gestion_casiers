@@ -78,7 +78,7 @@ void main() {
 
   group('searchInLockers', () {
     void prepareMockToReturnTwoStudentsList() {
-      when(() => studentsRepository.fetchStudents()).thenReturn(students);
+      when(() => studentsRepository.getStudentList()).thenReturn(students);
       when(
         () => studentsRepository.getLockerByStudent('1'),
       ).thenReturn(lockers[1]);

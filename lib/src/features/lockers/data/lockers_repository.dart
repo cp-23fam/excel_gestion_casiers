@@ -20,9 +20,11 @@ class LockersRepository extends Notifier<List<Locker>> {
     for (Locker locker in lockers) {
       lockersBox.put(locker.number, runAutoHealthCheckOnLocker(locker));
     }
+
+    state = getLockersList();
   }
 
-  List<Locker> fetchLockersList() {
+  List<Locker> getLockersList() {
     final lockers = <Locker>[];
 
     for (int i = 0; i < lockersBox.length; i++) {
@@ -36,7 +38,7 @@ class LockersRepository extends Notifier<List<Locker>> {
     return lockers;
   }
 
-  List<Locker> fetchFreeLockers() {
+  List<Locker> getFreeLockers() {
     final lockers = <Locker>[];
 
     for (int i = 0; i < lockersBox.length; i++) {
@@ -50,17 +52,7 @@ class LockersRepository extends Notifier<List<Locker>> {
     return lockers;
   }
 
-  Locker? getLockerById(int lockerNumber) {
-    try {
-      return lockersBox.values.firstWhere(
-        (locker) => locker.number == lockerNumber,
-      );
-    } on StateError {
-      return null;
-    }
-  }
-
-  Future<void> freeLockerByIndex(int lockerNumber) async {
+  void freeLockerByIndex(int lockerNumber) {
     TransactionRepository().saveTransaction(
       TransactionType.edit,
       isStudentBox: false,
@@ -71,23 +63,8 @@ class LockersRepository extends Notifier<List<Locker>> {
       lockerNumber,
       lockersBox.get(lockerNumber)!.returnFreedLocker(),
     );
-  }
 
-  Future<void> addStudentToLockerBy(int number, String studentId) async {
-    TransactionRepository().saveTransaction(
-      TransactionType.edit,
-      isStudentBox: false,
-      lockerValue: lockersBox.get(number)!,
-    );
-
-    lockersBox.put(
-      number,
-      lockersBox
-          .get(number)!
-          .copyWith(
-            studentId: StudentsRepository.studentsBox.get(studentId)!.id,
-          ),
-    );
+    state = getLockersList();
   }
 
   void addLocker(Locker locker) {
@@ -100,6 +77,8 @@ class LockersRepository extends Notifier<List<Locker>> {
     );
 
     LockersRepository.lockersBox.put(locker.number, checkedLocker);
+
+    state = getLockersList();
   }
 
   void editLocker(int lockerNumber, Locker editedLocker) {
@@ -112,6 +91,8 @@ class LockersRepository extends Notifier<List<Locker>> {
     );
 
     LockersRepository.lockersBox.put(lockerNumber, checkedLocker);
+
+    state = getLockersList();
   }
 
   void deleteLocker(int lockerNumber) {
@@ -122,6 +103,8 @@ class LockersRepository extends Notifier<List<Locker>> {
     );
 
     LockersRepository.lockersBox.delete(lockerNumber);
+
+    state = getLockersList();
   }
 
   Student? getStudentByLocker(int lockerNumber) {
@@ -136,7 +119,7 @@ class LockersRepository extends Notifier<List<Locker>> {
 
   @override
   build() {
-    return [];
+    return getLockersList();
   }
 }
 

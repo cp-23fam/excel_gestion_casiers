@@ -154,55 +154,37 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
             Expanded(
               child: Consumer(
                 builder: (context, ref, child) {
-                  final studentsRepository = ref.watch(
-                    studentRepositoryProvider.notifier,
+                  List<Student> students = ref.watch(studentRepositoryProvider);
+
+                  students = filterStudents(
+                    students,
+                    genderTitle: selectedGenderTitle,
+                    job: selectedJob,
+                    caution: int.tryParse(selectedCaution ?? ''),
+                    formationYear: int.tryParse(selectedFormationYear ?? ''),
                   );
-                  List<Student> students = studentsRepository.fetchStudents();
-                  if (selectedGenderTitle != null) {
-                    students = filterStudents(
-                      students,
-                      genderTitle: selectedGenderTitle!,
-                    );
-                  }
-                  if (selectedJob != null) {
-                    students = filterStudents(students, job: selectedJob!);
-                  }
-                  if (selectedCaution != null) {
-                    students = filterStudents(
-                      students,
-                      caution: int.parse(selectedCaution!),
-                    );
-                  }
-                  if (selectedFormationYear != null) {
-                    students = filterStudents(
-                      students,
-                      formationYear: int.parse(selectedFormationYear!),
-                    );
-                  }
 
-                  final filteredStudents = _searchQuery.isEmpty
-                      ? students
-                      : searchInStudents(students, _searchQuery);
+                  students = searchInStudents(students, _searchQuery);
 
-                  filteredStudents.sort((a, b) {
+                  students.sort((a, b) {
                     final lastNameComp = a.surname.compareTo(b.surname);
                     if (lastNameComp != 0) return lastNameComp;
                     return a.name.compareTo(b.name);
                   });
 
-                  return filteredStudents.isEmpty
+                  return students.isEmpty
                       ? Center(
                           child: StyledText('Aucun étudiant trouvé.'.hardcoded),
                         )
                       : ListView.builder(
-                          itemCount: filteredStudents.length,
+                          itemCount: students.length,
                           itemBuilder: (_, index) {
-                            final student = filteredStudents[index];
+                            final student = students[index];
                             return StudentCard(
                               student: student,
-                              deleteStudent: (id) => setState(() {
-                                studentsRepository.deleteStudent(student.id);
-                              }),
+                              deleteStudent: (id) => ref
+                                  .read(studentRepositoryProvider.notifier)
+                                  .deleteStudent(id),
                               editStudent: (student) =>
                                   _createStudent(student: student),
                             );

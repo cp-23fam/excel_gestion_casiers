@@ -21,7 +21,7 @@ List<Student> searchInStudents(
   List<Student> returnStudents = <Student>[];
 
   if (int.tryParse(searchValue) != null) {
-    List<Locker> lockers = repository.fetchLockersList();
+    List<Locker> lockers = repository.getLockersList();
 
     for (Locker locker in lockers) {
       if (locker.studentId == null) {
@@ -31,9 +31,11 @@ List<Student> searchInStudents(
       if (locker.number.toString().toLowerCase().contains(
         searchValue.toLowerCase(),
       )) {
-        Student student = repository.getStudentByLocker(locker.number)!;
+        Student? student = repository.getStudentByLocker(locker.number);
 
-        returnStudents.add(student);
+        if (student != null && students.contains(student)) {
+          returnStudents.add(student);
+        }
       }
     }
   } else {

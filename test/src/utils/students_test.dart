@@ -88,7 +88,7 @@ void main() {
 
   group('SearchInStudents', () {
     void prepareMockToReturnThreeLockersList() {
-      when(() => lockersRepository.fetchLockersList()).thenReturn(lockers);
+      when(() => lockersRepository.getLockersList()).thenReturn(lockers);
       when(
         () => lockersRepository.getStudentByLocker(2),
       ).thenReturn(students[0]);

@@ -99,7 +99,7 @@ class TransactionRepository extends Notifier<List<Transaction>> {
     transactionsBox.delete(id);
   }
 
-  List<Transaction> fetchTransactionList() {
+  List<Transaction> getTransactionList() {
     final transactions = <Transaction>[];
 
     for (int i = 0; i < transactionsBox.length; i++) {
@@ -114,8 +114,8 @@ class TransactionRepository extends Notifier<List<Transaction>> {
   }
 
   void clearTransactions() {
-    for (int i = 0; i < transactionsBox.length; i++) {
-      transactionsBox.deleteAt(i);
+    for (int i = 0; i < transactionsBox.values.length; i++) {
+      transactionsBox.deleteAt(0);
     }
   }
 

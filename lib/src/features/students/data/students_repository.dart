@@ -35,22 +35,24 @@ class StudentsRepository extends Notifier<List<Student>> {
         );
       }
     }
+
+    state = getStudentList();
   }
 
-  List<Student> fetchNoLockerStudents() {
-    final lockers = <Student>[];
+  List<Student> getFreeStudents() {
+    final students = <Student>[];
 
     for (int i = 0; i < studentsBox.length; i++) {
       final Student? student = studentsBox.getAt(i);
 
       if (student != null) {
         if (getLockerByStudent(student.id) == null) {
-          lockers.add(student);
+          students.add(student);
         }
       }
     }
 
-    return lockers;
+    return students;
   }
 
   Student? getStudentBy(StudentID id) {
@@ -69,7 +71,7 @@ class StudentsRepository extends Notifier<List<Student>> {
     return null;
   }
 
-  List<Student> fetchStudents() {
+  List<Student> getStudentList() {
     final students = <Student>[];
 
     for (int i = 0; i < studentsBox.length; i++) {
@@ -91,6 +93,8 @@ class StudentsRepository extends Notifier<List<Student>> {
     );
 
     studentsBox.put(student.id, student);
+
+    state = getStudentList();
   }
 
   void editStudent(Student editedStudent) {
@@ -101,6 +105,8 @@ class StudentsRepository extends Notifier<List<Student>> {
     );
 
     studentsBox.put(editedStudent.id, editedStudent);
+
+    state = getStudentList();
   }
 
   void deleteStudent(String id) {
@@ -111,11 +117,13 @@ class StudentsRepository extends Notifier<List<Student>> {
     );
 
     studentsBox.delete(id);
+
+    state = getStudentList();
   }
 
   @override
   build() {
-    return [];
+    return getStudentList();
   }
 }
 

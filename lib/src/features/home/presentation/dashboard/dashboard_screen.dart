@@ -26,7 +26,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           builder: (context, ref, child) {
             final lockers = ref
                 .read(lockersRepositoryProvider.notifier)
-                .fetchLockersList();
+                .getLockersList();
 
             final lockersErrorCount = lockers
                 .where(
@@ -41,12 +41,12 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
             final studentsCount = ref
                 .read(studentRepositoryProvider.notifier)
-                .fetchStudents()
+                .getStudentList()
                 .length;
 
             final studentsErrorCount = ref
                 .read(studentRepositoryProvider.notifier)
-                .fetchNoLockerStudents()
+                .getFreeStudents()
                 .length;
 
             return lockers.isEmpty
@@ -65,7 +65,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 : Wrap(
                     children: [
                       DashboardCard(
-                        text: 'Général',
+                        text: 'Général'.hardcoded,
                         condition:
                             (lockersErrorCount != 0 || studentsErrorCount > 0)
                             ? 2
@@ -77,8 +77,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                     studentsErrorCount +
                                     keysWarningCount) ==
                                 1
-                            ? '1 problème majeur ou mineur'
-                            : '${lockersErrorCount + studentsErrorCount + keysWarningCount} problèmes majeurs ou mineurs',
+                            ? '1 problème majeur ou mineur'.hardcoded
+                            : '${lockersErrorCount + studentsErrorCount + keysWarningCount} problèmes majeurs ou mineurs'
+                                  .hardcoded,
                         logo: Icons.inbox,
                         value:
                             (2 * lockers.length +
@@ -92,10 +93,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         text: 'Casiers',
                         condition: lockersErrorCount == 0 ? 0 : 2,
                         comment: lockersErrorCount == 0
-                            ? 'Tous les casiers sont en ordre'
+                            ? 'Tous les casiers sont en ordre'.hardcoded
                             : lockersErrorCount == 1
-                            ? '1 casier à des problèmes'
-                            : '$lockersErrorCount casiers ont des problèmes',
+                            ? '1 casier à des problèmes'.hardcoded
+                            : '$lockersErrorCount casiers ont des problèmes'
+                                  .hardcoded,
                         logo: Icons.lock,
                         value: 1 - lockersErrorCount / lockers.length,
                       ),
@@ -103,10 +105,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         text: 'Élèves',
                         condition: studentsErrorCount > 0 ? 2 : 0,
                         comment: studentsErrorCount < 1
-                            ? 'Tous les élèves sont en ordre'
+                            ? 'Tous les élèves sont en ordre'.hardcoded
                             : studentsErrorCount == 1
-                            ? '1 élève n\'a pas de casier'
-                            : '$studentsErrorCount élèves n\'ont pas de casier',
+                            ? '1 élève n\'a pas de casier'.hardcoded
+                            : '$studentsErrorCount élèves n\'ont pas de casier'
+                                  .hardcoded,
                         logo: Icons.person,
                         value: 1 - studentsErrorCount / studentsCount,
                       ),
@@ -115,9 +118,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         condition: keysWarningCount > 0 ? 1 : 0,
                         comment: keysWarningCount < 1
                             ? 'Tous les casiers possèdent des rechanges'
+                                  .hardcoded
                             : keysWarningCount == 1
-                            ? '1 casier n\'a pas de rechange'
-                            : '$keysWarningCount casiers n\'ont pas de rechange',
+                            ? '1 casier n\'a pas de rechanges'.hardcoded
+                            : '$keysWarningCount casiers n\'ont pas de rechange'
+                                  .hardcoded,
                         logo: Icons.key,
                         value: 1 - keysWarningCount / lockers.length,
                       ),

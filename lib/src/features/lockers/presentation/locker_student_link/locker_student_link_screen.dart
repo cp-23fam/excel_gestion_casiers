@@ -51,7 +51,7 @@ class _LockerStudentLinkScreenState
   @override
   Widget build(BuildContext context) {
     final studentsRepository = ref.watch(studentRepositoryProvider.notifier);
-    final allStudents = studentsRepository.fetchStudents();
+    final allStudents = studentsRepository.getStudentList();
 
     final filteredStudents = allStudents.where((student) {
       final fullName = '${student.name} ${student.surname}'.toLowerCase();

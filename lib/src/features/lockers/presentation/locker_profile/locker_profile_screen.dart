@@ -25,14 +25,11 @@ class LockerProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final lockersRepository = ref.watch(lockersRepositoryProvider.notifier);
-    final studentsRepository = ref.watch(studentRepositoryProvider.notifier);
-
-    final lockers = lockersRepository.fetchLockersList();
+    final lockers = ref.watch(lockersRepositoryProvider);
     final locker = lockers.firstWhere((l) => l.id == lockerId);
-    final Student? student = studentsRepository.getStudentBy(
-      locker.studentId ?? '',
-    );
+    final Student? student = ref
+        .read(studentRepositoryProvider.notifier)
+        .getStudentBy(locker.studentId ?? '');
 
     return Align(
       alignment: Alignment.centerRight,
@@ -145,9 +142,12 @@ class LockerProfileScreen extends ConsumerWidget {
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                        lockersRepository.freeLockerByIndex(
-                                          locker.number,
-                                        );
+                                        ref
+                                            .read(
+                                              lockersRepositoryProvider
+                                                  .notifier,
+                                            )
+                                            .freeLockerByIndex(locker.number);
                                       },
                                       icon: const Icon(Icons.link_off),
                                     ),
@@ -247,8 +247,10 @@ class LockerProfileScreen extends ConsumerWidget {
                     Expanded(
                       child: TextButton.icon(
                         onPressed: () {
-                          lockersRepository.deleteLocker(locker.number);
                           Navigator.of(context).pop();
+                          ref
+                              .read(lockersRepositoryProvider.notifier)
+                              .deleteLocker(locker.number);
                         },
                         icon: Icon(Icons.delete, color: AppColors.iconColor),
                         label: const StyledTitle('Supprimer'),
