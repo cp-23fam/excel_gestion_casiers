@@ -1,5 +1,3 @@
-import 'package:excel_gestion_casiers/src/features/students/data/students_repository.dart';
-import 'package:excel_gestion_casiers/src/features/lockers/domain/locker.dart';
 import 'package:excel_gestion_casiers/src/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
@@ -25,11 +23,10 @@ class _StudentLinkCardState extends State<StudentLinkCard> {
   bool isHover = false;
   @override
   Widget build(BuildContext context) {
-    Locker? possedLocker = StudentsRepository().getLockerByStudent(
-      widget.student.id,
-    );
     return GestureDetector(
-      onTap: () => widget.selectStudent(widget.student),
+      onTap: () => setState(() {
+        widget.selectStudent(widget.student);
+      }),
       child: MouseRegion(
         onEnter: (event) {
           setState(() {
@@ -63,14 +60,6 @@ class _StudentLinkCardState extends State<StudentLinkCard> {
                 ),
                 gapW8,
                 Expanded(child: StyledBoldText(widget.student.name)),
-                gapW8,
-                possedLocker == null
-                    ? const Expanded(child: StyledBoldText('-'))
-                    : Expanded(
-                        child: StyledBoldText(
-                          'Casier N° ${possedLocker.number}',
-                        ),
-                      ),
                 gapW8,
                 StyledBoldText('${widget.student.formationYear} année'),
               ],

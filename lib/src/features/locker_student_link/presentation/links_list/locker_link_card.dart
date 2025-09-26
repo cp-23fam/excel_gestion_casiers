@@ -25,7 +25,9 @@ class _LockerLinkCardState extends State<LockerLinkCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => widget.selectLocker(widget.locker),
+      onTap: () => setState(() {
+        widget.selectLocker(widget.locker);
+      }),
       child: MouseRegion(
         onEnter: (event) {
           setState(() {
