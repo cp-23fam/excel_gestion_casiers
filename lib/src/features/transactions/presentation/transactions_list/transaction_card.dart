@@ -66,7 +66,7 @@ class _TransactionCardState extends State<TransactionCard> {
                       const Icon(Icons.swap_vertical_circle, size: Sizes.p24),
                       gapW8,
                       Expanded(
-                        child: StyledBoldText('${widget.transaction.type}'),
+                        child: StyledBoldText(widget.transaction.type.name),
                       ),
                       gapW8,
 

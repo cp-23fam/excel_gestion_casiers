@@ -1,4 +1,3 @@
-import 'package:excel_gestion_casiers/src/common_widgets/styled_button.dart';
 import 'package:excel_gestion_casiers/src/common_widgets/styled_text.dart';
 import 'package:excel_gestion_casiers/src/constants/app_sizes.dart';
 import 'package:excel_gestion_casiers/src/features/lockers/data/lockers_repository.dart';
@@ -50,7 +49,7 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
               children: [
                 Row(
                   children: [
-                    StyledButton(
+                    TextButton(
                       onPressed: () {
                         if (selectedLocker != null && selectedStudent != null) {
                           setState(() {
@@ -65,10 +64,25 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                           });
                         }
                       },
-                      child: Icon(
-                        Icons.link,
-                        color: AppColors.iconColor,
-                        size: 30.0,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: Sizes.p12,
+                          horizontal: Sizes.p20,
+                        ),
+                        decoration: BoxDecoration(
+                          color:
+                              selectedLocker != null && selectedStudent != null
+                              ? AppColors.importantColor
+                              : AppColors.secondaryColor,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(Sizes.p8),
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.link,
+                          color: AppColors.iconColor,
+                          size: 30.0,
+                        ),
                       ),
                     ),
                   ],

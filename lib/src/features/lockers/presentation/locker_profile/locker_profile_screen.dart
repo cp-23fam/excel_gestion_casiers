@@ -161,16 +161,31 @@ class LockerProfileScreen extends ConsumerWidget {
                 Card(
                   child: Column(
                     children: [
-                      locker.lockerCondition.isConditionGood
+                      !locker.lockerCondition.isConditionGood
                           ? Container(
                               width: double.infinity,
-                              color: AppColors.goodColor,
-                              child: const Icon(Icons.check),
+                              color: AppColors.deleteColor.withAlpha(50),
+                              child: Icon(
+                                Icons.error,
+                                color: AppColors.deleteColor,
+                              ),
+                            )
+                          : locker.lockerCondition.problems == null
+                          ? Container(
+                              width: double.infinity,
+                              color: AppColors.goodColor.withAlpha(50),
+                              child: Icon(
+                                Icons.check,
+                                color: AppColors.goodColor,
+                              ),
                             )
                           : Container(
                               width: double.infinity,
-                              color: AppColors.deleteColor,
-                              child: const Icon(Icons.close),
+                              color: AppColors.warningColor.withAlpha(50),
+                              child: Icon(
+                                Icons.warning,
+                                color: AppColors.warningColor,
+                              ),
                             ),
                       Padding(
                         padding: const EdgeInsets.symmetric(

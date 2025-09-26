@@ -210,8 +210,11 @@ class _LockersListScreenState extends ConsumerState<LockersListScreen> {
                           itemCount: lockers.length,
                           itemBuilder: (_, index) {
                             final locker = lockers[index];
+                            final student = lockersRepository
+                                .getStudentByLocker(locker.number);
                             return LockerCard(
                               locker: locker,
+                              student: student,
                               infoLocker: (locker) =>
                                   _infoLocker(locker: locker),
                             );

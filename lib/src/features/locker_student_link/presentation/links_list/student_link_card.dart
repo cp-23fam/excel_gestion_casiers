@@ -24,7 +24,9 @@ class _StudentLinkCardState extends State<StudentLinkCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => widget.selectStudent(widget.student),
+      onTap: () => setState(() {
+        widget.selectStudent(widget.student);
+      }),
       child: MouseRegion(
         onEnter: (event) {
           setState(() {
