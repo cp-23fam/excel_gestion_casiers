@@ -61,6 +61,8 @@ class _LinksListScreenState extends ConsumerState<LinksListScreen> {
                                     studentId: selectedStudent!.id,
                                   ),
                                 );
+                            selectedLocker = null;
+                            selectedStudent = null;
                           });
                         }
                       },
